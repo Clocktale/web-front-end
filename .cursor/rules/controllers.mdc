@@ -1,0 +1,114 @@
+---
+context: true
+priority: high
+scope: project
+---
+
+# Controllers - Camada de Controle e Estado
+
+Controllers são classes responsáveis por controlar a interface e manter o estado que as telas utilizam. Elas orquestram a lógica da aplicação e fazem a ponte entre a UI e os Repositories.
+
+## Responsabilidades
+
+### O que Controllers FAZEM:
+- ✅ Manter o estado da tela usando signals
+- ✅ Expor ações que a UI pode chamar
+- ✅ Orquestrar chamadas a múltiplos repositories
+- ✅ Implementar lógica de negócio da aplicação
+- ✅ Gerenciar loading states e error states
+- ✅ Transformar dados para formato adequado à UI
+- ✅ Validar dados antes de enviar aos repositories
+
+### O que Controllers NÃO FAZEM:
+- ❌ Fazer requisições HTTP diretamente (use repositories)
+- ❌ Conter lógica de apresentação ou estilos
+- ❌ Acessar APIs externas diretamente
+- ❌ Manipular DOM diretamente
+
+## Localização e Nomenclatura
+
+```
+src/app/controllers/
+├── customer.controller.ts    # CustomerController
+├── product.controller.ts     # ProductController
+├── order.controller.ts       # OrderController
+└── ...
+```
+
+- **Arquivo**: `[entidade].controller.ts`
+- **Classe**: `[Entidade]Controller`
+- **Decorator**: `@Injectable({ providedIn: 'root' })`
+
+## Gerenciamento de Estado
+
+Controllers usam **signals** para gerenciar estado de forma reativa:
+
+- `signal()`: Para estado mutável
+- `computed()`: Para estado derivado
+- `effect()`: Para side effects (usar com moderação)
+
+## Padrão Básico
+
+```typescript
+@Injectable({ providedIn: 'root' })
+export class CustomerController {
+  private repo = inject(CustomerRepository);
+
+  // Estado
+  customers = signal<Customer[]>([]);
+  loading = signal(false);
+  error = signal<string | null>(null);
+
+  // Estado derivado
+  customerCount = computed(() => this.customers().length);
+
+  // Ações
+  loadCustomers() {
+    this.loading.set(true);
+    this.repo.getAll().subscribe({
+      next: (data) => {
+        this.customers.set(data);
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.error.set('Erro ao carregar');
+        this.loading.set(false);
+      }
+    });
+  }
+}
+```
+
+## Princípios Fundamentais
+
+1. **Use signals para TODO estado** - Nunca use variáveis comuns
+2. **Use computed para estado derivado** - Atualiza automaticamente
+3. **Injete com inject()** - Não use constructor injection
+4. **Ações têm verbos claros** - `loadCustomers()`, `createCustomer()`
+5. **Sempre trate erros** - Loading e error states
+6. **Controllers orquestram, não buscam** - Use repositories para dados
+
+## Relação com Outras Camadas
+
+- UI Components injetam Controllers para acessar estado e ações
+- Controllers injetam e usam Repositories para buscar dados
+- Controllers gerenciam estado usando Types do domínio
+
+## Como Implementar
+
+Para aprender como implementar controllers, consulte a skill dedicada:
+
+**Skill**: `.agents/skills/create-controller/SKILL.md`
+
+A skill contém:
+- Estrutura completa de código
+- Guia completo de signals e computed
+- Padrões de gerenciamento de estado
+- Exemplos de orquestração de múltiplos repositories
+- Script de geração automática
+
+Ver também:
+- [architecture.mdc](architecture.mdc): Visão geral da arquitetura
+- [repositories.mdc](repositories.mdc): Como repositories retornam dados
+- [types.mdc](types.mdc): Tipos usados no estado
+- [ui.mdc](ui.mdc): Como componentes usam controllers

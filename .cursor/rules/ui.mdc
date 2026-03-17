@@ -1,0 +1,144 @@
+---
+context: true
+priority: high
+scope: project
+---
+
+# UI - Camada de Interface (Atomic Design)
+
+A camada UI contém todos os componentes visuais compartilhados, organizados seguindo a metodologia Atomic Design. Esta organização facilita reutilização, manutenção e escalabilidade dos componentes.
+
+## Responsabilidades
+
+### O que UI FAZ:
+- ✅ Renderizar interface visual
+- ✅ Responder a interações do usuário
+- ✅ Consumir estado de controllers
+- ✅ Emitir eventos para controllers
+- ✅ Garantir acessibilidade (WCAG AA)
+- ✅ Implementar responsividade
+
+### O que UI NÃO FAZ:
+- ❌ Conter lógica de negócio
+- ❌ Fazer requisições HTTP diretamente
+- ❌ Gerenciar estado complexo (use controllers)
+- ❌ Acessar repositories diretamente
+
+## Localização
+
+```
+src/app/ui/
+├── atoms/           # Componentes básicos indivisíveis
+│   ├── button/
+│   ├── input/
+│   └── label/
+├── molecules/       # Combinações de atoms
+│   ├── form-field/
+│   └── search-bar/
+├── organisms/       # Componentes complexos
+│   ├── header/
+│   └── customer-form/
+└── templates/       # Layouts de página
+    ├── main-layout/
+    └── auth-layout/
+
+src/app/pages/       # Páginas (rotas) - fora de ui/
+├── home/
+├── customers/
+└── products/
+```
+
+## Atomic Design: Os 4 Níveis
+
+### 1. Atoms (Átomos)
+
+Componentes básicos e indivisíveis. Blocos de construção fundamentais.
+
+**Exemplos**: Button, Input, Label, Icon, Badge
+**Características**:
+- Não podem ser quebrados em partes menores
+- Altamente reutilizáveis
+- Geralmente mapeiam elementos HTML
+- Não contêm lógica de negócio
+
+### 2. Molecules (Moléculas)
+
+Combinações de átomos que formam componentes funcionais simples.
+
+**Exemplos**: Form Field (label + input + error), Search Bar (input + button)
+**Características**:
+- Compostos por 2 ou mais átomos
+- Têm propósito específico e bem definido
+- Ainda são relativamente simples
+- Podem ter estado local simples
+
+### 3. Organisms (Organismos)
+
+Componentes complexos compostos por molecules e/ou atoms.
+
+**Exemplos**: Header completo, Sidebar, Customer Form, Data Table
+**Características**:
+- Componentes complexos e autossuficientes
+- Representam seções distintas da interface
+- Podem injetar controllers para gerenciar estado
+- Podem conter lógica de apresentação complexa
+
+### 4. Templates (Templates)
+
+Layouts de página que definem a estrutura visual geral.
+
+**Exemplos**: Main Layout, Auth Layout, Dashboard Layout
+**Características**:
+- Definem estrutura e layout da página
+- Usam `<ng-content>` para áreas de conteúdo
+- Não contêm lógica de negócio
+- Reutilizáveis entre diferentes páginas
+
+## Páginas (Rotas)
+
+Páginas são componentes que representam rotas da aplicação. Ficam FORA da pasta `ui/`, seguindo a estrutura de roteamento do Angular.
+
+```typescript
+// pages/customers/customers.page.ts
+@Component({
+  template: `
+    <app-main-layout>
+      <h1>Clientes</h1>
+      <!-- Usa organisms, molecules e atoms -->
+    </app-main-layout>
+  `
+})
+export class CustomersPage {
+  controller = inject(CustomerController);
+}
+```
+
+## Princípios Fundamentais
+
+1. **Sempre use ChangeDetectionStrategy.OnPush**
+2. **Use input() e output() ao invés de decorators**
+3. **Use signals para estado local**
+4. **Componentes standalone** (padrão no Angular 16+)
+5. **Atoms não injetam controllers** (exceto organisms)
+6. **Garanta acessibilidade** (ARIA, focus, teclado)
+
+## Como Implementar
+
+Para aprender como criar componentes UI, consulte as skills dedicadas:
+
+- **Atoms**: `.agents/skills/create-atom/SKILL.md`
+- **Molecules**: `.agents/skills/create-molecule/SKILL.md`
+- **Organisms**: `.agents/skills/create-organism/SKILL.md`
+- **Templates**: `.agents/skills/create-template/SKILL.md`
+
+Cada skill contém:
+- Definição e quando usar
+- Estrutura completa de código
+- Exemplos práticos
+- Padrões comuns
+- Script de geração automática
+
+Ver também:
+- [architecture.mdc](architecture.mdc): Visão geral da arquitetura
+- [controllers.mdc](controllers.mdc): Como componentes usam controllers
+- [types.mdc](types.mdc): Tipos usados nos componentes

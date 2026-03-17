@@ -1,0 +1,117 @@
+---
+context: true
+priority: high
+scope: project
+---
+
+# Arquitetura do Projeto
+
+Este projeto segue uma arquitetura em camadas bem definida para garantir separação de responsabilidades, manutenibilidade e escalabilidade.
+
+## Visão Geral da Arquitetura
+
+A arquitetura é organizada em 4 camadas principais:
+
+```mermaid
+graph TD
+    UI[UI Layer - Componentes Visuais]
+    Controllers[Controllers - Gerenciamento de Estado]
+    Repositories[Repositories - Acesso a Dados]
+    External[Mundo Exterior - API, Firebase, etc]
+    
+    UI -->|Chama ações| Controllers
+    Controllers -->|Usa| Repositories
+    Repositories -->|Busca/Envia dados| External
+    External -->|Retorna dados| Repositories
+    Repositories -->|Converte para Types| Controllers
+    Controllers -->|Atualiza estado| UI
+```
+
+## Fluxo de Dados
+
+1. **UI → Controllers**: A interface do usuário chama ações nas controllers
+2. **Controllers → Repositories**: Controllers solicitam dados através dos repositories
+3. **Repositories → Mundo Exterior**: Repositories fazem requisições para APIs, Firebase, etc
+4. **Mundo Exterior → Repositories**: Dados retornam no formato da API
+5. **Repositories → Controllers**: Repositories convertem dados para Types do domínio
+6. **Controllers → UI**: Controllers atualizam o estado que a UI consome
+
+## Princípios Fundamentais
+
+### 1. Separação de Responsabilidades
+Cada camada tem uma responsabilidade única e bem definida:
+- **UI**: Apenas apresentação e interação do usuário
+- **Controllers**: Apenas gerenciamento de estado e orquestração
+- **Repositories**: Apenas acesso e transformação de dados externos
+- **Types**: Apenas definição de estruturas de dados
+
+### 2. Dependência Unidirecional
+O fluxo de dependência sempre vai de fora para dentro:
+- UI depende de Controllers
+- Controllers dependem de Repositories e Types
+- Repositories dependem de Types
+- Types não dependem de nada
+
+### 3. Imutabilidade e Previsibilidade
+- Use signals para gerenciamento de estado
+- Transformações de dados devem ser puras
+- Evite efeitos colaterais inesperados
+
+## Estrutura de Pastas
+
+```
+src/app/
+├── repositories/     # Camada de acesso a dados
+├── controllers/      # Camada de controle e estado
+├── types/           # Definições de tipos
+├── ui/              # Componentes visuais
+│   ├── atoms/       # Componentes básicos
+│   ├── molecules/   # Combinação de atoms
+│   ├── organisms/   # Seções complexas
+│   └── templates/   # Layouts de página
+└── pages/           # Rotas do Angular (fora de ui/)
+```
+
+## Rules Específicas
+
+Para detalhes sobre cada camada, consulte as rules específicas:
+
+- **[repositories.mdc](repositories.mdc)**: Camada de acesso a dados
+- **[controllers.mdc](controllers.mdc)**: Gerenciamento de estado
+- **[types.mdc](types.mdc)**: Definição de tipos e interfaces
+- **[ui.mdc](ui.mdc)**: Organização de componentes (Atomic Design)
+
+## Skills de Implementação
+
+Para aprender COMO implementar cada parte, consulte as skills:
+
+### Camadas Backend
+- **`.agents/skills/create-repository/`**: Como criar repositories
+- **`.agents/skills/create-controller/`**: Como criar controllers
+- **`.agents/skills/create-types/`**: Como definir types
+
+### Camadas UI (Atomic Design)
+- **`.agents/skills/create-atom/`**: Como criar atoms
+- **`.agents/skills/create-molecule/`**: Como criar molecules
+- **`.agents/skills/create-organism/`**: Como criar organisms
+- **`.agents/skills/create-template/`**: Como criar templates
+
+Cada skill inclui:
+- Guia passo a passo
+- Exemplos completos em `references/`
+- Scripts de geração em `scripts/`
+
+## Benefícios desta Arquitetura
+
+- **Testabilidade**: Cada camada pode ser testada isoladamente
+- **Manutenibilidade**: Mudanças em uma camada não afetam as outras
+- **Escalabilidade**: Fácil adicionar novos recursos seguindo o padrão
+- **Clareza**: Desenvolvedores sabem exatamente onde colocar código novo
+- **Reusabilidade**: Repositories e Controllers podem ser reutilizados
+
+## Começando
+
+1. **Leia as rules** para entender O QUÊ é cada camada
+2. **Consulte as skills** para aprender COMO implementar
+3. **Use os scripts** para gerar código rapidamente
+4. **Siga os padrões** estabelecidos nas references

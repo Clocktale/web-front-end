@@ -1,0 +1,82 @@
+---
+context: true
+priority: high
+scope: project
+---
+
+# Repositories - Camada de Acesso a Dados
+
+Repositories são classes responsáveis por acessar e enviar dados para o mundo exterior (APIs REST, Firebase, GraphQL, localStorage, etc).
+
+## Responsabilidades
+
+### O que Repositories FAZEM:
+- ✅ Fazer requisições HTTP para APIs externas
+- ✅ Converter dados da API para Types do domínio
+- ✅ Converter Types do domínio para formato da API
+- ✅ Tratar erros de comunicação com APIs
+- ✅ Implementar retry logic quando necessário
+- ✅ Cachear dados quando apropriado
+
+### O que Repositories NÃO FAZEM:
+- ❌ Conter lógica de negócio
+- ❌ Gerenciar estado da aplicação
+- ❌ Conhecer detalhes da UI
+- ❌ Tomar decisões sobre quando buscar dados
+
+## Localização e Nomenclatura
+
+```
+src/app/repositories/
+├── base-api.repository.ts   # BaseApiRepository (classe base)
+├── customer.repository.ts    # CustomerRepository
+├── product.repository.ts     # ProductRepository
+├── order.repository.ts       # OrderRepository
+└── ...
+```
+
+- **Arquivo**: `[entidade].repository.ts`
+- **Classe**: `[Entidade]Repository extends BaseApiRepository`
+- **Decorator**: `@Injectable({ providedIn: 'root' })`
+
+## Métodos Comuns
+
+- `getAll()`: Buscar lista completa
+- `get(id)`: Buscar por ID
+- `create(data)`: Criar novo registro
+- `update(id, data)`: Atualizar registro existente
+- `delete(id)`: Deletar registro
+
+Métodos adicionais conforme necessário: `search()`, `getPaginated()`, etc.
+
+## Princípios Fundamentais
+
+1. **Sempre retorne Observables** para consistência
+2. **Sempre converta tipos da API** para tipos do domínio
+3. **Métodos de conversão são privados** (`toCustomer`, `toApiCustomer`)
+4. **Estenda BaseApiRepository** para centralizar URLs da API
+5. **Use getEndpoint()** para construir URLs dos endpoints
+6. **Centralize configurações** em `environment.ts`
+
+## Relação com Outras Camadas
+
+- Controllers injetam e usam Repositories
+- Repositories convertem dados da API para Types do domínio
+- Repositories nunca gerenciam estado ou conhecem a UI
+
+## Como Implementar
+
+Para aprender como implementar repositories, consulte a skill dedicada:
+
+**Skill**: `.agents/skills/create-repository/SKILL.md`
+
+A skill contém:
+- Estrutura completa de código
+- Exemplos com HTTP e Firebase  
+- Padrões de tratamento de erros
+- Script de geração automática
+
+Ver também:
+- [architecture.mdc](architecture.mdc): Visão geral da arquitetura
+- [controllers.mdc](controllers.mdc): Como controllers usam repositories
+- [types.mdc](types.mdc): Definição de types do domínio

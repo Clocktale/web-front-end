@@ -1,0 +1,113 @@
+---
+context: true
+priority: high
+scope: project
+---
+
+# Types - Definições de Tipos
+
+Types e interfaces definem as estruturas de dados usadas em toda a aplicação. São essenciais para gerenciamento de estado, type safety e documentação do domínio.
+
+## Responsabilidades
+
+### O que Types FAZEM:
+- ✅ Definir estrutura de entidades do domínio
+- ✅ Definir inputs para criação/atualização
+- ✅ Definir tipos para estado da aplicação
+- ✅ Garantir type safety em toda aplicação
+- ✅ Documentar formato dos dados
+
+### O que Types NÃO FAZEM:
+- ❌ Conter lógica de negócio
+- ❌ Conter métodos (use classes apenas quando necessário)
+- ❌ Fazer validações complexas (isso é responsabilidade de controllers)
+
+## Localização e Nomenclatura
+
+```
+src/app/types/
+├── customer.type.ts          # Customer, CustomerInput
+├── product.type.ts           # Product, ProductInput
+├── order.type.ts             # Order, OrderInput
+├── api/                      # Types da API
+│   ├── customer-api.type.ts  # ApiCustomer, ApiCustomerInput
+│   └── product-api.type.ts
+└── common/                   # Types compartilhados
+    ├── pagination.type.ts    # PaginationParams, PaginatedResponse
+    └── response.type.ts      # ApiResponse, ApiError
+```
+
+## Convenções de Nomenclatura
+
+- **Entidade**: `Customer`, `Product`, `Order`
+- **Input (criação)**: `CustomerInput`, `ProductInput`
+- **Update (atualização)**: `CustomerUpdate`, `ProductUpdate`
+- **API**: `ApiCustomer`, `ApiCustomerInput` (prefixo `Api`)
+- **Filters**: `CustomerFilter`, `ProductFilter`
+
+## Estrutura Típica
+
+### Type de Domínio
+```typescript
+export interface Customer {
+  id: string;
+  name: string;
+  email: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+```
+
+### Input Types
+```typescript
+export interface CustomerInput {
+  name: string;
+  email: string;
+}
+```
+
+### API Types
+```typescript
+export interface ApiCustomer {
+  id: string;
+  customer_name: string;     // snake_case da API
+  email_address: string;
+  created_at: string;         // string ISO da API
+}
+```
+
+## Princípios Fundamentais
+
+1. **Separe types de domínio de types da API**
+2. **Use interface para objetos, type para unions**
+3. **Sempre defina tipos explícitos, evite `any`**
+4. **Campos opcionais usam `?:`**
+5. **Input types não incluem id ou timestamps**
+6. **Use union types ao invés de enums quando possível**
+
+## Utility Types do TypeScript
+
+- `Partial<T>`: Todos campos opcionais
+- `Pick<T, K>`: Selecionar campos específicos
+- `Omit<T, K>`: Excluir campos específicos
+- `Required<T>`: Todos campos obrigatórios
+- `Readonly<T>`: Todos campos readonly
+- `Record<K, T>`: Objeto com chaves específicas
+
+## Como Implementar
+
+Para aprender como criar types, consulte a skill dedicada:
+
+**Skill**: `.agents/skills/create-types/SKILL.md`
+
+A skill contém:
+- Estrutura completa de tipos
+- Padrões comuns de types
+- Como definir tipos de API
+- Uso de utility types do TypeScript
+- Script de geração automática
+
+Ver também:
+- [architecture.mdc](architecture.mdc): Visão geral da arquitetura
+- [repositories.mdc](repositories.mdc): Como repositories convertem tipos
+- [controllers.mdc](controllers.mdc): Como controllers usam tipos para estado
