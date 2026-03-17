@@ -1,0 +1,27 @@
+.login-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.login-layout__image {
+  flex: 0 0 50%;
+  background-image: url('/images/metade_login.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.login-layout__form {
+  flex: 0 0 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0f0f12;
+  padding: 2rem;
+}
+
+.login-layout__form h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.5rem;
+}
