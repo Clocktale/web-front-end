@@ -51,8 +51,10 @@ export class FormFieldComponent {
 
 ## Localização
 
+Molecules ficam no Design System, em `src/app/ui/design_system/molecules/`:
+
 ```
-src/app/ui/molecules/
+src/app/ui/design_system/molecules/
 ├── form-field/
 ├── search-bar/
 ├── card-header/

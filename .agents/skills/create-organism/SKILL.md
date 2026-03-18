@@ -81,12 +81,21 @@ export class CustomerFormComponent {
 
 ## Localização
 
+Organisms compartilhados ficam no Design System. Organisms específicos de um módulo ficam dentro do módulo:
+
+- **Design System** (compartilhado): `src/app/ui/design_system/organisms/`
+- **Módulo específico**: `src/app/ui/modules/<nome-modulo>/organisms/`
+
 ```
-src/app/ui/organisms/
+src/app/ui/design_system/organisms/
 ├── header/
 ├── sidebar/
-├── customer-form/
-└── product-card/
+├── data-table/
+└── ...
+
+src/app/ui/modules/auth/organisms/
+├── login-form/
+└── ...
 ```
 
 ## Pode Injetar Controllers

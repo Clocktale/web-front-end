@@ -7,7 +7,7 @@ fi
 
 TEMPLATE_NAME=$1
 TEMPLATE_PASCAL=$(echo $TEMPLATE_NAME | sed -e "s/\b\(.\)/\u\1/g" | sed 's/-//g')
-DIR_PATH="src/app/ui/templates/${TEMPLATE_NAME}"
+DIR_PATH="src/app/ui/design_system/templates/${TEMPLATE_NAME}"
 FILE_PATH="${DIR_PATH}/${TEMPLATE_NAME}.component.ts"
 
 mkdir -p "$DIR_PATH"

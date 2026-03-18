@@ -7,7 +7,7 @@ fi
 
 MOLECULE_NAME=$1
 MOLECULE_PASCAL=$(echo $MOLECULE_NAME | sed -e "s/\b\(.\)/\u\1/g" | sed 's/-//g')
-DIR_PATH="src/app/ui/molecules/${MOLECULE_NAME}"
+DIR_PATH="src/app/ui/design_system/molecules/${MOLECULE_NAME}"
 FILE_PATH="${DIR_PATH}/${MOLECULE_NAME}.component.ts"
 
 mkdir -p "$DIR_PATH"

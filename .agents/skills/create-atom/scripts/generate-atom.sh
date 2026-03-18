@@ -10,7 +10,7 @@ fi
 
 ATOM_NAME=$1
 ATOM_PASCAL=$(echo $ATOM_NAME | sed -e "s/\b\(.\)/\u\1/g")
-DIR_PATH="src/app/ui/atoms/${ATOM_NAME}"
+DIR_PATH="src/app/ui/design_system/atoms/${ATOM_NAME}"
 FILE_PATH="${DIR_PATH}/${ATOM_NAME}.component.ts"
 
 mkdir -p "$DIR_PATH"

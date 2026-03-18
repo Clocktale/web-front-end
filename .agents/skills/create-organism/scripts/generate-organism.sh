@@ -7,7 +7,7 @@ fi
 
 ORGANISM_NAME=$1
 ORGANISM_PASCAL=$(echo $ORGANISM_NAME | sed -e "s/\b\(.\)/\u\1/g" | sed 's/-//g')
-DIR_PATH="src/app/ui/organisms/${ORGANISM_NAME}"
+DIR_PATH="src/app/ui/design_system/organisms/${ORGANISM_NAME}"
 FILE_PATH="${DIR_PATH}/${ORGANISM_NAME}.component.ts"
 
 mkdir -p "$DIR_PATH"

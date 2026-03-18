@@ -35,11 +35,20 @@ export class MainLayoutComponent {}
 
 ## Localização
 
+Templates compartilhados ficam no Design System. Templates específicos de um módulo ficam dentro do módulo:
+
+- **Design System** (compartilhado): `src/app/ui/design_system/templates/`
+- **Módulo específico**: `src/app/ui/modules/<nome-modulo>/templates/`
+
 ```
-src/app/ui/templates/
+src/app/ui/design_system/templates/
 ├── main-layout/
 ├── auth-layout/
 └── dashboard-layout/
+
+src/app/ui/modules/auth/templates/
+├── login-layout/
+└── ...
 ```
 
 ## ng-content Slots

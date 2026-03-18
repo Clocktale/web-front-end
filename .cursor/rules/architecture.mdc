@@ -63,13 +63,19 @@ O fluxo de dependência sempre vai de fora para dentro:
 src/app/
 ├── repositories/     # Camada de acesso a dados
 ├── controllers/      # Camada de controle e estado
-├── types/           # Definições de tipos
-├── ui/              # Componentes visuais
-│   ├── atoms/       # Componentes básicos
-│   ├── molecules/   # Combinação de atoms
-│   ├── organisms/   # Seções complexas
-│   └── templates/   # Layouts de página
-└── pages/           # Rotas do Angular (fora de ui/)
+├── types/            # Definições de tipos
+├── ui/               # Componentes visuais
+│   ├── design_system/    # Design System - componentes compartilhados
+│   │   ├── atoms/        # Componentes básicos
+│   │   ├── molecules/    # Combinação de atoms
+│   │   ├── organisms/    # Seções complexas compartilhadas
+│   │   └── templates/    # Layouts de página compartilhados
+│   └── modules/          # Módulos da aplicação (auth, anime, etc.)
+│       ├── auth/
+│       │   ├── pages/
+│       │   ├── templates/
+│       │   └── organisms/
+│       └── ...          # Rotas do Angular (ou dentro de modules)
 ```
 
 ## Rules Específicas

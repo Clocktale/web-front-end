@@ -26,27 +26,40 @@ A camada UI contém todos os componentes visuais compartilhados, organizados seg
 
 ## Localização
 
+A camada UI está organizada em duas áreas principais:
+
+- **design_system**: Componentes compartilhados (Atomic Design), reutilizáveis em todo o projeto
+- **modules**: Módulos da aplicação (auth, anime, etc.), cada um com sua organização interna
+
 ```
 src/app/ui/
-├── atoms/           # Componentes básicos indivisíveis
-│   ├── button/
-│   ├── input/
-│   └── label/
-├── molecules/       # Combinações de atoms
-│   ├── form-field/
-│   └── search-bar/
-├── organisms/       # Componentes complexos
-│   ├── header/
-│   └── customer-form/
-└── templates/       # Layouts de página
-    ├── main-layout/
-    └── auth-layout/
-
-src/app/pages/       # Páginas (rotas) - fora de ui/
-├── home/
-├── customers/
-└── products/
+├── design_system/           # Design System - componentes compartilhados
+│   ├── atoms/               # Componentes básicos indivisíveis
+│   │   ├── button/
+│   │   ├── input/
+│   │   └── label/
+│   ├── molecules/           # Combinações de atoms
+│   │   ├── form-field/
+│   │   └── search-bar/
+│   ├── organisms/           # Componentes complexos compartilhados
+│   │   ├── header/
+│   │   └── data-table/
+│   └── templates/           # Layouts compartilhados
+│       ├── main-layout/
+│       └── auth-layout/
+│
+└── modules/                 # Módulos da aplicação
+    ├── auth/
+    │   ├── login/           # login.page.ts, login.page.html, login.page.css
+    │   ├── templates/
+    │   ├── organisms/
+    │   └── ...
+    ├── anime/
+    │   └── ...
+    └── ...
 ```
+
+Nota: `src/app/pages/` não é mais usada. As páginas (rotas) ficam dentro de cada módulo.
 
 ## Atomic Design: Os 4 Níveis
 
@@ -96,20 +109,28 @@ Layouts de página que definem a estrutura visual geral.
 
 ## Páginas (Rotas)
 
-Páginas são componentes que representam rotas da aplicação. Ficam FORA da pasta `ui/`, seguindo a estrutura de roteamento do Angular.
+Páginas são componentes que representam rotas da aplicação. Ficam dentro de cada módulo em `ui/modules/<modulo>/<pagina>/`.
 
 ```typescript
-// pages/customers/customers.page.ts
+// ui/modules/auth/login/login.page.ts
+@Component({
+  selector: 'app-login-page',
+  templateUrl: './login.page.html',
+  styleUrl: './login.page.css'
+})
+export class LoginPage {}
+
+// ui/modules/anime/list/list.page.ts (exemplo)
 @Component({
   template: `
     <app-main-layout>
-      <h1>Clientes</h1>
+      <h1>Animes</h1>
       <!-- Usa organisms, molecules e atoms -->
     </app-main-layout>
   `
 })
-export class CustomersPage {
-  controller = inject(CustomerController);
+export class AnimeListPage {
+  controller = inject(AnimeController);
 }
 ```
 

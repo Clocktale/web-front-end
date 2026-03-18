@@ -68,8 +68,10 @@ export class ButtonComponent {
 
 ## Localização
 
+Atoms ficam no Design System, em `src/app/ui/design_system/atoms/`:
+
 ```
-src/app/ui/atoms/
+src/app/ui/design_system/atoms/
 ├── button/
 │   └── button.component.ts
 ├── input/
@@ -208,7 +210,7 @@ template: `
 - **Arquivo**: `button.component.ts`
 - **Classe**: `ButtonComponent`
 - **Selector**: `app-button`
-- **Localização**: `src/app/ui/atoms/button/`
+- **Localização**: `src/app/ui/design_system/atoms/button/`
 
 ## Checklist
 
