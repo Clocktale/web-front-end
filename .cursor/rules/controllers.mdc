@@ -1,9 +1,7 @@
 ---
-context: true
-priority: high
-scope: project
+description: Use esta rule quando estiver modificando ou criando controllers
+alwaysApply: false
 ---
-
 # Controllers - Camada de Controle e Estado
 
 Controllers são classes responsáveis por controlar a interface e manter o estado que as telas utilizam. Elas orquestram a lógica da aplicação e fazem a ponte entre a UI e os Repositories.

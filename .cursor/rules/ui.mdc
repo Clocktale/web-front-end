@@ -1,9 +1,7 @@
 ---
-context: true
-priority: high
-scope: project
+description: Use esta rule quando estiver criando ou modificando componentes de UI
+alwaysApply: false
 ---
-
 # UI - Camada de Interface (Atomic Design)
 
 A camada UI contém todos os componentes visuais compartilhados, organizados seguindo a metodologia Atomic Design. Esta organização facilita reutilização, manutenção e escalabilidade dos componentes.

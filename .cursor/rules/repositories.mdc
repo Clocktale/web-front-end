@@ -1,9 +1,7 @@
 ---
-context: true
-priority: high
-scope: project
+description: Use esta rule quando estiver modificando ou criando repositories
+alwaysApply: false
 ---
-
 # Repositories - Camada de Acesso a Dados
 
 Repositories são classes responsáveis por acessar e enviar dados para o mundo exterior (APIs REST, Firebase, GraphQL, localStorage, etc).
