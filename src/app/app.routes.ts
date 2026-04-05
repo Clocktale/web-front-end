@@ -3,6 +3,7 @@ import { redirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated
 import { LoginPage } from './ui/modules/auth/login/login.page';
 import { RegisterPage } from './ui/modules/auth/register/register.page';
 import { ExplorePage } from './ui/modules/explore/explore.page';
+import { AuthorsPage } from './ui/modules/admin/authors/authors.page';
 
 export const routes: Routes = [
   {
@@ -16,5 +17,6 @@ export const routes: Routes = [
     canActivate: [redirectIfAuthenticatedGuard],
   },
   { path: 'explore', component: ExplorePage },
+  { path: 'admin/authors', component: AuthorsPage },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];

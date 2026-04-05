@@ -1,13 +1,19 @@
 import { Component, inject } from '@angular/core';
 import { ToastService } from '../../services/toast.service';
+import { ToastComponent } from '../design_system/molecules';
 
 @Component({
   selector: 'app-toast-host',
   standalone: true,
+  imports: [ToastComponent],
   template: `
-    @if (toast.message(); as text) {
-      <div class="toast-host" role="status" aria-live="polite">
-        {{ text }}
+    @if (toastService.toastState(); as t) {
+      <div class="toast-host">
+        <app-toast
+          [variant]="t.variant"
+          [message]="t.message"
+          (closed)="toastService.dismiss()"
+        />
       </div>
     }
   `,
@@ -18,18 +24,12 @@ import { ToastService } from '../../services/toast.service';
       left: 50%;
       transform: translateX(-50%);
       z-index: 9999;
-      max-width: min(90vw, 24rem);
-      padding: var(--space-12) var(--space-20);
-      border-radius: var(--radius-12);
-      background-color: var(--color-surface-modal);
-      color: var(--color-text-primary);
-      font-size: var(--font-size-14);
-      line-height: 1.4;
+      width: min(90vw, 600px);
+      max-width: 600px;
       box-shadow: 0 var(--space-8) var(--space-24) var(--color-white-muted-10);
-      pointer-events: none;
     }
   `,
 })
 export class ToastHostComponent {
-  readonly toast = inject(ToastService);
+  readonly toastService = inject(ToastService);
 }

@@ -54,6 +54,7 @@
    * Cores — primitivos
    * -------------------------------------------------------------------------- */
   --color-brand: #a855f7;
+  --color-secondary-avatar: #6366F1;
   --color-page: #0f0f12;
   --color-white: #ffffff;
   --color-muted: #94aeb8;
@@ -119,4 +120,12 @@
 
   --color-decorative-orange-muted: var(--color-accent-orange-muted-20);
   --color-decorative-green-muted: var(--color-accent-green-muted-20);
+
+  /* Admin UI específico */
+  --color-surface-sidemenu-hover: var(--color-white-muted-10);
+  --color-sidemenu-icon-active: var(--color-brand);
+  --color-search-field-border: var(--color-white-muted-20);
+
+  /* Dimensões */
+  --space-sidemenu-width: 240px;
 }

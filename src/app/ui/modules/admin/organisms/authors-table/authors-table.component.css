@@ -1,0 +1,112 @@
+.authors-table {
+  width: 100%;
+  background-color: var(--color-surface-admin-table);
+  border-radius: var(--radius-12);
+  border: 1px solid var(--color-white-muted-10);
+  overflow: hidden;
+}
+
+.authors-table__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-family-sans);
+}
+
+.authors-table__header {
+  background-color: var(--color-white-muted-5);
+}
+
+.authors-table__header-cell {
+  padding: var(--space-16) var(--space-24);
+  text-align: left;
+  font-size: var(--font-size-14);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid var(--color-white-muted-10);
+}
+
+.authors-table__header-cell--actions {
+  text-align: right;
+  width: 120px;
+}
+
+.authors-table__body {
+  background-color: transparent;
+}
+
+.authors-table__row {
+  border-bottom: 1px solid var(--color-white-muted-10);
+  transition: background-color 0.2s;
+}
+
+.authors-table__row:hover {
+  background-color: var(--color-white-muted-5);
+}
+
+.authors-table__row:last-child {
+  border-bottom: none;
+}
+
+.authors-table__cell {
+  padding: var(--space-20) var(--space-24);
+  font-size: var(--font-size-14);
+  color: var(--color-text-primary);
+}
+
+.authors-table__cell--actions {
+  text-align: right;
+}
+
+.authors-table__actions {
+  display: flex;
+  gap: var(--space-8);
+  justify-content: flex-end;
+}
+
+.authors-table__action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background-color: var(--color-surface-overlay);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-8);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  padding: 0;
+}
+
+.authors-table__action-button:hover:not(:disabled) {
+  background-color: var(--color-surface-overlay-medium);
+}
+
+.authors-table__action-button--danger:hover:not(:disabled) {
+  background-color: var(--color-danger);
+  color: var(--color-white);
+}
+
+.authors-table__action-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.authors-table__empty {
+  padding: var(--space-40) var(--space-24);
+  text-align: center;
+  font-size: var(--font-size-14);
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 640px) {
+  .authors-table__header-cell,
+  .authors-table__cell {
+    padding: var(--space-12) var(--space-16);
+  }
+
+  .authors-table__action-button {
+    width: 32px;
+    height: 32px;
+  }
+}
