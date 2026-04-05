@@ -2,13 +2,51 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 12px 16px;
-  border-radius: 8px;
+  gap: var(--space-8);
+  padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-8);
   border: none;
   cursor: pointer;
   transition: opacity 0.2s, background-color 0.2s, color 0.2s;
   font: inherit;
+}
+
+.ds-button__body {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+  min-height: 1.25em;
+}
+
+.ds-button__spinner {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 1.25em;
+  height: 1.25em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--radius-full);
+  opacity: 0;
+  pointer-events: none;
+  animation: ds-button-spin 0.65s linear infinite;
+}
+
+.ds-button--loading .ds-button__spinner {
+  opacity: 1;
+}
+
+.ds-button--loading .ds-button__content {
+  opacity: 0;
+}
+
+@keyframes ds-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .ds-button__leading:empty,
@@ -27,51 +65,56 @@
 
 /* Primary */
 .ds-button--primary {
-  background-color: #a855f7;
-  color: #ffffff;
+  background-color: var(--color-primary);
+  color: var(--color-text-primary);
 }
 
-.ds-button--primary:hover:not(:disabled) {
+.ds-button--primary:hover:not(:disabled):not(.ds-button--loading) {
   opacity: 0.9;
 }
 
 .ds-button--primary:focus-visible {
-  outline: 2px solid #a855f7;
-  outline-offset: 2px;
+  outline: calc(var(--space-4) / 2) solid var(--color-primary);
+  outline-offset: calc(var(--space-4) / 2);
 }
 
-/* Text */
+/* Text — cor de texto = primária (marca) */
 .ds-button--text {
   background-color: transparent;
-  color: #8b5cf6;
+  color: var(--color-primary);
 }
 
-.ds-button--text:hover:not(:disabled) {
+.ds-button--text:hover:not(:disabled):not(.ds-button--loading) {
   opacity: 0.9;
 }
 
 .ds-button--text:focus-visible {
-  outline: 2px solid #8b5cf6;
-  outline-offset: 2px;
+  outline: calc(var(--space-4) / 2) solid var(--color-primary);
+  outline-offset: calc(var(--space-4) / 2);
 }
 
 /* Secondary */
 .ds-button--secondary {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #cbd5e1;
+  background-color: var(--color-surface-overlay-light);
+  color: var(--color-text-secondary);
 }
 
-.ds-button--secondary:hover:not(:disabled) {
-  background-color: rgba(255, 255, 255, 0.08);
+.ds-button--secondary:hover:not(:disabled):not(.ds-button--loading) {
+  background-color: var(--color-surface-overlay);
 }
 
 .ds-button--secondary:focus-visible {
-  outline: 2px solid #cbd5e1;
-  outline-offset: 2px;
+  outline: calc(var(--space-4) / 2) solid var(--color-text-secondary);
+  outline-offset: calc(var(--space-4) / 2);
 }
 
-/* Disabled */
-.ds-button:disabled {
-  opacity: 0.5;
+/* Disabled / loading */
+.ds-button:disabled,
+.ds-button.ds-button--loading:disabled {
+  opacity: 0.65;
   cursor: not-allowed;
+}
+
+.ds-button.ds-button--loading:not(:disabled) {
+  cursor: wait;
 }

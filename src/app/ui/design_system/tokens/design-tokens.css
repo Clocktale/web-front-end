@@ -1,0 +1,122 @@
+/**
+ * Design System — tokens globais (:root).
+ * Única fonte de verdade para cores literais; componentes usam var(--token).
+ */
+
+:root {
+  /* --------------------------------------------------------------------------
+   * Tipografia
+   * -------------------------------------------------------------------------- */
+  --font-family-sans: 'Public Sans', system-ui, sans-serif;
+
+  --font-size-14: 14px;
+  --font-size-16: 16px;
+  --font-size-18: 18px;
+  --font-size-20: 20px;
+  --font-size-24: 24px;
+  --font-size-28: 28px;
+  --font-size-32: 32px;
+  --font-size-36: 36px;
+
+  /* --------------------------------------------------------------------------
+   * Raios de borda
+   * -------------------------------------------------------------------------- */
+  --radius-0: 0;
+  --radius-4: 4px;
+  --radius-8: 8px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-20: 20px;
+  --radius-full: 999px;
+
+  /* --------------------------------------------------------------------------
+   * Espaçamento (0–64, passo 4px; nome = valor em px)
+   * -------------------------------------------------------------------------- */
+  --space-0: 0;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-28: 28px;
+  --space-32: 32px;
+  --space-36: 36px;
+  --space-40: 40px;
+  --space-44: 44px;
+  --space-48: 48px;
+  --space-52: 52px;
+  --space-56: 56px;
+  --space-60: 60px;
+  --space-64: 64px;
+
+  /* --------------------------------------------------------------------------
+   * Cores — primitivos
+   * -------------------------------------------------------------------------- */
+  --color-brand: #a855f7;
+  --color-page: #0f0f12;
+  --color-white: #ffffff;
+  --color-muted: #94aeb8;
+  --color-surface-elevated: #1a1a28;
+  --color-info: #009dff;
+  --color-danger: #fe2d2d;
+  --color-warning: #ec9a15;
+  --color-success: #0aff02;
+  --color-divider: #757575;
+  --color-accent-orange: #d7901e;
+  --color-accent-green: #16ca5b;
+  --color-neutral-850: #1e1e26;
+  --color-purple-950: #1c1226;
+  --color-trophy-gold: #fff600;
+  --color-trophy-silver: #b6b6b6;
+  --color-trophy-bronze: #9b632c;
+
+  /* --------------------------------------------------------------------------
+   * Cores — derivados (opacidade via color-mix)
+   * -------------------------------------------------------------------------- */
+  --color-brand-muted-10: color-mix(in srgb, var(--color-brand) 10%, transparent);
+  --color-brand-muted-20: color-mix(in srgb, var(--color-brand) 20%, transparent);
+
+  --color-white-muted-5: color-mix(in srgb, var(--color-white) 5%, transparent);
+  --color-white-muted-10: color-mix(in srgb, var(--color-white) 10%, transparent);
+  --color-white-muted-20: color-mix(in srgb, var(--color-white) 20%, transparent);
+  --color-white-muted-30: color-mix(in srgb, var(--color-white) 30%, transparent);
+
+  --color-info-muted-25: color-mix(in srgb, var(--color-info) 25%, transparent);
+  --color-danger-muted-25: color-mix(in srgb, var(--color-danger) 25%, transparent);
+  --color-warning-muted-25: color-mix(in srgb, var(--color-warning) 25%, transparent);
+  --color-success-muted-25: color-mix(in srgb, var(--color-success) 25%, transparent);
+
+  --color-accent-orange-muted-20: color-mix(in srgb, var(--color-accent-orange) 20%, transparent);
+  --color-accent-green-muted-20: color-mix(in srgb, var(--color-accent-green) 20%, transparent);
+
+  /* --------------------------------------------------------------------------
+   * Cores — aliases semânticos
+   * -------------------------------------------------------------------------- */
+  --color-primary: var(--color-brand);
+  --color-surface: var(--color-page);
+  --color-text-primary: var(--color-white);
+  --color-text-secondary: var(--color-muted);
+  --color-surface-modal: var(--color-surface-elevated);
+  --color-icon-default: var(--color-muted);
+  --color-border-error: var(--color-danger);
+
+  --color-surface-sidemenu: var(--color-neutral-850);
+  --color-surface-admin-table: var(--color-purple-950);
+
+  /* Superfícies / fundos comuns (mapear a derivados) */
+  --color-surface-primary-tint: var(--color-brand-muted-10);
+  --color-surface-primary-tint-strong: var(--color-brand-muted-20);
+  --color-surface-overlay-light: var(--color-white-muted-5);
+  --color-surface-overlay: var(--color-white-muted-10);
+  --color-surface-overlay-medium: var(--color-white-muted-20);
+  --color-surface-overlay-strong: var(--color-white-muted-30);
+
+  --color-toast-info-icon-bg: var(--color-info-muted-25);
+  --color-toast-error-icon-bg: var(--color-danger-muted-25);
+  --color-toast-warning-icon-bg: var(--color-warning-muted-25);
+  --color-toast-success-icon-bg: var(--color-success-muted-25);
+
+  --color-decorative-orange-muted: var(--color-accent-orange-muted-20);
+  --color-decorative-green-muted: var(--color-accent-green-muted-20);
+}

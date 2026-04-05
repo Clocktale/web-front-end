@@ -1,8 +1,56 @@
 {
+  "http": {
+    "connectionFailed": "サーバーに接続できません。接続を確認して再度お試しください。",
+    "serverUnavailable": "サービスが一時的に利用できません。しばらくしてから再度お試しください。"
+  },
   "auth": {
     "login": {
-      "title": "ログインフォーム",
-      "imageAlt": "月と物思いにふける人のいる夜景"
+      "title": "ログイン",
+      "subtitle": "ClockTale へようこそ。さまざまなアニメやストーリーを見つけ、最新トレンドを追いかけましょう。",
+      "imageAlt": "月と物思いにふける人のいる夜景",
+      "emailLabel": "ユーザー名またはメール",
+      "emailPlaceholder": "user_email@domain.com",
+      "passwordLabel": "パスワード",
+      "passwordPlaceholder": "••••••••",
+      "rememberMe": "ログイン状態を保持",
+      "submitPrimary": "アカウントにログイン",
+      "continueGuest": "ログインせずに続行",
+      "noAccount": "アカウントをお持ちでないですか？",
+      "signUp": "新規登録",
+      "validationRequired": "ユーザー名とパスワードを入力してください。",
+      "eyeShow": "パスワードを表示",
+      "eyeHide": "パスワードを非表示",
+      "loginFailed": "ログインできませんでした。内容を確認して再度お試しください。",
+      "successToast": "ログインしました。"
+    },
+    "register": {
+      "title": "アカウント作成",
+      "subtitle": "ClockTale へようこそ。さまざまなアニメやストーリーを見つけ、最新トレンドを追いかけましょう。",
+      "imageAlt": "赤い月と夜景のシルエット",
+      "usernameLabel": "ユーザー名",
+      "usernamePlaceholder": "あなたを識別する一意の名前（変更不可）",
+      "nicknameLabel": "表示名",
+      "nicknamePlaceholder": "呼び方",
+      "emailLabel": "メール",
+      "emailPlaceholder": "user_email@domain.com",
+      "passwordLabel": "パスワード",
+      "passwordPlaceholder": "••••••••",
+      "passwordRulesTitle": "パスワードは次の条件を満たす必要があります。",
+      "ruleLength": "8〜12文字",
+      "ruleUppercase": "大文字を1文字以上",
+      "ruleLowercase": "小文字を1文字以上",
+      "ruleDigit": "数字を1文字以上",
+      "ruleSpecial": "記号を1文字以上",
+      "submitPrimary": "登録する",
+      "hasAccount": "すでにアカウントをお持ちですか？",
+      "loginLink": "ログイン",
+      "validationRequired": "すべての項目を入力してください。",
+      "validationPasswordRules": "パスワードがすべての条件を満たしていません。",
+      "eyeShow": "パスワードを表示",
+      "eyeHide": "パスワードを非表示"
+    },
+    "explore": {
+      "comingSoon": "探索は近日公開予定です。"
     }
   }
 }

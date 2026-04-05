@@ -1,0 +1,31 @@
+---
+description: Onde vivem os tokens do Design System, semântica primitivo vs semântico e uso obrigatório — sem cores ou medidas hardcoded fora do ficheiro de tokens.
+alwaysApply: true
+---
+
+# Design System — tokens CSS
+
+## Onde ficam os tokens
+
+- Ficheiro canónico: [`src/app/ui/design_system/tokens/design-tokens.css`](src/app/ui/design_system/tokens/design-tokens.css).
+- Import global em [`src/styles.css`](src/styles.css) **antes** de `tailwindcss`.
+- Todas as variáveis expõem-se em `:root`; nos estilos usa-se `var(--nome-do-token)`.
+
+Tipografia (Public Sans) é carregada em `styles.css`; a família tipográfica do produto é `--font-family-sans`.
+
+## Semântica
+
+- **Primitivos** — valores base nomeados por tom ou domínio (ex.: `--color-brand`, `--color-neutral-850`, `--color-trophy-gold`). Use quando o contexto for esse literal ou quando ainda não existir alias semântico.
+- **Aliases semânticos** — papéis de UI (ex.: `--color-primary`, `--color-surface`, `--color-text-secondary`, `--color-surface-sidemenu`). **Preferir estes** para texto, superfícies, bordas e estados quando existirem para o caso.
+- **Derivados** — opacidades via `color-mix` (ex.: `--color-brand-muted-10`, `--color-white-muted-10`). Usar estes ou aliases que os referenciam (ex.: `--color-surface-overlay`).
+
+Novas cores ou novas escalas **não** entram como `#hex` ou `rgb()` nos componentes: primeiro definem-se no `design-tokens.css`, depois o componente referencia `var(--...)`.
+
+## Regra obrigatória
+
+Em `*.css` (incl. estilos de componentes) e estilos globais:
+
+- **Proibido** usar `#RRGGBB`, `rgb()`, `rgba()`, `hsl()` etc. para **cor**, exceto **dentro** de `design-tokens.css` (única fonte de verdade para literais).
+- **Proibido** repetir valores mágicos para **espaçamento, raios, tamanhos de fonte e família** — usar sempre `--space-*`, `--radius-*`, `--font-size-*`, `--font-family-sans` (ou outro token já definido).
+
+Exceções pontuais (SVG inline, assets externos, integrações de terceiros) devem ser mínimas; quando a cor for da marca, duplicar o valor no token e usar `var()`.

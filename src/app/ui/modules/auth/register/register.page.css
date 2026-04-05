@@ -1,0 +1,159 @@
+.register-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.register-layout__image {
+  flex: 0 0 50%;
+  background-image: url('/images/half_signup.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.register-layout__form {
+  flex: 0 0 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-block: var(--space-32);
+  padding-inline: var(--space-12) var(--space-24);
+  background-color: var(--color-surface);
+}
+
+.register-form {
+  width: 100%;
+  max-width: 32rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+}
+
+.register-form__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  text-align: left;
+}
+
+.register-form__title {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-28);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.register-form__subtitle {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-16);
+  line-height: 1.5;
+}
+
+.register-form__field-icon {
+  display: block;
+  color: var(--color-icon-default);
+}
+
+.register-form__icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: var(--radius-4);
+  color: inherit;
+}
+
+.register-form__icon-button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.register-form__rules {
+  margin: calc(var(--space-8) * -1) 0 0;
+}
+
+.register-form__rules-title {
+  margin: 0 0 var(--space-8);
+  font-size: var(--font-size-14);
+  color: var(--color-text-secondary);
+}
+
+.register-form__rules-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.register-form__rule {
+  position: relative;
+  padding-left: var(--space-16);
+  font-size: var(--font-size-14);
+  line-height: 1.4;
+  color: var(--color-text-secondary);
+  transition: color 0.15s ease;
+}
+
+.register-form__rule::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-text-secondary);
+  transition: background-color 0.15s ease;
+}
+
+.register-form__rule--met {
+  color: var(--color-accent-green);
+}
+
+.register-form__rule--met::before {
+  background-color: var(--color-accent-green);
+}
+
+.register-form__footer {
+  margin: 0;
+  text-align: center;
+  font-size: var(--font-size-14);
+  color: var(--color-text-secondary);
+}
+
+.register-form__footer-link {
+  margin-left: var(--space-4);
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+}
+
+.register-form__footer-link:hover {
+  text-decoration: underline;
+}
+
+.register-form__footer-link:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-4);
+}
+
+.register-form--loading .register-form__footer-link {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}

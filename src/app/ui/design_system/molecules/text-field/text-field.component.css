@@ -10,6 +10,16 @@
   cursor: pointer;
 }
 
+:host.ds-text-field--loading .ds-text-field__label {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+:host.ds-text-field--loading .ds-text-field__trailing {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 .ds-text-field__input-wrapper {
   display: flex;
   align-items: center;

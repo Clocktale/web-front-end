@@ -1,8 +1,56 @@
 {
+  "http": {
+    "connectionFailed": "Não foi possível contactar o servidor. Verifique a sua ligação e tente novamente.",
+    "serverUnavailable": "O serviço está temporariamente indisponível. Tente novamente mais tarde."
+  },
   "auth": {
     "login": {
-      "title": "Form do login",
-      "imageAlt": "Cena noturna com lua e pessoa contemplando"
+      "title": "Entrar",
+      "subtitle": "Bem-vindo ao ClockTale. Descubra animes e histórias para todos os gostos e acompanhe as últimas tendências.",
+      "imageAlt": "Cena noturna com lua e pessoa contemplando",
+      "emailLabel": "Usuário ou E-mail",
+      "emailPlaceholder": "email_usuario@dominio.com",
+      "passwordLabel": "Senha",
+      "passwordPlaceholder": "••••••••",
+      "rememberMe": "Lembrar de mim",
+      "submitPrimary": "Entrar na conta",
+      "continueGuest": "Continuar sem login",
+      "noAccount": "Ainda não tem uma conta?",
+      "signUp": "Cadastre-se",
+      "validationRequired": "Preencha usuário e senha.",
+      "eyeShow": "Mostrar senha",
+      "eyeHide": "Ocultar senha",
+      "loginFailed": "Não foi possível entrar. Verifique os dados e tente novamente.",
+      "successToast": "Login realizado com sucesso."
+    },
+    "register": {
+      "title": "Criar conta",
+      "subtitle": "Bem-vindo ao ClockTale. Descubra animes e histórias para todos os gostos e acompanhe as últimas tendências.",
+      "imageAlt": "Lua vermelha e silhueta em cena noturna",
+      "usernameLabel": "Nome de usuário",
+      "usernamePlaceholder": "Nome único que te identifica (Imutável)",
+      "nicknameLabel": "Apelido",
+      "nicknamePlaceholder": "Como nós e outros devem te chamar",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "email_usuario@dominio.com",
+      "passwordLabel": "Senha",
+      "passwordPlaceholder": "••••••••",
+      "passwordRulesTitle": "Senha deve atender os seguintes critérios:",
+      "ruleLength": "8 a 12 caracteres",
+      "ruleUppercase": "1 letra maiúscula",
+      "ruleLowercase": "1 letra minúscula",
+      "ruleDigit": "1 número",
+      "ruleSpecial": "1 caractere especial",
+      "submitPrimary": "Cadastrar-se",
+      "hasAccount": "Já possui uma conta?",
+      "loginLink": "Faça login",
+      "validationRequired": "Preencha todos os campos.",
+      "validationPasswordRules": "A senha não atende a todos os critérios.",
+      "eyeShow": "Mostrar senha",
+      "eyeHide": "Ocultar senha"
+    },
+    "explore": {
+      "comingSoon": "Explorar em breve."
     }
   }
 }

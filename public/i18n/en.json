@@ -1,8 +1,56 @@
 {
+  "http": {
+    "connectionFailed": "Could not reach the server. Check your connection and try again.",
+    "serverUnavailable": "The service is temporarily unavailable. Please try again later."
+  },
   "auth": {
     "login": {
-      "title": "Login Form",
-      "imageAlt": "Night scene with moon and person contemplating"
+      "title": "Sign in",
+      "subtitle": "Welcome to ClockTale. Discover anime and stories for every taste and follow the latest trends.",
+      "imageAlt": "Night scene with moon and person contemplating",
+      "emailLabel": "Username or email",
+      "emailPlaceholder": "user_email@domain.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "••••••••",
+      "rememberMe": "Remember me",
+      "submitPrimary": "Sign in",
+      "continueGuest": "Continue without signing in",
+      "noAccount": "Don’t have an account yet?",
+      "signUp": "Sign up",
+      "validationRequired": "Enter your username and password.",
+      "eyeShow": "Show password",
+      "eyeHide": "Hide password",
+      "loginFailed": "Could not sign in. Check your details and try again.",
+      "successToast": "Signed in successfully."
+    },
+    "register": {
+      "title": "Create account",
+      "subtitle": "Welcome to ClockTale. Discover anime and stories for every taste and follow the latest trends.",
+      "imageAlt": "Red moon and silhouette in a night scene",
+      "usernameLabel": "Username",
+      "usernamePlaceholder": "Unique name that identifies you (cannot be changed)",
+      "nicknameLabel": "Nickname",
+      "nicknamePlaceholder": "How we and others should call you",
+      "emailLabel": "Email",
+      "emailPlaceholder": "user_email@domain.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "••••••••",
+      "passwordRulesTitle": "Password must meet the following criteria:",
+      "ruleLength": "8 to 12 characters",
+      "ruleUppercase": "1 uppercase letter",
+      "ruleLowercase": "1 lowercase letter",
+      "ruleDigit": "1 number",
+      "ruleSpecial": "1 special character",
+      "submitPrimary": "Sign up",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Sign in",
+      "validationRequired": "Fill in all fields.",
+      "validationPasswordRules": "The password does not meet all criteria.",
+      "eyeShow": "Show password",
+      "eyeHide": "Hide password"
+    },
+    "explore": {
+      "comingSoon": "Explore coming soon."
     }
   }
 }

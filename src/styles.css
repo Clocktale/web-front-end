@@ -1,7 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+@import './app/ui/design_system/tokens/design-tokens.css';
 @import 'tailwindcss';
 
 body {
-  color: #94aeb8;
+  color: var(--color-text-secondary);
+  font-family: var(--font-family-sans);
 }

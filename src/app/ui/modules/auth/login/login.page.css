@@ -5,7 +5,7 @@
 
 .login-layout__image {
   flex: 0 0 50%;
-  background-image: url('/images/metade_login.png');
+  background-image: url('/images/half_login.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -17,13 +17,161 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
-  background-color: #0f0f12;
-  padding: 2rem;
+  padding-block: var(--space-32);
+  padding-inline: var(--space-12) var(--space-24);
+  background-color: var(--color-surface);
 }
 
-.login-layout__form h2 {
+.login-form {
+  width: 100%;
+  max-width: 28rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+}
+
+.login-form__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  text-align: left;
+}
+
+.login-form__title {
   margin: 0;
-  color: #fff;
-  font-size: 1.5rem;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-28);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.login-form__subtitle {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-16);
+  line-height: 1.5;
+}
+
+.login-form__field-icon {
+  display: block;
+  color: var(--color-icon-default);
+}
+
+.login-form__icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: var(--radius-4);
+  color: inherit;
+}
+
+.login-form__icon-button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.login-form__remember {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  margin: calc(var(--space-4) * -1) 0 0;
+  font-size: var(--font-size-14);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.login-form__checkbox {
+  position: relative;
+  appearance: none;
+  -webkit-appearance: none;
+  width: var(--space-16);
+  height: var(--space-16);
+  margin: 0;
+  flex-shrink: 0;
+  cursor: pointer;
+  border: 1px solid var(--color-white-muted-30);
+  border-radius: var(--radius-4);
+  background-color: transparent;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.login-form__checkbox:hover {
+  border-color: var(--color-primary);
+}
+
+.login-form__checkbox:checked {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* Ícone centrado (path 24×24) — evita desalinhamento do truque com border + rotate */
+.login-form__checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 11px;
+  height: 11px;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-text-primary);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+.login-form__checkbox:focus {
+  outline: none;
+}
+
+.login-form__checkbox:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.login-form__footer {
+  margin: 0;
+  text-align: center;
+  font-size: var(--font-size-14);
+  color: var(--color-text-secondary);
+}
+
+.login-form__footer-link {
+  margin-left: var(--space-4);
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+}
+
+.login-form__footer-link:hover {
+  text-decoration: underline;
+}
+
+.login-form__footer-link:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-4);
+}
+
+.login-form--loading .login-form__footer-link {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
