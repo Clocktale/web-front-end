@@ -66,3 +66,23 @@ export function isClientHttpError(err: unknown): err is ClientHttpError {
 export function isApiEnvelopeError(err: unknown): err is ApiEnvelopeError {
   return err instanceof ApiEnvelopeError;
 }
+
+/**
+ * Erro 422 com `errors` por campo (Laravel); a UI pode mapear mensagens aos inputs.
+ */
+export class LaravelValidationError extends Error {
+  readonly fieldErrors: Record<string, string>;
+
+  constructor(message: string, fieldErrors: Record<string, string>) {
+    super(message);
+    this.name = 'LaravelValidationError';
+    this.fieldErrors = fieldErrors;
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+}
+
+export function isLaravelValidationError(
+  err: unknown
+): err is LaravelValidationError {
+  return err instanceof LaravelValidationError;
+}

@@ -51,7 +51,12 @@
       "hasAccount": "Already have an account?",
       "loginLink": "Sign in",
       "validationRequired": "Fill in all fields.",
+      "validationUsernameMin": "Username must be at least 3 characters.",
+      "validationNicknameMin": "Nickname must be at least 3 characters.",
+      "validationEmailInvalid": "Enter a valid email address.",
       "validationPasswordRules": "The password does not meet all criteria.",
+      "successToast": "Account created. Sign in to continue.",
+      "registerFailed": "Could not complete registration. Please try again.",
       "eyeShow": "Show password",
       "eyeHide": "Hide password"
     },

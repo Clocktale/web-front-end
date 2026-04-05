@@ -51,7 +51,12 @@
       "hasAccount": "すでにアカウントをお持ちですか？",
       "loginLink": "ログイン",
       "validationRequired": "すべての項目を入力してください。",
+      "validationUsernameMin": "ユーザー名は3文字以上にしてください。",
+      "validationNicknameMin": "表示名は3文字以上にしてください。",
+      "validationEmailInvalid": "有効なメールアドレスを入力してください。",
       "validationPasswordRules": "パスワードがすべての条件を満たしていません。",
+      "successToast": "アカウントを作成しました。続行するにはログインしてください。",
+      "registerFailed": "登録を完了できませんでした。もう一度お試しください。",
       "eyeShow": "パスワードを表示",
       "eyeHide": "パスワードを非表示"
     },

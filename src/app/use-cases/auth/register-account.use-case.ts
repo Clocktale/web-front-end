@@ -1,44 +1,21 @@
-import {
-  allPasswordSignupRulesPass,
-  validatePasswordSignupRulesUseCase,
-} from './password/validate-password-signup-rules.use-case';
-
-export interface RegisterAccountInput {
-  username: string;
-  nickname: string;
-  email: string;
-  password: string;
-}
-
-export type RegisterAccountFailureReason =
-  | 'EMPTY_FIELDS'
-  | 'INVALID_PASSWORD';
-
-export type RegisterAccountResult =
-  | { ok: true }
-  | { ok: false; reason: RegisterAccountFailureReason };
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import { UserRepository } from '../../repositories/user.repository';
+import type { User } from '../../types/user.type';
 
 /**
- * Caso de uso de alto nível do cadastro: reutiliza o agregador de regras de senha
- * e, no futuro, delega à API/repositório. Mantém uma única entrada para o fluxo real.
+ * Caso de uso de cadastro: delega ao repositório (único ponto para trocar por mocks/testes).
  */
-export function registerAccountUseCase(
-  input: RegisterAccountInput
-): RegisterAccountResult {
-  const username = input.username.trim();
-  const nickname = input.nickname.trim();
-  const email = input.email.trim();
-  const password = input.password;
+@Injectable({ providedIn: 'root' })
+export class RegisterAccountUseCase {
+  private readonly userRepository = inject(UserRepository);
 
-  if (!username || !nickname || !email || !password) {
-    return { ok: false, reason: 'EMPTY_FIELDS' };
+  execute(input: {
+    username: string;
+    nickname: string;
+    email: string;
+    password: string;
+  }): Observable<User> {
+    return this.userRepository.create(input);
   }
-
-  const rules = validatePasswordSignupRulesUseCase(password);
-  if (!allPasswordSignupRulesPass(rules)) {
-    return { ok: false, reason: 'INVALID_PASSWORD' };
-  }
-
-  // TODO: AuthRepository.register({ username, nickname, email, password })
-  return { ok: true };
 }

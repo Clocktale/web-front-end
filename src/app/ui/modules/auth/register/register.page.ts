@@ -35,6 +35,8 @@ import { RegisterController } from '../../../../controllers/register.controller'
               type="text"
               [value]="register.username()"
               (valueChanged)="register.setUsername($event)"
+              (fieldBlur)="register.onUsernameBlur()"
+              [errorText]="register.usernameError()"
               [loading]="register.loading()"
               autocomplete="username"
             >
@@ -61,6 +63,8 @@ import { RegisterController } from '../../../../controllers/register.controller'
               type="text"
               [value]="register.nickname()"
               (valueChanged)="register.setNickname($event)"
+              (fieldBlur)="register.onNicknameBlur()"
+              [errorText]="register.nicknameError()"
               [loading]="register.loading()"
               autocomplete="nickname"
             >
@@ -87,6 +91,8 @@ import { RegisterController } from '../../../../controllers/register.controller'
               type="email"
               [value]="register.email()"
               (valueChanged)="register.setEmail($event)"
+              (fieldBlur)="register.onEmailBlur()"
+              [errorText]="register.emailError()"
               [loading]="register.loading()"
               autocomplete="email"
             >
@@ -113,7 +119,8 @@ import { RegisterController } from '../../../../controllers/register.controller'
               [type]="register.passwordFieldType()"
               [value]="register.password()"
               (valueChanged)="register.setPassword($event)"
-              [errorText]="register.error()"
+              (fieldBlur)="register.onPasswordBlur()"
+              [errorText]="register.passwordError()"
               [loading]="register.loading()"
               autocomplete="new-password"
             >

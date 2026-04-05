@@ -37,6 +37,7 @@ import {
           class="ds-text-field__input"
           [value]="value()"
           (input)="onInput($event)"
+          (blur)="onFieldBlur()"
         />
         <span class="ds-text-field__trailing">
           <ng-content select="[trailing]" />
@@ -71,6 +72,8 @@ export class TextFieldComponent {
   value = model<string>('');
 
   valueChanged = output<string>();
+  /** Disparado ao sair do campo (validação ao blur). */
+  fieldBlur = output<void>();
 
   private static idCounter = 0;
   private readonly instanceId = `ds-text-field-${++TextFieldComponent.idCounter}`;
@@ -90,5 +93,12 @@ export class TextFieldComponent {
     const newValue = target?.value ?? '';
     this.value.set(newValue);
     this.valueChanged.emit(newValue);
+  }
+
+  onFieldBlur(): void {
+    if (this.loading()) {
+      return;
+    }
+    this.fieldBlur.emit();
   }
 }

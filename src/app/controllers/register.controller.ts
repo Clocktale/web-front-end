@@ -2,18 +2,25 @@ import { Injectable, inject, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
 import {
-  RegisterAccountFailureReason,
-  registerAccountUseCase,
-} from '../use-cases/auth/register-account.use-case';
-import {
   validatePasswordSignupRulesUseCase,
   allPasswordSignupRulesPass,
 } from '../use-cases/auth/password/validate-password-signup-rules.use-case';
+import { RegisterAccountUseCase } from '../use-cases/auth/register-account.use-case';
+import {
+  isLaravelValidationError,
+  resolveUserFacingErrorMessage,
+} from '../utils/http';
+import { isValidEmail } from '../utils/validation/is-valid-email';
+import { ToastService } from '../services/toast.service';
+
+type RegisterField = 'username' | 'nickname' | 'email' | 'password';
 
 @Injectable({ providedIn: 'root' })
 export class RegisterController {
   private readonly router = inject(Router);
   private readonly transloco = inject(TranslocoService);
+  private readonly registerUseCase = inject(RegisterAccountUseCase);
+  private readonly toastService = inject(ToastService);
 
   username = signal('');
   nickname = signal('');
@@ -21,7 +28,19 @@ export class RegisterController {
   password = signal('');
   passwordVisible = signal(false);
   loading = signal(false);
-  error = signal<string | null>(null);
+
+  usernameBlurred = signal(false);
+  nicknameBlurred = signal(false);
+  emailBlurred = signal(false);
+  passwordBlurred = signal(false);
+
+  /** Erros devolvidos pela API (422) por campo. */
+  private readonly serverFieldErrors = signal<
+    Partial<Record<RegisterField, string>>
+  >({});
+
+  /** Erro genérico (rede, 5xx, 4xx sem mapa de campos); mostrado no campo senha. */
+  private readonly generalError = signal<string | null>(null);
 
   passwordFieldType = computed<'text' | 'password'>(() =>
     this.passwordVisible() ? 'text' : 'password'
@@ -31,15 +50,92 @@ export class RegisterController {
     validatePasswordSignupRulesUseCase(this.password())
   );
 
+  private readonly usernameTrimmed = computed(() => this.username().trim());
+  private readonly nicknameTrimmed = computed(() => this.nickname().trim());
+  private readonly emailTrimmed = computed(() => this.email().trim());
+
+  private usernameValid = computed(
+    () => this.usernameTrimmed().length >= 3
+  );
+  private nicknameValid = computed(
+    () => this.nicknameTrimmed().length >= 3
+  );
+  private emailValid = computed(() =>
+    isValidEmail(this.emailTrimmed())
+  );
+  private passwordValid = computed(() =>
+    allPasswordSignupRulesPass(this.passwordRules())
+  );
+
   canSubmit = computed(() => {
-    const u = this.username().trim();
-    const n = this.nickname().trim();
-    const e = this.email().trim();
-    const p = this.password();
-    if (!u || !n || !e || !p) {
+    if (this.loading()) {
       return false;
     }
-    return allPasswordSignupRulesPass(this.passwordRules());
+    return (
+      this.usernameValid() &&
+      this.nicknameValid() &&
+      this.emailValid() &&
+      this.passwordValid()
+    );
+  });
+
+  usernameError = computed(() => {
+    const server = this.serverFieldErrors()['username'];
+    if (server) {
+      return server;
+    }
+    if (!this.usernameBlurred()) {
+      return null;
+    }
+    if (!this.usernameValid()) {
+      return this.transloco.translate('auth.register.validationUsernameMin');
+    }
+    return null;
+  });
+
+  nicknameError = computed(() => {
+    const server = this.serverFieldErrors()['nickname'];
+    if (server) {
+      return server;
+    }
+    if (!this.nicknameBlurred()) {
+      return null;
+    }
+    if (!this.nicknameValid()) {
+      return this.transloco.translate('auth.register.validationNicknameMin');
+    }
+    return null;
+  });
+
+  emailError = computed(() => {
+    const server = this.serverFieldErrors()['email'];
+    if (server) {
+      return server;
+    }
+    if (!this.emailBlurred()) {
+      return null;
+    }
+    if (!this.emailValid()) {
+      return this.transloco.translate('auth.register.validationEmailInvalid');
+    }
+    return null;
+  });
+
+  passwordError = computed(() => {
+    const server = this.serverFieldErrors()['password'];
+    if (server) {
+      return server;
+    }
+    if (this.generalError()) {
+      return this.generalError();
+    }
+    if (!this.passwordBlurred()) {
+      return null;
+    }
+    if (!this.passwordValid()) {
+      return this.transloco.translate('auth.register.validationPasswordRules');
+    }
+    return null;
   });
 
   togglePasswordVisibility(): void {
@@ -49,12 +145,41 @@ export class RegisterController {
     this.passwordVisible.update(v => !v);
   }
 
+  onUsernameBlur(): void {
+    if (this.loading()) {
+      return;
+    }
+    this.usernameBlurred.set(true);
+  }
+
+  onNicknameBlur(): void {
+    if (this.loading()) {
+      return;
+    }
+    this.nicknameBlurred.set(true);
+  }
+
+  onEmailBlur(): void {
+    if (this.loading()) {
+      return;
+    }
+    this.emailBlurred.set(true);
+  }
+
+  onPasswordBlur(): void {
+    if (this.loading()) {
+      return;
+    }
+    this.passwordBlurred.set(true);
+  }
+
   setUsername(value: string): void {
     if (this.loading()) {
       return;
     }
     this.username.set(value);
-    this.error.set(null);
+    this.clearServerField('username');
+    this.generalError.set(null);
   }
 
   setNickname(value: string): void {
@@ -62,7 +187,8 @@ export class RegisterController {
       return;
     }
     this.nickname.set(value);
-    this.error.set(null);
+    this.clearServerField('nickname');
+    this.generalError.set(null);
   }
 
   setEmail(value: string): void {
@@ -70,7 +196,8 @@ export class RegisterController {
       return;
     }
     this.email.set(value);
-    this.error.set(null);
+    this.clearServerField('email');
+    this.generalError.set(null);
   }
 
   setPassword(value: string): void {
@@ -78,57 +205,91 @@ export class RegisterController {
       return;
     }
     this.password.set(value);
-    this.error.set(null);
+    this.clearServerField('password');
+    this.generalError.set(null);
   }
 
   navigateToLogin(): void {
     if (this.loading()) {
       return;
     }
-    this.router.navigate(['/login']);
+    void this.router.navigate(['/login']);
   }
 
   register(): void {
-    if (this.loading()) {
+    if (this.loading() || !this.canSubmit()) {
       return;
     }
 
-    const result = registerAccountUseCase({
-      username: this.username(),
-      nickname: this.nickname(),
-      email: this.email(),
-      password: this.password(),
-    });
+    this.usernameBlurred.set(true);
+    this.nicknameBlurred.set(true);
+    this.emailBlurred.set(true);
+    this.passwordBlurred.set(true);
+    this.serverFieldErrors.set({});
+    this.generalError.set(null);
 
-    if (!result.ok) {
-      this.showError(result.reason);
-      return;
-    }
-
-    this.error.set(null);
     this.loading.set(true);
 
-    // TODO: quando existir chamada HTTP, mover loading/error para a subscrição
-    this.loading.set(false);
+    this.registerUseCase
+      .execute({
+        username: this.usernameTrimmed(),
+        nickname: this.nicknameTrimmed(),
+        email: this.emailTrimmed(),
+        password: this.password(),
+      })
+      .subscribe({
+        next: () => {
+          this.loading.set(false);
+          this.toastService.showTranslated(
+            'auth.register.successToast',
+            'success'
+          );
+          void this.router.navigate(['/login']);
+        },
+        error: (err: unknown) => {
+          this.loading.set(false);
+          if (isLaravelValidationError(err)) {
+            this.applyLaravelFieldErrors(err.fieldErrors);
+            return;
+          }
+          this.generalError.set(
+            resolveUserFacingErrorMessage(
+              err,
+              key => this.transloco.translate(key),
+              'auth.register.registerFailed'
+            )
+          );
+        },
+      });
   }
 
-  private showError(reason: RegisterAccountFailureReason): void {
-    switch (reason) {
-      case 'EMPTY_FIELDS':
-        this.error.set(
-          this.transloco.translate('auth.register.validationRequired')
-        );
-        break;
-      case 'INVALID_PASSWORD':
-        this.error.set(
-          this.transloco.translate('auth.register.validationPasswordRules')
-        );
-        break;
-      default:
-        this.error.set(
-          this.transloco.translate('auth.register.validationRequired')
-        );
-        break;
+  private applyLaravelFieldErrors(
+    fieldErrors: Record<string, string>
+  ): void {
+    const next: Partial<Record<RegisterField, string>> = {};
+    const keys: RegisterField[] = [
+      'username',
+      'nickname',
+      'email',
+      'password',
+    ];
+    for (const k of keys) {
+      const msg = fieldErrors[k];
+      if (typeof msg === 'string' && msg.trim()) {
+        next[k] = msg.trim();
+      }
     }
+    this.serverFieldErrors.set(next);
+  }
+
+  private clearServerField(field: RegisterField): void {
+    this.serverFieldErrors.update(prev => {
+      if (!(field in prev)) {
+        return prev;
+      }
+      const copy = { ...prev };
+      delete copy[field];
+      return copy;
+    });
   }
 }

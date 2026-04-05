@@ -7,18 +7,26 @@ import { routes } from './app.routes';
 import { TranslocoHttpLoader } from './transloco-loader';
 import { authInterceptor } from './interceptors/auth.interceptor';
 import { authErrorInterceptor } from './interceptors/auth-error.interceptor';
+import { devHttpRequestLogInterceptor } from './interceptors/dev-http-request-log.interceptor';
+import { devHttpResponseLogInterceptor } from './interceptors/dev-http-response-log.interceptor';
 import { AuthSessionController } from './controllers/auth-session.controller';
 import { ToastService } from './services/toast.service';
 
 const AVAILABLE_LANGS = ['en', 'pt-BR', 'ja'] as const;
 
+const httpInterceptorFns = [
+  authInterceptor,
+  authErrorInterceptor,
+  ...(isDevMode()
+    ? [devHttpRequestLogInterceptor, devHttpResponseLogInterceptor]
+    : []),
+];
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(
-      withInterceptors([authInterceptor, authErrorInterceptor])
-    ),
+    provideHttpClient(withInterceptors(httpInterceptorFns)),
     provideTransloco({
       config: {
         availableLangs: [...AVAILABLE_LANGS],

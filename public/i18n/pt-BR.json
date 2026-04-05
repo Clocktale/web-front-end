@@ -51,7 +51,12 @@
       "hasAccount": "Já possui uma conta?",
       "loginLink": "Faça login",
       "validationRequired": "Preencha todos os campos.",
+      "validationUsernameMin": "O nome de usuário deve ter pelo menos 3 caracteres.",
+      "validationNicknameMin": "O apelido deve ter pelo menos 3 caracteres.",
+      "validationEmailInvalid": "Digite um e-mail válido.",
       "validationPasswordRules": "A senha não atende a todos os critérios.",
+      "successToast": "Conta criada com sucesso. Faça login para continuar.",
+      "registerFailed": "Não foi possível concluir o cadastro. Tente novamente.",
       "eyeShow": "Mostrar senha",
       "eyeHide": "Ocultar senha"
     },
