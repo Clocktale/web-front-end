@@ -1,11 +1,11 @@
 .ds-text-field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-8);
 }
 
 .ds-text-field__label {
-  font-size: 14px;
+  font-size: var(--font-size-14);
   color: inherit;
   cursor: pointer;
 }
@@ -22,16 +22,17 @@
 
 .ds-text-field__input-wrapper {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   background-color: rgba(15, 23, 42, 0.005);
-  border: 1px solid #1e293b;
-  border-radius: 8px;
-  padding: 12px 16px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-8);
+  padding: var(--space-12) var(--space-16);
   transition: border-color 0.2s;
 }
 
+
 :host.ds-text-field--error .ds-text-field__input-wrapper {
-  border-color: #fe2d2d;
+  border-color: var(--color-border-error);
 }
 
 .ds-text-field__leading:empty,
@@ -43,30 +44,60 @@
 .ds-text-field__trailing {
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 
 .ds-text-field__leading {
-  margin-right: 12px;
+  margin-right: var(--space-12);
 }
 
 .ds-text-field__trailing {
-  margin-left: 12px;
+  margin-left: var(--space-12);
 }
 
 .ds-text-field__input {
   flex: 1;
   min-width: 0;
+  min-height: 0;
+  align-self: stretch;
+  margin: 0;
+  padding: 0;
   background: transparent;
   border: none;
   outline: none;
-  color: #ffffff;
-  font-size: 16px;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-16);
   font: inherit;
 }
 
 .ds-text-field__input::placeholder {
   color: #94aeb8;
+}
+
+/* Placeholder (••••) e pontos mascarados um pouco mais espaçados */
+.ds-text-field__input[type='password'] {
+  letter-spacing: 0.12em;
+}
+
+/* Opera/Chrome/Safari: autofill — !important costuma ser necessário; cor = página (wrapper quase transparente) */
+.ds-text-field__input:-webkit-autofill,
+.ds-text-field__input:-webkit-autofill:hover,
+.ds-text-field__input:-webkit-autofill:focus,
+.ds-text-field__input:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--color-text-primary) !important;
+  caret-color: var(--color-text-primary);
+  box-shadow: 0 0 0 1000px var(--color-surface) inset !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--color-surface) inset !important;
+  transition:
+    background-color 99999s ease-out 0s,
+    color 99999s ease-out 0s;
+}
+
+/* Firefox 94+ */
+.ds-text-field__input:-moz-autofill,
+.ds-text-field__input:-moz-autofill-preview {
+  filter: none;
 }
 
 .ds-text-field__input:disabled {
@@ -75,6 +106,6 @@
 }
 
 .ds-text-field__error {
-  font-size: 14px;
-  color: #b21f1f;
+  font-size: var(--font-size-14);
+  color: var(--color-text-error);
 }

@@ -21,7 +21,13 @@
       "eyeShow": "パスワードを表示",
       "eyeHide": "パスワードを非表示",
       "loginFailed": "ログインできませんでした。内容を確認して再度お試しください。",
+      "invalidCredentials": "ユーザー名またはパスワードが正しくありません。",
       "successToast": "ログインしました。"
+    },
+    "logout": {
+      "loadingMessage": "ログアウト処理中です…",
+      "successToast": "ログアウトしました。",
+      "apiError": "サーバーに接続できませんでした。この端末のセッションは終了しました。"
     },
     "register": {
       "title": "アカウント作成",

@@ -17,7 +17,9 @@ export const authErrorInterceptor: HttpInterceptorFn = (req, next) => {
       if (err instanceof HttpErrorResponse && err.status === 401) {
         const isLoginPost =
           req.method === 'POST' && req.url.includes('/auth/login');
-        if (!isLoginPost) {
+        const isLogoutPost =
+          req.method === 'POST' && req.url.includes('/auth/logout');
+        if (!isLoginPost && !isLogoutPost) {
           authSession.logout();
         }
       }

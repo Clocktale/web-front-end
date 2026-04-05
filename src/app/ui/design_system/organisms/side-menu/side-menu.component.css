@@ -119,8 +119,22 @@
   color: var(--color-sidemenu-icon-active);
 }
 
-.side-menu__item--button {
+.side-menu__footer {
   margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  flex-shrink: 0;
+}
+
+.side-menu__footer .side-menu__divider {
+  margin-top: 0;
+}
+
+.side-menu__item--button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .side-menu__icon {

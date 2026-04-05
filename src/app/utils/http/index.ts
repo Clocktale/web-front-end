@@ -14,3 +14,4 @@ export {
 } from './extract-api-message';
 export { mapHttpErrorResponse } from './map-http-error-response';
 export { resolveUserFacingErrorMessage } from './resolve-user-facing-error';
+export { resolveLoginErrorMessage } from './resolve-login-error-message';

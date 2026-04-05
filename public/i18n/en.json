@@ -21,7 +21,13 @@
       "eyeShow": "Show password",
       "eyeHide": "Hide password",
       "loginFailed": "Could not sign in. Check your details and try again.",
+      "invalidCredentials": "Incorrect username or password.",
       "successToast": "Signed in successfully."
+    },
+    "logout": {
+      "loadingMessage": "Signing you out…",
+      "successToast": "You have signed out successfully.",
+      "apiError": "Could not reach the server to sign out. Your session on this device was cleared."
     },
     "register": {
       "title": "Create account",

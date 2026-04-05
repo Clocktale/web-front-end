@@ -21,7 +21,13 @@
       "eyeShow": "Mostrar senha",
       "eyeHide": "Ocultar senha",
       "loginFailed": "Não foi possível entrar. Verifique os dados e tente novamente.",
+      "invalidCredentials": "Usuário ou senha incorretos.",
       "successToast": "Login realizado com sucesso."
+    },
+    "logout": {
+      "loadingMessage": "Saindo da sua conta rapidamente...",
+      "successToast": "Você saiu da sua conta com sucesso",
+      "apiError": "Não foi possível contactar o servidor para sair. A sua sessão neste dispositivo foi terminada."
     },
     "register": {
       "title": "Criar conta",

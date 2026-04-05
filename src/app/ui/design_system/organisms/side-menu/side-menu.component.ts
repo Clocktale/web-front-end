@@ -6,7 +6,7 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
   LucideAngularModule,
   LucideIconData,
@@ -21,6 +21,7 @@ import {
   LogOut,
 } from 'lucide-angular';
 import { AuthSessionController } from '../../../../controllers/auth-session.controller';
+import { LogoutController } from '../../../../controllers/logout.controller';
 
 interface MenuItem {
   label: string;
@@ -31,7 +32,12 @@ interface MenuItem {
 @Component({
   selector: 'app-side-menu',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, LucideAngularModule],
+  imports: [
+    CommonModule,
+    RouterLink,
+    RouterLinkActive,
+    LucideAngularModule,
+  ],
   host: {
     class: 'side-menu',
     '(mouseenter)': 'onMouseEnter()',
@@ -64,36 +70,39 @@ interface MenuItem {
           <span class="side-menu__label">{{ item.label }}</span>
         </a>
 
-        <div class="side-menu__divider"></div>
+        <div class="side-menu__footer">
+          <div class="side-menu__divider"></div>
 
-        <a
-          *ngFor="let item of bottomMenuItems"
-          [routerLink]="item.route"
-          routerLinkActive="side-menu__item--active"
-          class="side-menu__item"
-          [title]="item.label"
-        >
-          <lucide-angular
-            [img]="item.icon"
-            [size]="20"
-            class="side-menu__icon"
-          />
-          <span class="side-menu__label">{{ item.label }}</span>
-        </a>
+          <a
+            *ngFor="let item of bottomMenuItems"
+            [routerLink]="item.route"
+            routerLinkActive="side-menu__item--active"
+            class="side-menu__item"
+            [title]="item.label"
+          >
+            <lucide-angular
+              [img]="item.icon"
+              [size]="20"
+              class="side-menu__icon"
+            />
+            <span class="side-menu__label">{{ item.label }}</span>
+          </a>
 
-        <button
-          type="button"
-          class="side-menu__item side-menu__item--button"
-          (click)="logout()"
-          title="Logout"
-        >
-          <lucide-angular
-            [img]="LogOutIcon"
-            [size]="20"
-            class="side-menu__icon"
-          />
-          <span class="side-menu__label">Logout</span>
-        </button>
+          <button
+            type="button"
+            class="side-menu__item side-menu__item--button"
+            [disabled]="logoutController.loading()"
+            (click)="logout()"
+            title="Logout"
+          >
+            <lucide-angular
+              [img]="LogOutIcon"
+              [size]="20"
+              class="side-menu__icon"
+            />
+            <span class="side-menu__label">Logout</span>
+          </button>
+        </div>
       </nav>
     </aside>
   `,
@@ -102,7 +111,7 @@ interface MenuItem {
 })
 export class SideMenuComponent {
   private readonly authSession = inject(AuthSessionController);
-  private readonly router = inject(Router);
+  readonly logoutController = inject(LogoutController);
 
   protected readonly LayoutDashboardIcon = LayoutDashboard;
   protected readonly FilmIcon = Film;
@@ -152,6 +161,6 @@ export class SideMenuComponent {
   }
 
   logout(): void {
-    this.authSession.logout();
+    this.logoutController.logout();
   }
 }

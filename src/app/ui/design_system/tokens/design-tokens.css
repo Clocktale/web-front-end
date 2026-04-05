@@ -71,6 +71,7 @@
   --color-trophy-gold: #fff600;
   --color-trophy-silver: #b6b6b6;
   --color-trophy-bronze: #9b632c;
+  --color-border-default: #1e293b;
 
   /* --------------------------------------------------------------------------
    * Cores — derivados (opacidade via color-mix)
@@ -98,6 +99,7 @@
   --color-surface: var(--color-page);
   --color-text-primary: var(--color-white);
   --color-text-secondary: var(--color-muted);
+  --color-text-error: var(--color-danger);
   --color-surface-modal: var(--color-surface-elevated);
   --color-icon-default: var(--color-muted);
   --color-border-error: var(--color-danger);

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import type { AuthSession } from '../types/auth-session.type';
@@ -37,6 +37,21 @@ export class AuthRepository extends BaseApiRepository {
         map(response => this.mapLoginResponse(response)),
         catchError((err: unknown) => this.handleLoginError(err))
       );
+  }
+
+  /**
+   * Invalida o token no servidor. 401 é tratado como sucesso (token já inválido).
+   */
+  logout(): Observable<void> {
+    return this.http.post<unknown>(this.getEndpoint('logout'), {}).pipe(
+      map(() => undefined),
+      catchError((err: unknown) => {
+        if (err instanceof HttpErrorResponse && err.status === 401) {
+          return of(undefined);
+        }
+        return this.handleLogoutError(err);
+      })
+    );
   }
 
   private mapLoginResponse(response: unknown): AuthSession {
@@ -103,6 +118,15 @@ export class AuthRepository extends BaseApiRepository {
     }
     return throwError(() =>
       err instanceof Error ? err : new ApiEnvelopeError('Login failed')
+    );
+  }
+
+  private handleLogoutError(err: unknown): Observable<never> {
+    if (err instanceof HttpErrorResponse) {
+      return throwError(() => mapHttpErrorResponse(err));
+    }
+    return throwError(() =>
+      err instanceof Error ? err : new ApiEnvelopeError('Logout failed')
     );
   }
 
