@@ -85,7 +85,7 @@
 }
 
 .ds-button--text:hover:not(:disabled):not(.ds-button--loading) {
-  opacity: 0.9;
+  background-color: var(--color-surface-overlay);
 }
 
 .ds-button--text:focus-visible {

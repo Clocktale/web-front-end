@@ -27,13 +27,25 @@
   max-width: 28rem;
   display: flex;
   flex-direction: column;
-  gap: var(--space-24);
+  gap: var(--space-40);
+}
+
+.login-form__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.login-form__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
 }
 
 .login-form__header {
   display: flex;
   flex-direction: column;
-  gap: var(--space-12);
+  gap: var(--space-8);
   text-align: left;
 }
 
@@ -79,7 +91,6 @@
   display: flex;
   align-items: center;
   gap: var(--space-8);
-  margin: calc(var(--space-4) * -1) 0 0;
   font-size: var(--font-size-14);
   color: var(--color-text-secondary);
   cursor: pointer;
@@ -118,8 +129,8 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 11px;
-  height: 11px;
+  width: 12px;
+  height: 12px;
   transform: translate(-50%, -50%);
   background-color: var(--color-text-primary);
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
