@@ -1,3 +1,4 @@
+import type { PasswordSignupInput } from '../../../types/password-signup-input.type';
 import type { PasswordSignupRulesResult } from '../../../types/password-signup-rules-result.type';
 import { passwordHasDigitUseCase } from './password-has-digit.use-case';
 import { passwordHasLowercaseUseCase } from './password-has-lowercase.use-case';
@@ -11,7 +12,7 @@ import { passwordLengthRangeUseCase } from './password-length-range.use-case';
  * para manter a mesma política que o feedback em tempo real na UI.
  */
 export function validatePasswordSignupRulesUseCase(
-  password: string
+  password: PasswordSignupInput
 ): PasswordSignupRulesResult {
   return {
     lengthInRange: passwordLengthRangeUseCase(password),

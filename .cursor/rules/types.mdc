@@ -27,6 +27,7 @@ Types e interfaces definem as estruturas de dados usadas em toda a aplicação. 
 ```
 src/app/types/
 ├── customer.type.ts          # Customer, CustomerInput
+├── login-credentials.type.ts # inputs de use case (ou agrupar em auth/*.type.ts)
 ├── product.type.ts           # Product, ProductInput
 ├── order.type.ts             # Order, OrderInput
 ├── api/                      # Types da API
@@ -36,6 +37,8 @@ src/app/types/
     ├── pagination.type.ts    # PaginationParams, PaginatedResponse
     └── response.type.ts      # ApiResponse, ApiError
 ```
+
+Inputs/outputs de use cases e payloads persistidos por **services** vivem aqui (ou em subpastas por domínio), com nomes exportados reutilizáveis em testes.
 
 ## Convenções de Nomenclatura
 
@@ -76,11 +79,73 @@ export interface ApiCustomer {
 }
 ```
 
+## Contratos de API (obrigatório)
+
+Integrar um endpoint **sem** interface de contrato em `src/app/types/api/` é fluxo incompleto. Os contratos documentam o formato real da API (snake_case, strings ISO, envelopes) e permitem tipar `HttpClient` e mapeamentos no repository.
+
+### O que fazer em todo recurso novo
+
+1. **Criar ou estender** um ficheiro `types/api/<recurso>-api.type.ts` com interfaces que espelham o JSON de request/response (nomes e tipos alinhados ao backend).
+2. **Separar** quando fizer sentido: por exemplo `ApiAuthor`, `ApiAuthorCreateBody`, `ApiAuthorListResponse` (lista paginada, envelope, etc.).
+3. **Tipar as chamadas HTTP** no repository: `this.http.get<ApiAuthor>(...)`, `post<ApiLoginResponse>(...)`, sem `any` em payloads de negócio.
+4. **Mapear** da interface API para o type de domínio em métodos privados do repository (`toAuthor`, etc.), não misturar formatos na UI ou no controller.
+
+### O que evitar
+
+- ❌ `any`, `unknown` solto ou `Record<string, unknown>` para o corpo inteiro da resposta quando o contrato já é conhecido ou pode ser alinhado com o backend.
+- ❌ Duplicar o mesmo shape em vários ficheiros; o contrato vive uma vez em `types/api/`.
+- ❌ Assumir camelCase no type da API se o backend envia `snake_case` (o contrato deve refletir o fio da API).
+
+### Ordem de trabalho sugerida
+
+1. Contrato em `types/api/` (ou confirmação com OpenAPI/Swagger/postman se existir).
+2. Repository com tipos genéricos do `HttpClient` + conversão para domínio.
+3. Contratos de use case e de service (entradas/saídas públicas) — ver abaixo.
+4. Controller / UI.
+
+Se o backend ainda não estiver estável, marca campos incertos como opcionais (`?`) e comenta numa linha `TODO` ou alinha numa única revisão de contrato.
+
+## Contratos de use case (obrigatório para testes)
+
+Use cases são o melhor ponto para **mocks estáveis** em testes: o `execute()` deve ter assinatura fixa e documentada.
+
+### O que fazer
+
+1. **Exportar** inputs e outputs do use case como tipos em `src/app/types/` (não usar só objetos inline na assinatura de `execute()`).
+   - Exemplos: `LoginCredentials`, `RegisterAccountInput`, `RegisterAccountResult` (ou reutilizar types de domínio como `AuthSession` quando for o retorno).
+2. **Um ficheiro por agrupamento lógico** ou por comando: `login-credentials.type.ts`, `register-account.type.ts`, ou `types/auth/auth-use-cases.type.ts` com vários exports relacionados.
+3. **Retornos** `Observable<T>` / `Promise<T>` / síncronos: `T` deve ser um type exportado (domínio ou `FooUseCaseResult` dedicado).
+
+### O que evitar
+
+- ❌ `execute(credentials: { email: string; password: string })` sem tipo nomeado exportado (dificulta testes e reutilização).
+- ❌ Lógica de negócio duplicada em tipos (tipos só estruturam dados; validação complexa fica no use case ou em helpers tipados).
+
+Ver [use-cases.mdc](use-cases.mdc).
+
+## Contratos de service (obrigatório para testes)
+
+Services expõem uma **API pública** que outras camadas e testes invocam; contratos explícitos evitam regressões silenciosas.
+
+### O que fazer
+
+1. **Métodos públicos** com tipos explícitos em **parâmetros e retorno** (incluindo `void` quando for o caso).
+2. **Payloads de storage, filas ou eventos** (JSON em `localStorage`, formato de mensagem entre serviços): interface **exportada** em `src/app/types/`, não só `interface` privada no mesmo ficheiro do service — assim testes e refactors alinham o mesmo contrato.
+3. **Tipos já exportados no próprio service** (ex.: `export type ActiveToast`) são aceitáveis para shapes muito locais; se forem reutilizados por controllers ou testes, preferir mover para `types/`.
+4. **Signals/observables expostos**: documentar o tipo do valor (ex.: `ReadonlySignal<AuthSession | null>`, `Signal<number>`) na declaração da propriedade.
+
+### O que evitar
+
+- ❌ `JSON.parse` sem asserção para um type exportado (usar `as FooPayload` com `FooPayload` definido em `types/`).
+- ❌ Parâmetros genéricos demais (`options: Record<string, unknown>`) quando o conjunto de campos é conhecido.
+
+Ver [services.mdc](services.mdc).
+
 ## Princípios Fundamentais
 
-1. **Separe types de domínio de types da API**
+1. **Separe types de domínio de types da API** (contratos em `types/api/` antes de considerar a integração “fechada”)
 2. **Use interface para objetos, type para unions**
-3. **Sempre defina tipos explícitos, evite `any`**
+3. **Sempre defina tipos explícitos, evite `any`** (especialmente em contratos de API e respostas HTTP)
 4. **Campos opcionais usam `?:`**
 5. **Input types não incluem id ou timestamps**
 6. **Use union types ao invés de enums quando possível**
@@ -110,4 +175,6 @@ A skill contém:
 Ver também:
 - [architecture.mdc](architecture.mdc): Visão geral da arquitetura
 - [repositories.mdc](repositories.mdc): Como repositories convertem tipos
+- [use-cases.mdc](use-cases.mdc): Contratos de use cases e testes
+- [services.mdc](services.mdc): Contratos de services e testes
 - [controllers.mdc](controllers.mdc): Como controllers usam tipos para estado

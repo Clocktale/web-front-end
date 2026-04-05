@@ -4,7 +4,12 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import type { User } from '../types/user.type';
-import type { ApiUserCreateData, ApiUserCreateResponse } from '../types/api/user-create-api.type';
+import type { RegisterAccountInput } from '../types/register-account-input.type';
+import type {
+  ApiUserCreateData,
+  ApiUserCreateRequestBody,
+  ApiUserCreateResponse,
+} from '../types/api/user-create-api.type';
 import type { ApiAuthUser } from '../types/api/auth-login-api.type';
 import {
   ApiEnvelopeError,
@@ -22,19 +27,15 @@ export class UserRepository extends BaseApiRepository {
     super('users');
   }
 
-  create(body: {
-    username: string;
-    nickname: string;
-    email: string;
-    password: string;
-  }): Observable<User> {
+  create(body: RegisterAccountInput): Observable<User> {
+    const payload: ApiUserCreateRequestBody = {
+      nickname: body.nickname,
+      username: body.username,
+      email: body.email,
+      password: body.password,
+    };
     return this.http
-      .post<ApiUserCreateResponse>(this.getEndpoint(), {
-        nickname: body.nickname,
-        username: body.username,
-        email: body.email,
-        password: body.password,
-      })
+      .post<ApiUserCreateResponse>(this.getEndpoint(), payload)
       .pipe(
         map(response => this.mapCreateResponse(response)),
         catchError((err: unknown) => this.handleCreateError(err))

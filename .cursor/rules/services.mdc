@@ -1,0 +1,50 @@
+---
+description: Use esta rule quando estiver modificando ou criando services (infraestrutura)
+alwaysApply: false
+---
+# Services — infraestrutura e efeitos transversais
+
+Services agrupam **capacidades transversais**: persistência local, eventos globais entre camadas, toasts, etc. Não são a mesma coisa que repositories (que falam com **API** remota).
+
+## Responsabilidades
+
+### O que services FAZEM:
+- ✅ Encapsular `localStorage` / `sessionStorage`, `IndexedDB`, listeners globais
+- ✅ Expor sinais ou APIs pequenas para desacoplar UI de controllers (ex.: evento “login ok”)
+- ✅ Tipar a superfície pública para consumidores e testes
+
+### O que services NÃO FAZEM:
+- ❌ Substituir repositories para chamadas HTTP à API
+- ❌ Conter regras de negócio pesadas (preferir use case + repository)
+
+## Localização e nomenclatura
+
+```
+src/app/services/
+├── auth-persistence.service.ts
+├── toast.service.ts
+├── ui-events.service.ts
+└── ...
+```
+
+- **Ficheiro**: `<nome>.service.ts`
+- **Classe**: `AuthPersistenceService`, `ToastService`
+- **Decorator**: `@Injectable({ providedIn: 'root' })`
+
+## Contratos (obrigatório)
+
+Regra alinhada com [types.mdc](types.mdc) — secção **Contratos de service**:
+
+1. **Métodos públicos**: parâmetros e tipo de retorno explícitos.
+2. **Estruturas serializadas** (JSON guardado, payloads de eventos partilhados): interfaces **exportadas** em `src/app/types/`, importadas pelo service — facilita testes (`expect(payload).toEqual(...)` com o mesmo type) e evita drift.
+3. Tipos exportados no próprio ficheiro do service (`export type ActiveToast`) são aceitáveis para detalhe interno; promover para `types/` quando vários módulos precisarem do mesmo shape.
+
+## Testes
+
+- Mockar storage ou `UiEventsService` em testes de controllers/use cases torna-se simples quando os contratos estão explícitos.
+- Evitar `any` em métodos públicos para os mocks TypeScript coincidirem com a interface real.
+
+Ver também:
+- [types.mdc](types.mdc): Contratos de API, use case e service
+- [repositories.mdc](repositories.mdc): Acesso HTTP
+- [controllers.mdc](controllers.mdc): Consumo de services quando necessário

@@ -1,3 +1,11 @@
+/** Corpo de POST /users (mesmo formato enviado ao backend). */
+export interface ApiUserCreateRequestBody {
+  nickname: string;
+  username: string;
+  email: string;
+  password: string;
+}
+
 /** `data` da resposta de POST /users (sucesso). Alinhado a ApiAuthUser. */
 export interface ApiUserCreateData {
   id: number;

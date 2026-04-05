@@ -1,3 +1,9 @@
+/** Corpo de POST /auth/login. */
+export interface ApiAuthLoginRequestBody {
+  email: string;
+  password: string;
+}
+
 /** Utilizador no payload JSON da API (snake_case). */
 export interface ApiAuthUser {
   id: number;

@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserRepository } from '../../repositories/user.repository';
+import type { RegisterAccountInput } from '../../types/register-account-input.type';
 import type { User } from '../../types/user.type';
 
 /**
@@ -10,12 +11,7 @@ import type { User } from '../../types/user.type';
 export class RegisterAccountUseCase {
   private readonly userRepository = inject(UserRepository);
 
-  execute(input: {
-    username: string;
-    nickname: string;
-    email: string;
-    password: string;
-  }): Observable<User> {
+  execute(input: RegisterAccountInput): Observable<User> {
     return this.userRepository.create(input);
   }
 }

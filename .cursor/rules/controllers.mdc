@@ -4,7 +4,7 @@ alwaysApply: false
 ---
 # Controllers - Camada de Controle e Estado
 
-Controllers são classes responsáveis por controlar a interface e manter o estado que as telas utilizam. Elas orquestram a lógica da aplicação e fazem a ponte entre a UI e os Repositories.
+Controllers são classes responsáveis por controlar a interface e manter o estado que as telas utilizam. Elas orquestram a lógica da aplicação e fazem a ponte entre a UI e os **use cases** e/ou **repositories** (preferir use case quando existir, para manter contratos de teste alinhados).
 
 ## Responsabilidades
 
@@ -107,6 +107,8 @@ A skill contém:
 
 Ver também:
 - [architecture.mdc](architecture.mdc): Visão geral da arquitetura
+- [use-cases.mdc](use-cases.mdc): Contratos de `execute()` e testes
+- [services.mdc](services.mdc): Persistência e eventos globais tipados
 - [repositories.mdc](repositories.mdc): Como repositories retornam dados
 - [types.mdc](types.mdc): Tipos usados no estado
 - [ui.mdc](ui.mdc): Como componentes usam controllers

@@ -58,9 +58,11 @@ O fluxo de dependência sempre vai de fora para dentro:
 
 ```
 src/app/
-├── repositories/     # Camada de acesso a dados
+├── repositories/     # Camada de acesso a dados (API)
+├── use-cases/        # Casos de uso (orquestração; contratos explícitos)
+├── services/         # Infraestrutura (storage, eventos globais, toasts)
 ├── controllers/      # Camada de controle e estado
-├── types/            # Definições de tipos
+├── types/            # Definições de tipos e contratos
 ├── ui/               # Componentes visuais
 │   ├── design_system/    # Design System - componentes compartilhados
 │   │   ├── atoms/        # Componentes básicos
@@ -80,8 +82,10 @@ src/app/
 Para detalhes sobre cada camada, consulte as rules específicas:
 
 - **[repositories.mdc](repositories.mdc)**: Camada de acesso a dados
+- **[use-cases.mdc](use-cases.mdc)**: Casos de uso e contratos para testes
+- **[services.mdc](services.mdc)**: Services de infraestrutura e contratos públicos
 - **[controllers.mdc](controllers.mdc)**: Gerenciamento de estado
-- **[types.mdc](types.mdc)**: Definição de tipos e interfaces
+- **[types.mdc](types.mdc)**: Definição de tipos e interfaces (API, use case e service)
 - **[ui.mdc](ui.mdc)**: Organização de componentes (Atomic Design)
 
 ## Skills de Implementação
@@ -110,7 +114,7 @@ Cada skill inclui:
 - **Manutenibilidade**: Mudanças em uma camada não afetam as outras
 - **Escalabilidade**: Fácil adicionar novos recursos seguindo o padrão
 - **Clareza**: Desenvolvedores sabem exatamente onde colocar código novo
-- **Reusabilidade**: Repositories e Controllers podem ser reutilizados
+- **Reusabilidade**: Repositories, use cases e controllers podem ser reutilizados; contratos em `types/` alinham testes e integrações
 
 ## Começando
 

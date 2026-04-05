@@ -55,10 +55,11 @@ Métodos adicionais conforme necessário: `search()`, `getPaginated()`, etc.
 4. **Estenda BaseApiRepository** para centralizar URLs da API
 5. **Use getEndpoint()** para construir URLs dos endpoints
 6. **Centralize configurações** em `environment.ts`
+7. **Contratos primeiro**: cada endpoint integrado deve ter interfaces em `src/app/types/api/` (ver [types.mdc](types.mdc) — secção “Contratos de API”). O repository tipa `get`/`post`/`patch`/`delete` com esses tipos e converte para o domínio.
 
 ## Relação com Outras Camadas
 
-- Controllers injetam e usam Repositories
+- Controllers ou **use cases** injetam repositories; os use cases devem tipar `execute()` com os mesmos types de domínio que o repository expõe (ver [use-cases.mdc](use-cases.mdc)).
 - Repositories convertem dados da API para Types do domínio
 - Repositories nunca gerenciam estado ou conhecem a UI
 
@@ -76,5 +77,6 @@ A skill contém:
 
 Ver também:
 - [architecture.mdc](architecture.mdc): Visão geral da arquitetura
+- [use-cases.mdc](use-cases.mdc): Contratos à entrada/saída dos use cases
 - [controllers.mdc](controllers.mdc): Como controllers usam repositories
-- [types.mdc](types.mdc): Definição de types do domínio
+- [types.mdc](types.mdc): Definição de types do domínio e `types/api/`

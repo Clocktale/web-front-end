@@ -4,12 +4,15 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import type { AuthSession } from '../types/auth-session.type';
+import type { LoginCredentials } from '../types/login-credentials.type';
 import type { User } from '../types/user.type';
 import type {
   ApiAuthLoginData,
+  ApiAuthLoginRequestBody,
   ApiAuthLoginResponse,
   ApiAuthUser,
 } from '../types/api/auth-login-api.type';
+import type { ApiAuthLogoutRequestBody } from '../types/api/auth-logout-api.type';
 import {
   ApiEnvelopeError,
   extractApiMessage,
@@ -24,15 +27,13 @@ export class AuthRepository extends BaseApiRepository {
     super('auth');
   }
 
-  login(credentials: {
-    email: string;
-    password: string;
-  }): Observable<AuthSession> {
+  login(credentials: LoginCredentials): Observable<AuthSession> {
+    const body: ApiAuthLoginRequestBody = {
+      email: credentials.email,
+      password: credentials.password,
+    };
     return this.http
-      .post<ApiAuthLoginResponse>(this.getEndpoint('login'), {
-        email: credentials.email,
-        password: credentials.password,
-      })
+      .post<ApiAuthLoginResponse>(this.getEndpoint('login'), body)
       .pipe(
         map(response => this.mapLoginResponse(response)),
         catchError((err: unknown) => this.handleLoginError(err))
@@ -43,7 +44,8 @@ export class AuthRepository extends BaseApiRepository {
    * Invalida o token no servidor. 401 é tratado como sucesso (token já inválido).
    */
   logout(): Observable<void> {
-    return this.http.post<unknown>(this.getEndpoint('logout'), {}).pipe(
+    const body: ApiAuthLogoutRequestBody = {};
+    return this.http.post<unknown>(this.getEndpoint('logout'), body).pipe(
       map(() => undefined),
       catchError((err: unknown) => {
         if (err instanceof HttpErrorResponse && err.status === 401) {

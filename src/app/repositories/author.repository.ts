@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, delay } from 'rxjs';
-import type { Author } from '../types/author.type';
+import type {
+  Author,
+  AuthorCreateInput,
+  AuthorListQuery,
+  AuthorPaginatedResult,
+  AuthorSearchQuery,
+} from '../types/author.type';
 
 @Injectable({ providedIn: 'root' })
 export class AuthorRepository {
@@ -17,10 +23,7 @@ export class AuthorRepository {
     { id: 10, name: 'Takehiko Inoue' },
   ];
 
-  getAll(options?: {
-    page?: number;
-    pageSize?: number;
-  }): Observable<{ authors: Author[]; total: number }> {
+  getAll(options?: AuthorListQuery): Observable<AuthorPaginatedResult> {
     const page = options?.page ?? 1;
     const pageSize = options?.pageSize ?? 6;
     const start = (page - 1) * pageSize;
@@ -34,11 +37,7 @@ export class AuthorRepository {
     }).pipe(delay(300));
   }
 
-  search(options: {
-    query: string;
-    page?: number;
-    pageSize?: number;
-  }): Observable<{ authors: Author[]; total: number }> {
+  search(options: AuthorSearchQuery): Observable<AuthorPaginatedResult> {
     const query = options.query.toLowerCase().trim();
     const page = options.page ?? 1;
     const pageSize = options.pageSize ?? 6;
@@ -61,7 +60,7 @@ export class AuthorRepository {
     }).pipe(delay(300));
   }
 
-  create(author: Omit<Author, 'id'>): Observable<Author> {
+  create(author: AuthorCreateInput): Observable<Author> {
     const newAuthor: Author = {
       id: Math.max(...this.mockAuthors.map(a => a.id)) + 1,
       ...author,

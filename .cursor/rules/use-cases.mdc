@@ -1,0 +1,54 @@
+---
+description: Use esta rule quando estiver modificando ou criando use cases
+alwaysApply: false
+---
+# Use cases — orquestração testável
+
+Use cases encapsulam uma **única intenção** da aplicação (login, registo, listar autores) e delegam a dados ao **repository**. São o ponto ideal para **testes unitários com mocks** do repository.
+
+## Responsabilidades
+
+### O que use cases FAZEM:
+- ✅ Expor um método principal (`execute` ou nome semântico) com contrato estável
+- ✅ Orquestrar chamadas a um ou mais repositories
+- ✅ Delegar persistência e HTTP ao repository
+
+### O que use cases NÃO FAZEM:
+- ❌ Usar `HttpClient` diretamente
+- ❌ Conhecer detalhes de UI ou rotas
+- ❌ Manter estado de ecrã (isso é controller)
+
+## Localização e nomenclatura
+
+```
+src/app/use-cases/
+├── auth/
+│   ├── login.use-case.ts
+│   ├── register-account.use-case.ts
+│   └── ...
+└── ...
+```
+
+- **Ficheiro**: `<verbo>-<recurso>.use-case.ts` ou `<ação>.use-case.ts`
+- **Classe**: `LoginUseCase`, `RegisterAccountUseCase`
+- **Decorator**: `@Injectable({ providedIn: 'root' })`
+
+## Contratos (obrigatório)
+
+Regra alinhada com [types.mdc](types.mdc) — secção **Contratos de use case**:
+
+1. Parâmetros e valores de retorno de `execute()` devem usar **types exportados** de `src/app/types/` (não só literais inline).
+2. Reutilizar types de domínio (`AuthSession`, `User`) quando o resultado já for o modelo da app.
+3. Para inputs específicos do comando, definir `LoginCredentials`, `RegisterAccountInput`, etc.
+
+Isto permite em testes: `const mockRepo = { login: jasmine.createSpy().and.returnValue(of(session)) }` com tipos que batem certo com o use case.
+
+## Relação com outras camadas
+
+- **Controllers** injetam use cases e chamam `execute()`; atualizam signals com o resultado.
+- **Repositories** são a única dependência de dados do use case (na maioria dos casos).
+
+Ver também:
+- [types.mdc](types.mdc): Onde definir inputs/outputs nomeados
+- [repositories.mdc](repositories.mdc): Contratos HTTP em `types/api/`
+- [controllers.mdc](controllers.mdc): Estado e orquestração com a UI

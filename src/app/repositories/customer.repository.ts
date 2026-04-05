@@ -1,41 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, catchError, retry } from 'rxjs/operators';
+import type { Customer, CustomerInput } from '../types/customer.type';
+import type { ApiCustomer, ApiCustomerInput } from '../types/api/customer-api.type';
 import { BaseApiRepository } from './base-api.repository';
-
-// Types do domínio (a serem criados em src/app/types/)
-export interface Customer {
-  id: string;
-  name: string;
-  email: string;
-  phone?: string;
-  active: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface CustomerInput {
-  name: string;
-  email: string;
-  phone?: string;
-}
-
-// Types da API (formato que vem/vai para o backend)
-interface ApiCustomer {
-  id: string;
-  customer_name: string;
-  email_address: string;
-  phone_number: string | null;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
-}
-
-interface ApiCustomerInput {
-  customer_name: string;
-  email_address: string;
-  phone_number: string | null;
-}
 
 /**
  * Repository para gerenciar clientes através da API.
@@ -162,9 +130,11 @@ export class CustomerRepository extends BaseApiRepository {
    * Tratamento centralizado de erros
    */
   private handleError(operation: string) {
-    return (error: any): Observable<never> => {
+    return (error: unknown): Observable<never> => {
       console.error(`${operation} falhou:`, error);
-      throw new Error(`Erro na operação ${operation}: ${error.message}`);
+      const message =
+        error instanceof Error ? error.message : String(error);
+      throw new Error(`Erro na operação ${operation}: ${message}`);
     };
   }
 }
