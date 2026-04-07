@@ -4,6 +4,6 @@ export interface User {
   nickname: string;
   username: string;
   email: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

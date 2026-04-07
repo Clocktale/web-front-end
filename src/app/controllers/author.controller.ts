@@ -1,6 +1,6 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import type { Author } from '../types/author.type';
-import { AuthorRepository } from '../repositories/author.repository';
+import { AuthorRepository } from '../data/repositories/author.repository';
 
 @Injectable({ providedIn: 'root' })
 export class AuthorController {

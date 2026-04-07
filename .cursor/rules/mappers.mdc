@@ -1,0 +1,49 @@
+# Mappers — Validação e Transformação de Dados
+
+Esta regra define como os dados que chegam da API devem ser validados e transformados para o domínio.
+
+## Onde ficam os mappers
+
+- Ficheiro base: `src/app/data/mappers/base.mapper.ts`.
+- Mappers específicos: `src/app/data/mappers/[nome].mapper.ts`.
+- DTOs/Responses: `src/app/data/responses/[nome]-api.type.ts`.
+
+## Princípios
+
+1. **Fail-Fast**: Se os dados obrigatórios da API estiverem ausentes ou forem inválidos, o mapper deve retornar `null`.
+2. **Imutabilidade**: O mapper deve retornar um novo objeto, nunca modificar o objeto bruto da API.
+3. **Tipagem Forte**: Use o `BaseMapper` para garantir que os tipos básicos (string, number, date) sejam respeitados.
+4. **Sanitização**: O mapper é o lugar ideal para fazer `trim()`, converter strings para `Date`, tratar valores nulos/undefined, etc.
+
+## Como Implementar
+
+Todos os mappers devem estender `BaseMapper` e usar o método `isValid` para validação declarativa.
+
+```typescript
+export class ExemploMapper extends BaseMapper {
+  static toDomain(raw: any): Exemplo | null {
+    if (!this.isObject(raw)) return null;
+
+    const valid = this.isValid(raw, {
+      id: (val) => this.canBeNumber(val),
+      nome: (val) => this.isNotEmptyString(val),
+      data_criacao: (val) => this.isDateTime(val),
+    });
+
+    if (!valid) return null;
+
+    return {
+      id: this.toNumber(raw['id']),
+      nome: this.sanitizeString(raw['nome']),
+      dataCriacao: this.toDate(raw['data_criacao']),
+    };
+  }
+}
+```
+
+## Regras Obrigatórias
+
+- **Proibido** usar dados da API diretamente nos controllers ou use cases sem passar por um mapper.
+- **Proibido** repetir lógica de validação de tipos básicos; use os métodos do `BaseMapper`.
+- **Sempre** converter campos de data da API (geralmente strings ISO) para objetos `Date` do JavaScript no domínio.
+- **Sempre** retornar `null` em caso de falha de integridade, permitindo que o repositório decida como tratar o erro.

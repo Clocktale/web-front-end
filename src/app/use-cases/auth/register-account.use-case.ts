@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserRepository } from '../../repositories/user.repository';
+import { UserRepository } from '../../data/repositories/user.repository';
 import type { RegisterAccountInput } from '../../types/register-account-input.type';
 import type { User } from '../../types/user.type';
 

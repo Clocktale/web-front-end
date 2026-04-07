@@ -4,5 +4,5 @@ import type { User } from './user.type';
 export interface AuthSession {
   user: User;
   token: string;
-  expiresAt: string;
+  expiresAt: Date;
 }

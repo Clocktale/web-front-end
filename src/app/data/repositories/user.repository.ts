@@ -3,14 +3,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import type { User } from '../types/user.type';
-import type { RegisterAccountInput } from '../types/register-account-input.type';
+import type { User } from '../../types/user.type';
+import type { RegisterAccountInput } from '../../types/register-account-input.type';
 import type {
-  ApiUserCreateData,
   ApiUserCreateRequestBody,
   ApiUserCreateResponse,
-} from '../types/api/user-create-api.type';
-import type { ApiAuthUser } from '../types/api/auth-login-api.type';
+} from '../responses/user-create-api.type';
 import {
   ApiEnvelopeError,
   LaravelValidationError,
@@ -18,8 +16,9 @@ import {
   extractEnvelopeFailureMessage,
   extractLaravelFieldErrors,
   mapHttpErrorResponse,
-} from '../utils/http';
+} from '../../utils/http';
 import { BaseApiRepository } from './base-api.repository';
+import { AuthMapper } from '../mappers/auth.mapper';
 
 @Injectable({ providedIn: 'root' })
 export class UserRepository extends BaseApiRepository {
@@ -37,7 +36,7 @@ export class UserRepository extends BaseApiRepository {
     return this.http
       .post<ApiUserCreateResponse>(this.getEndpoint(), payload)
       .pipe(
-        map(response => this.mapCreateResponse(response)),
+        map((response) => this.mapCreateResponse(response)),
         catchError((err: unknown) => this.handleCreateError(err))
       );
   }
@@ -54,46 +53,19 @@ export class UserRepository extends BaseApiRepository {
 
     const r = response as Partial<ApiUserCreateResponse>;
     if (!r.success || r.data === undefined || r.data === null) {
-      const fallback =
-        extractApiMessage(response) ?? 'Registration failed';
+      const fallback = extractApiMessage(response) ?? 'Registration failed';
       throw new ApiEnvelopeError(fallback);
     }
 
-    if (!this.isValidUserData(r.data)) {
-      throw new ApiEnvelopeError(
-        'Incomplete user response (id or fields missing).'
-      );
-    }
-
-    return this.toUser(r.data);
-  }
-
-  private isValidUserData(data: unknown): data is ApiUserCreateData {
-    return this.isValidApiUserShape(data);
-  }
-
-  private isValidApiUserShape(user: unknown): user is ApiAuthUser {
-    if (user === null || typeof user !== 'object') {
-      return false;
-    }
-    const u = user as Record<string, unknown>;
-    return (
-      typeof u['id'] === 'number' &&
-      typeof u['profile_picture'] === 'string' &&
-      typeof u['nickname'] === 'string' &&
-      typeof u['username'] === 'string' &&
-      typeof u['email'] === 'string' &&
-      typeof u['created_at'] === 'string' &&
-      typeof u['updated_at'] === 'string'
-    );
+    // Usando o AuthMapper para converter o usuário (já que o shape é o mesmo)
+    return AuthMapper.toUser(r.data);
   }
 
   private handleCreateError(err: unknown): Observable<never> {
     if (err instanceof HttpErrorResponse && err.status === 422) {
       const fieldErrors = extractLaravelFieldErrors(err.error);
       if (fieldErrors !== null && Object.keys(fieldErrors).length > 0) {
-        const message =
-          extractApiMessage(err.error) ?? 'Validation failed';
+        const message = extractApiMessage(err.error) ?? 'Validation failed';
         return throwError(
           () => new LaravelValidationError(message, fieldErrors)
         );
@@ -105,17 +77,5 @@ export class UserRepository extends BaseApiRepository {
     return throwError(() =>
       err instanceof Error ? err : new ApiEnvelopeError('Registration failed')
     );
-  }
-
-  private toUser(api: ApiAuthUser): User {
-    return {
-      id: api.id,
-      profilePicture: api.profile_picture,
-      nickname: api.nickname,
-      username: api.username,
-      email: api.email,
-      createdAt: api.created_at,
-      updatedAt: api.updated_at,
-    };
   }
 }

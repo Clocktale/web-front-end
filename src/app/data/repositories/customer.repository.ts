@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, catchError, retry } from 'rxjs/operators';
-import type { Customer, CustomerInput } from '../types/customer.type';
-import type { ApiCustomer, ApiCustomerInput } from '../types/api/customer-api.type';
+import type { Customer, CustomerInput } from '../../types/customer.type';
+import type { ApiCustomer, ApiCustomerInput } from '../responses/customer-api.type';
 import { BaseApiRepository } from './base-api.repository';
 
 /**

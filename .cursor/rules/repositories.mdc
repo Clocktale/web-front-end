@@ -4,32 +4,29 @@ alwaysApply: false
 ---
 # Repositories - Camada de Acesso a Dados
 
-Repositories são classes responsáveis por acessar e enviar dados para o mundo exterior (APIs REST, Firebase, GraphQL, localStorage, etc).
+Repositories são classes responsáveis por acessar e enviar dados para o mundo exterior (APIs REST, Firebase, localStorage, etc).
 
 ## Responsabilidades
 
 ### O que Repositories FAZEM:
-- ✅ Fazer requisições HTTP para APIs externas
-- ✅ Converter dados da API para Types do domínio
-- ✅ Converter Types do domínio para formato da API
-- ✅ Tratar erros de comunicação com APIs
-- ✅ Implementar retry logic quando necessário
-- ✅ Cachear dados quando apropriado
+- ✅ Fazer requisições HTTP para APIs externas via `HttpClient`.
+- ✅ Orquestrar o uso de **Mappers** para validar e converter dados.
+- ✅ Tratar erros de comunicação com APIs (404, 500, etc).
+- ✅ Implementar retry logic ou cache quando necessário.
 
 ### O que Repositories NÃO FAZEM:
-- ❌ Conter lógica de negócio
-- ❌ Gerenciar estado da aplicação
-- ❌ Conhecer detalhes da UI
-- ❌ Tomar decisões sobre quando buscar dados
+- ❌ Conter lógica de negócio (isso é para **Use Cases**).
+- ❌ Validar integridade de campos individuais (isso é para **Mappers**).
+- ❌ Gerenciar estado da aplicação (isso é para **Controllers**).
+- ❌ Conhecer detalhes da UI.
 
 ## Localização e Nomenclatura
 
 ```
-src/app/repositories/
+src/app/data/repositories/
 ├── base-api.repository.ts   # BaseApiRepository (classe base)
 ├── customer.repository.ts    # CustomerRepository
 ├── product.repository.ts     # ProductRepository
-├── order.repository.ts       # OrderRepository
 └── ...
 ```
 
@@ -37,46 +34,40 @@ src/app/repositories/
 - **Classe**: `[Entidade]Repository extends BaseApiRepository`
 - **Decorator**: `@Injectable({ providedIn: 'root' })`
 
-## Métodos Comuns
-
-- `getAll()`: Buscar lista completa
-- `get(id)`: Buscar por ID
-- `create(data)`: Criar novo registro
-- `update(id, data)`: Atualizar registro existente
-- `delete(id)`: Deletar registro
-
-Métodos adicionais conforme necessário: `search()`, `getPaginated()`, etc.
-
 ## Princípios Fundamentais
 
-1. **Sempre retorne Observables** para consistência
-2. **Sempre converta tipos da API** para tipos do domínio
-3. **Métodos de conversão são privados** (`toCustomer`, `toApiCustomer`)
-4. **Estenda BaseApiRepository** para centralizar URLs da API
-5. **Use getEndpoint()** para construir URLs dos endpoints
-6. **Centralize configurações** em `environment.ts`
-7. **Contratos primeiro**: cada endpoint integrado deve ter interfaces em `src/app/types/api/` (ver [types.mdc](types.mdc) — secção “Contratos de API”). O repository tipa `get`/`post`/`patch`/`delete` com esses tipos e converte para o domínio.
+1. **Sempre retorne Observables** para consistência com o Angular.
+2. **Delegue a conversão para Mappers**: Nunca faça `map(raw => ({ ... }))` dentro do repository. Use `map(raw => EntidadeMapper.toDomain(raw))`.
+3. **Estenda BaseApiRepository**: Centraliza a URL base e o `HttpClient`.
+4. **Use getEndpoint()**: Para construir URLs de forma padronizada.
+5. **Contratos de API**: Cada endpoint deve ter interfaces em `src/app/data/responses/`. O repository tipa as chamadas HTTP com esses tipos.
+
+## Exemplo de Implementação
+
+```typescript
+@Injectable({ providedIn: 'root' })
+export class ExemploRepository extends BaseApiRepository {
+  constructor() {
+    super('exemplo');
+  }
+
+  getById(id: number): Observable<Exemplo | null> {
+    return this.http.get<ApiExemploResponse>(this.getEndpoint(id.toString())).pipe(
+      map(response => ExemploMapper.toDomain(response.data)),
+      catchError(() => of(null))
+    );
+  }
+}
+```
 
 ## Relação com Outras Camadas
 
-- Controllers ou **use cases** injetam repositories; os use cases devem tipar `execute()` com os mesmos types de domínio que o repository expõe (ver [use-cases.mdc](use-cases.mdc)).
-- Repositories convertem dados da API para Types do domínio
-- Repositories nunca gerenciam estado ou conhecem a UI
-
-## Como Implementar
-
-Para aprender como implementar repositories, consulte a skill dedicada:
-
-**Skill**: `.agents/skills/create-repository/SKILL.md`
-
-A skill contém:
-- Estrutura completa de código
-- Exemplos com HTTP e Firebase  
-- Padrões de tratamento de erros
-- Script de geração automática
+- **Use Cases** injetam repositories para buscar dados.
+- **Repositories** usam **Mappers** para garantir que o que chega ao Use Case é válido.
+- **Repositories** nunca gerenciam estado (Signals).
 
 Ver também:
-- [architecture.mdc](architecture.mdc): Visão geral da arquitetura
-- [use-cases.mdc](use-cases.mdc): Contratos à entrada/saída dos use cases
-- [controllers.mdc](controllers.mdc): Como controllers usam repositories
-- [types.mdc](types.mdc): Definição de types do domínio e `types/api/`
+- [architecture.mdc](architecture.mdc): Visão geral da arquitetura.
+- [mappers.mdc](mappers.mdc): Como validar e converter dados da API.
+- [use-cases.mdc](use-cases.mdc): Como a lógica de negócio consome os dados.
+- [types.mdc](types.mdc): Definição de types do domínio e `types/api/`.

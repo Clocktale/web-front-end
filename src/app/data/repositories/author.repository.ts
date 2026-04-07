@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, delay } from 'rxjs';
+import { Observable, of, delay, map } from 'rxjs';
 import type {
   Author,
   AuthorCreateInput,
   AuthorListQuery,
   AuthorPaginatedResult,
   AuthorSearchQuery,
-} from '../types/author.type';
+} from '../../types/author.type';
+import { AuthorMapper } from '../mappers/author.mapper';
 
 @Injectable({ providedIn: 'root' })
 export class AuthorRepository {
-  private mockAuthors: Author[] = [
+  private mockAuthors: any[] = [
     { id: 1, name: 'Akira Toriyama' },
     { id: 2, name: 'Eiichiro Oda' },
     { id: 3, name: 'Gege Akutami' },
@@ -29,10 +30,11 @@ export class AuthorRepository {
     const start = (page - 1) * pageSize;
     const end = start + pageSize;
 
-    const paginatedAuthors = this.mockAuthors.slice(start, end);
+    const paginatedAuthorsRaw = this.mockAuthors.slice(start, end);
+    const authors = AuthorMapper.toDomainList(paginatedAuthorsRaw);
 
     return of({
-      authors: paginatedAuthors,
+      authors,
       total: this.mockAuthors.length,
     }).pipe(delay(300));
   }
@@ -46,40 +48,47 @@ export class AuthorRepository {
       return this.getAll({ page, pageSize });
     }
 
-    const filtered = this.mockAuthors.filter(author =>
+    const filteredRaw = this.mockAuthors.filter((author) =>
       author.name.toLowerCase().includes(query)
     );
 
     const start = (page - 1) * pageSize;
     const end = start + pageSize;
-    const paginatedAuthors = filtered.slice(start, end);
+    const paginatedAuthorsRaw = filteredRaw.slice(start, end);
+    const authors = AuthorMapper.toDomainList(paginatedAuthorsRaw);
 
     return of({
-      authors: paginatedAuthors,
-      total: filtered.length,
+      authors,
+      total: filteredRaw.length,
     }).pipe(delay(300));
   }
 
-  create(author: AuthorCreateInput): Observable<Author> {
-    const newAuthor: Author = {
-      id: Math.max(...this.mockAuthors.map(a => a.id)) + 1,
+  create(author: AuthorCreateInput): Observable<Author | null> {
+    const newAuthorRaw = {
+      id: Math.max(...this.mockAuthors.map((a) => a.id)) + 1,
       ...author,
     };
-    this.mockAuthors.push(newAuthor);
-    return of(newAuthor).pipe(delay(300));
+    this.mockAuthors.push(newAuthorRaw);
+    return of(newAuthorRaw).pipe(
+      delay(300),
+      map((raw) => AuthorMapper.toDomain(raw))
+    );
   }
 
-  update(id: number, author: Partial<Author>): Observable<Author> {
-    const index = this.mockAuthors.findIndex(a => a.id === id);
+  update(id: number, author: Partial<Author>): Observable<Author | null> {
+    const index = this.mockAuthors.findIndex((a) => a.id === id);
     if (index === -1) {
       throw new Error(`Author with id ${id} not found`);
     }
     this.mockAuthors[index] = { ...this.mockAuthors[index], ...author };
-    return of(this.mockAuthors[index]).pipe(delay(300));
+    return of(this.mockAuthors[index]).pipe(
+      delay(300),
+      map((raw) => AuthorMapper.toDomain(raw))
+    );
   }
 
   delete(id: number): Observable<void> {
-    const index = this.mockAuthors.findIndex(a => a.id === id);
+    const index = this.mockAuthors.findIndex((a) => a.id === id);
     if (index === -1) {
       throw new Error(`Author with id ${id} not found`);
     }

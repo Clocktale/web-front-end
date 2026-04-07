@@ -7,118 +7,90 @@ Este projeto segue uma arquitetura em camadas bem definida para garantir separa�
 
 ## Visão Geral da Arquitetura
 
-A arquitetura é organizada em 4 camadas principais:
+A arquitetura é organizada em camadas principais:
 
 ```mermaid
 graph TD
     UI[UI Layer - Componentes Visuais]
     Controllers[Controllers - Gerenciamento de Estado]
+    UseCases[Use Cases - Lógica de Negócio]
     Repositories[Repositories - Acesso a Dados]
+    Mappers[Mappers - Validação e Transformação]
     External[Mundo Exterior - API, Firebase, etc]
     
     UI -->|Chama ações| Controllers
-    Controllers -->|Usa| Repositories
+    Controllers -->|Usa| UseCases
+    UseCases -->|Usa| Repositories
     Repositories -->|Busca/Envia dados| External
     External -->|Retorna dados| Repositories
-    Repositories -->|Converte para Types| Controllers
+    Repositories -->|Usa| Mappers
+    Mappers -->|Valida e Converte| Repositories
+    Repositories -->|Retorna Domain Type| UseCases
+    UseCases -->|Retorna para| Controllers
     Controllers -->|Atualiza estado| UI
 ```
 
 ## Fluxo de Dados
 
-1. **UI → Controllers**: A interface do usuário chama ações nas controllers
-2. **Controllers → Repositories**: Controllers solicitam dados através dos repositories
-3. **Repositories → Mundo Exterior**: Repositories fazem requisições para APIs, Firebase, etc
-4. **Mundo Exterior → Repositories**: Dados retornam no formato da API
-5. **Repositories → Controllers**: Repositories convertem dados para Types do domínio
-6. **Controllers → UI**: Controllers atualizam o estado que a UI consome
+1. **UI → Controllers**: A interface do usuário chama ações nas controllers.
+2. **Controllers → Use Cases**: Controllers orquestram a lógica através de casos de uso.
+3. **Use Cases → Repositories**: Use cases solicitam dados aos repositories.
+4. **Repositories → Mundo Exterior**: Repositories fazem requisições para APIs, Firebase, etc.
+5. **Mundo Exterior → Repositories**: Dados retornam no formato bruto da API.
+6. **Repositories → Mappers**: Repositories enviam dados brutos para os mappers.
+7. **Mappers → Repositories**: Mappers validam a integridade e convertem para Types do domínio (ou retornam null).
+8. **Repositories → Use Cases**: Repositories retornam dados tipados ou erros de integridade.
+9. **Use Cases → Controllers**: Use cases retornam o resultado final.
+10. **Controllers → UI**: Controllers atualizam o estado que a UI consome.
 
 ## Princípios Fundamentais
 
 ### 1. Separação de Responsabilidades
 Cada camada tem uma responsabilidade única e bem definida:
-- **UI**: Apenas apresentação e interação do usuário
-- **Controllers**: Apenas gerenciamento de estado e orquestração
-- **Repositories**: Apenas acesso e transformação de dados externos
-- **Types**: Apenas definição de estruturas de dados
+- **UI**: Apresentação e interação do usuário.
+- **Controllers**: Gerenciamento de estado (Signals) e ponte entre UI e Use Cases.
+- **Use Cases**: Lógica de negócio pura e orquestração de fluxos.
+- **Repositories**: Acesso a dados externos e orquestração de mappers.
+- **Mappers**: Validação de integridade e transformação de dados (API -> Domínio).
+- **Types**: Definição de estruturas de dados e contratos.
 
 ### 2. Dependência Unidirecional
 O fluxo de dependência sempre vai de fora para dentro:
-- UI depende de Controllers
-- Controllers dependem de Repositories e Types
-- Repositories dependem de Types
-- Types não dependem de nada
+- UI depende de Controllers.
+- Controllers dependem de Use Cases e Types.
+- Use Cases dependem de Repositories e Types.
+- Repositories dependem de Mappers e Types.
+- Mappers dependem de Types e BaseMapper.
+- Types não dependem de nada.
 
 ### 3. Imutabilidade e Previsibilidade
-- Use signals para gerenciamento de estado
-- Transformações de dados devem ser puras
-- Evite efeitos colaterais inesperados
+- Use signals para gerenciamento de estado na UI.
+- Mappers devem ser puros (estáticos).
+- Evite efeitos colaterais inesperados fora da camada de Data.
 
 ## Estrutura de Pastas
 
 ```
 src/app/
-├── repositories/     # Camada de acesso a dados (API)
-├── use-cases/        # Casos de uso (orquestração; contratos explícitos)
+├── data/              # Camada de Dados (Infraestrutura)
+│   ├── repositories/  # Implementação dos repositórios
+│   ├── mappers/       # Validação e transformação de dados (Mappers)
+│   └── responses/     # DTOs e Contratos da API (Data Transfer Objects)
+├── use-cases/        # Casos de uso (Lógica de negócio)
 ├── services/         # Infraestrutura (storage, eventos globais, toasts)
-├── controllers/      # Camada de controle e estado
+├── controllers/      # Camada de controle e estado (Signals)
 ├── types/            # Definições de tipos e contratos
-├── ui/               # Componentes visuais
-│   ├── design_system/    # Design System - componentes compartilhados
-│   │   ├── atoms/        # Componentes básicos
-│   │   ├── molecules/    # Combinação de atoms
-│   │   ├── organisms/    # Seções complexas compartilhadas
-│   │   └── templates/    # Layouts de página compartilhados
-│   └── modules/          # Módulos da aplicação (auth, anime, etc.)
-│       ├── auth/
-│       │   ├── pages/
-│       │   ├── templates/
-│       │   └── organisms/
-│       └── ...          # Rotas do Angular (ou dentro de modules)
+├── ui/               # Componentes visuais (Atomic Design)
 ```
 
 ## Rules Específicas
 
 Para detalhes sobre cada camada, consulte as rules específicas:
 
-- **[repositories.mdc](repositories.mdc)**: Camada de acesso a dados
-- **[use-cases.mdc](use-cases.mdc)**: Casos de uso e contratos para testes
-- **[services.mdc](services.mdc)**: Services de infraestrutura e contratos públicos
-- **[controllers.mdc](controllers.mdc)**: Gerenciamento de estado
-- **[types.mdc](types.mdc)**: Definição de tipos e interfaces (API, use case e service)
-- **[ui.mdc](ui.mdc)**: Organização de componentes (Atomic Design)
-
-## Skills de Implementação
-
-Para aprender COMO implementar cada parte, consulte as skills:
-
-### Camadas Backend
-- **`.agents/skills/create-repository/`**: Como criar repositories
-- **`.agents/skills/create-controller/`**: Como criar controllers
-- **`.agents/skills/create-types/`**: Como definir types
-
-### Camadas UI (Atomic Design)
-- **`.agents/skills/create-atom/`**: Como criar atoms
-- **`.agents/skills/create-molecule/`**: Como criar molecules
-- **`.agents/skills/create-organism/`**: Como criar organisms
-- **`.agents/skills/create-template/`**: Como criar templates
-
-Cada skill inclui:
-- Guia passo a passo
-- Exemplos completos em `references/`
-- Scripts de geração em `scripts/`
-
-## Benefícios desta Arquitetura
-
-- **Testabilidade**: Cada camada pode ser testada isoladamente
-- **Manutenibilidade**: Mudanças em uma camada não afetam as outras
-- **Escalabilidade**: Fácil adicionar novos recursos seguindo o padrão
-- **Clareza**: Desenvolvedores sabem exatamente onde colocar código novo
-- **Reusabilidade**: Repositories, use cases e controllers podem ser reutilizados; contratos em `types/` alinham testes e integrações
-
-## Começando
-
-1. **Leia as rules** para entender O QUÊ é cada camada
-2. **Consulte as skills** para aprender COMO implementar
-3. **Use os scripts** para gerar código rapidamente
-4. **Siga os padrões** estabelecidos nas references
+- **[repositories.mdc](repositories.mdc)**: Camada de acesso a dados.
+- **[mappers.mdc](mappers.mdc)**: Validação e transformação de dados.
+- **[use-cases.mdc](use-cases.mdc)**: Casos de uso e lógica de negócio.
+- **[services.mdc](services.mdc)**: Services de infraestrutura.
+- **[controllers.mdc](controllers.mdc)**: Gerenciamento de estado.
+- **[types.mdc](types.mdc)**: Definição de tipos e interfaces.
+- **[ui.mdc](ui.mdc)**: Organização de componentes.
