@@ -1,7 +1,7 @@
 import {
-  isConnectionHttpError,
-  isServerHttpError,
-} from './app-http-error';
+  isConnectionError,
+  isServerInternalError,
+} from '../../errors';
 
 /**
  * Mensagem para exibir na UI: chaves i18n para erros padronizados (rede / 5xx),
@@ -12,10 +12,10 @@ export function resolveUserFacingErrorMessage(
   translate: (key: string) => string,
   fallbackKey: string
 ): string {
-  if (isConnectionHttpError(err)) {
+  if (isConnectionError(err)) {
     return translate(err.uiMessageKey);
   }
-  if (isServerHttpError(err)) {
+  if (isServerInternalError(err)) {
     return translate(err.uiMessageKey);
   }
   if (err instanceof Error) {

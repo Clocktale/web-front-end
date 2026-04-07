@@ -9,14 +9,13 @@ import type {
   ApiUserCreateRequestBody,
   ApiUserCreateResponse,
 } from '../responses/user-create-api.type';
+import { EnvelopeFailureError, FieldValidationError } from '../../errors';
 import {
-  ApiEnvelopeError,
-  LaravelValidationError,
   extractApiMessage,
   extractEnvelopeFailureMessage,
-  extractLaravelFieldErrors,
+  extractFieldValidationErrors,
   mapHttpErrorResponse,
-} from '../../utils/http';
+} from '../http';
 import { BaseApiRepository } from './base-api.repository';
 import { AuthMapper } from '../mappers/auth.mapper';
 
@@ -43,18 +42,18 @@ export class UserRepository extends BaseApiRepository {
 
   private mapCreateResponse(response: unknown): User {
     if (response === null || typeof response !== 'object') {
-      throw new ApiEnvelopeError('Invalid server response.');
+      throw new EnvelopeFailureError('Invalid server response.');
     }
 
     const envelopeMsg = extractEnvelopeFailureMessage(response);
     if (envelopeMsg !== null) {
-      throw new ApiEnvelopeError(envelopeMsg);
+      throw new EnvelopeFailureError(envelopeMsg);
     }
 
     const r = response as Partial<ApiUserCreateResponse>;
     if (!r.success || r.data === undefined || r.data === null) {
       const fallback = extractApiMessage(response) ?? 'Registration failed';
-      throw new ApiEnvelopeError(fallback);
+      throw new EnvelopeFailureError(fallback);
     }
 
     // Usando o AuthMapper para converter o usuário (já que o shape é o mesmo)
@@ -63,11 +62,11 @@ export class UserRepository extends BaseApiRepository {
 
   private handleCreateError(err: unknown): Observable<never> {
     if (err instanceof HttpErrorResponse && err.status === 422) {
-      const fieldErrors = extractLaravelFieldErrors(err.error);
+      const fieldErrors = extractFieldValidationErrors(err.error);
       if (fieldErrors !== null && Object.keys(fieldErrors).length > 0) {
         const message = extractApiMessage(err.error) ?? 'Validation failed';
         return throwError(
-          () => new LaravelValidationError(message, fieldErrors)
+          () => new FieldValidationError(message, fieldErrors)
         );
       }
     }
@@ -75,7 +74,7 @@ export class UserRepository extends BaseApiRepository {
       return throwError(() => mapHttpErrorResponse(err));
     }
     return throwError(() =>
-      err instanceof Error ? err : new ApiEnvelopeError('Registration failed')
+      err instanceof Error ? err : new EnvelopeFailureError('Registration failed')
     );
   }
 }

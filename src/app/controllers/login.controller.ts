@@ -1,7 +1,8 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
-import { resolveLoginErrorMessage } from '../utils/http';
+import { isInvalidCredentialsError } from '../errors';
+import { resolveUserFacingErrorMessage } from '../utils/error-handling/resolve-user-facing-error';
 import { AuthSessionController } from './auth-session.controller';
 import { LoginUseCase } from '../use-cases/auth/login.use-case';
 import { UiEventsService } from '../services/ui-events.service';
@@ -101,8 +102,14 @@ export class LoginController {
       },
       error: (err: unknown) => {
         this.loading.set(false);
+        if (isInvalidCredentialsError(err)) {
+          this.error.set(
+            this.transloco.translate('auth.login.invalidCredentials')
+          );
+          return;
+        }
         this.error.set(
-          resolveLoginErrorMessage(
+          resolveUserFacingErrorMessage(
             err,
             key => this.transloco.translate(key),
             'auth.login.loginFailed'

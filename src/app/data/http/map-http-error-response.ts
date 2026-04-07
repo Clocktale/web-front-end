@@ -1,9 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
+
 import {
-  ClientHttpError,
-  ConnectionHttpError,
-  ServerHttpError,
-} from './app-http-error';
+  ClientRequestError,
+  ConnectionError,
+  ServerInternalError,
+} from '../../errors';
 import { extractApiMessage } from './extract-api-message';
 
 /**
@@ -11,16 +12,16 @@ import { extractApiMessage } from './extract-api-message';
  */
 export function mapHttpErrorResponse(err: HttpErrorResponse): Error {
   if (err.status === 0) {
-    return new ConnectionHttpError();
+    return new ConnectionError();
   }
 
   if (err.status >= 500) {
-    return new ServerHttpError(err.status);
+    return new ServerInternalError(err.status);
   }
 
   const fromBody = extractApiMessage(err.error);
   const message =
     fromBody ?? err.message ?? `Request failed (${err.status})`;
 
-  return new ClientHttpError(err.status, message);
+  return new ClientRequestError(err.status, message);
 }

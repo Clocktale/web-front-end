@@ -5,7 +5,7 @@ import { finalize } from 'rxjs/operators';
 import { AuthSessionController } from './auth-session.controller';
 import { ToastService } from '../services/toast.service';
 import { LogoutUseCase } from '../use-cases/auth/logout.use-case';
-import { resolveUserFacingErrorMessage } from '../utils/http';
+import { resolveUserFacingErrorMessage } from '../utils/error-handling/resolve-user-facing-error';
 
 @Injectable({ providedIn: 'root' })
 export class LogoutController {

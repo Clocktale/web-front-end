@@ -41,11 +41,11 @@ export class AuthorController {
     const page = this.currentPage();
     const pageSize = this.pageSize();
 
-    const request$ = query
+    const request = query
       ? this.repository.search({ query, page, pageSize })
       : this.repository.getAll({ page, pageSize });
 
-    request$.subscribe({
+    request.subscribe({
       next: result => {
         this.authors.set(result.authors);
         this.totalItems.set(result.total);

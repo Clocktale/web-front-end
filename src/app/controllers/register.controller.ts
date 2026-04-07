@@ -6,10 +6,8 @@ import {
   allPasswordSignupRulesPass,
 } from '../use-cases/auth/password/validate-password-signup-rules.use-case';
 import { RegisterAccountUseCase } from '../use-cases/auth/register-account.use-case';
-import {
-  isLaravelValidationError,
-  resolveUserFacingErrorMessage,
-} from '../utils/http';
+import { isFieldValidationError } from '../errors';
+import { resolveUserFacingErrorMessage } from '../utils/error-handling/resolve-user-facing-error';
 import { isValidEmail } from '../utils/validation/is-valid-email';
 import { ToastService } from '../services/toast.service';
 
@@ -248,7 +246,7 @@ export class RegisterController {
         },
         error: (err: unknown) => {
           this.loading.set(false);
-          if (isLaravelValidationError(err)) {
+          if (isFieldValidationError(err)) {
             this.applyLaravelFieldErrors(err.fieldErrors);
             return;
           }

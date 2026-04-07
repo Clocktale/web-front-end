@@ -1,7 +1,7 @@
 /**
- * Extrai a primeira mensagem por campo do objeto `errors` do Laravel (422).
+ * Extrai a primeira mensagem por campo do objeto `errors` em respostas de validação (ex.: 422).
  */
-export function extractLaravelFieldErrors(
+export function extractFieldValidationErrors(
   body: unknown
 ): Record<string, string> | null {
   if (body === null || typeof body !== 'object') {

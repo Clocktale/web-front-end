@@ -11,11 +11,15 @@ import type {
 } from '../responses/auth-login-api.type';
 import type { ApiAuthLogoutRequestBody } from '../responses/auth-logout-api.type';
 import {
-  ApiEnvelopeError,
+  EnvelopeFailureError,
+  InvalidCredentialsError,
+  matchesLoginInvalidCredentials,
+} from '../../errors';
+import {
   extractApiMessage,
   extractEnvelopeFailureMessage,
   mapHttpErrorResponse,
-} from '../../utils/http';
+} from '../http';
 import { BaseApiRepository } from './base-api.repository';
 import { AuthMapper } from '../mappers/auth.mapper';
 
@@ -56,23 +60,23 @@ export class AuthRepository extends BaseApiRepository {
 
   private mapLoginResponse(response: unknown): AuthSession {
     if (response === null || typeof response !== 'object') {
-      throw new ApiEnvelopeError('Invalid server response.');
+      throw new EnvelopeFailureError('Invalid server response.');
     }
 
     const envelopeMsg = extractEnvelopeFailureMessage(response);
     if (envelopeMsg !== null) {
-      throw new ApiEnvelopeError(envelopeMsg);
+      this.throwEnvelopeOrInvalidCredentials(envelopeMsg);
     }
 
     const r = response as Partial<ApiAuthLoginResponse>;
     if (!r.success || r.data === undefined || r.data === null) {
       const fallback = extractApiMessage(response) ?? 'Login failed';
-      throw new ApiEnvelopeError(fallback);
+      this.throwEnvelopeOrInvalidCredentials(fallback);
     }
 
     const session = AuthMapper.toAuthSession(r.data);
     if (!session) {
-      throw new ApiEnvelopeError(
+      throw new EnvelopeFailureError(
         'Incomplete login response (user, token, or expiration missing).'
       );
     }
@@ -80,12 +84,30 @@ export class AuthRepository extends BaseApiRepository {
     return session;
   }
 
+  private throwEnvelopeOrInvalidCredentials(message: string): never {
+    if (matchesLoginInvalidCredentials(new Error(message))) {
+      throw new InvalidCredentialsError(message);
+    }
+    throw new EnvelopeFailureError(message);
+  }
+
   private handleLoginError(err: unknown): Observable<never> {
+    if (err instanceof InvalidCredentialsError) {
+      return throwError(() => err);
+    }
     if (err instanceof HttpErrorResponse) {
-      return throwError(() => mapHttpErrorResponse(err));
+      const mapped = mapHttpErrorResponse(err);
+      if (matchesLoginInvalidCredentials(mapped)) {
+        return throwError(() => new InvalidCredentialsError(mapped.message));
+      }
+      return throwError(() => mapped);
+    }
+    if (matchesLoginInvalidCredentials(err)) {
+      const msg = err instanceof Error ? err.message : 'Login failed';
+      return throwError(() => new InvalidCredentialsError(msg));
     }
     return throwError(() =>
-      err instanceof Error ? err : new ApiEnvelopeError('Login failed')
+      err instanceof Error ? err : new EnvelopeFailureError('Login failed')
     );
   }
 
@@ -94,7 +116,7 @@ export class AuthRepository extends BaseApiRepository {
       return throwError(() => mapHttpErrorResponse(err));
     }
     return throwError(() =>
-      err instanceof Error ? err : new ApiEnvelopeError('Logout failed')
+      err instanceof Error ? err : new EnvelopeFailureError('Logout failed')
     );
   }
 }

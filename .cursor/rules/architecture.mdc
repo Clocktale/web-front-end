@@ -75,11 +75,16 @@ src/app/
 ├── data/              # Camada de Dados (Infraestrutura)
 │   ├── repositories/  # Implementação dos repositórios
 │   ├── mappers/       # Validação e transformação de dados (Mappers)
-│   └── responses/     # DTOs e Contratos da API (Data Transfer Objects)
+│   ├── responses/     # DTOs e Contratos da API (Data Transfer Objects)
+│   └── http/          # Infraestrutura HTTP (Classes de Erro, DTOs de Erro)
 ├── use-cases/        # Casos de uso (Lógica de negócio)
 ├── services/         # Infraestrutura (storage, eventos globais, toasts)
 ├── controllers/      # Camada de controle e estado (Signals)
-├── types/            # Definições de tipos e contratos
+├── types/            # Definições de tipos e contratos (domínio)
+├── errors/           # Erros de domínio partilhados entre camadas
+├── utils/            # Utilitários genéricos e de UI
+│   ├── error-handling/ # Tratamento de erros para exibição na UI
+│   └── validation/    # Validadores de campos (email, etc.)
 ├── ui/               # Componentes visuais (Atomic Design)
 ```
 
