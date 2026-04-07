@@ -1,98 +1,84 @@
+import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, delay, map } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+
 import type {
-  Author,
-  AuthorCreateInput,
   AuthorListQuery,
   AuthorPaginatedResult,
-  AuthorSearchQuery,
 } from '../../types/author.type';
+import type { ApiAuthorListResponse } from '../responses/author-list-api.type';
+import { EnvelopeFailureError } from '../../errors';
+import {
+  extractApiMessage,
+  extractEnvelopeFailureMessage,
+  mapHttpErrorResponse,
+} from '../http';
+import { BaseApiRepository } from './base-api.repository';
 import { AuthorMapper } from '../mappers/author.mapper';
+import { PaginatedMapper } from '../mappers/paginated.mapper';
 
 @Injectable({ providedIn: 'root' })
-export class AuthorRepository {
-  private mockAuthors: any[] = [
-    { id: 1, name: 'Akira Toriyama' },
-    { id: 2, name: 'Eiichiro Oda' },
-    { id: 3, name: 'Gege Akutami' },
-    { id: 4, name: 'Masashi Kishimoto' },
-    { id: 5, name: 'Osamu Tezuka' },
-    { id: 6, name: 'Yoshihiro Togashi' },
-    { id: 7, name: 'Kentaro Miura' },
-    { id: 8, name: 'Hajime Isayama' },
-    { id: 9, name: 'Naoki Urasawa' },
-    { id: 10, name: 'Takehiko Inoue' },
-  ];
+export class AuthorRepository extends BaseApiRepository {
+  constructor() {
+    super('authors');
+  }
 
-  getAll(options?: AuthorListQuery): Observable<AuthorPaginatedResult> {
+  /**
+   * Lista autores (público). `name` filtra no servidor quando preenchido.
+   */
+  list(options?: AuthorListQuery): Observable<AuthorPaginatedResult> {
     const page = options?.page ?? 1;
     const pageSize = options?.pageSize ?? 6;
-    const start = (page - 1) * pageSize;
-    const end = start + pageSize;
 
-    const paginatedAuthorsRaw = this.mockAuthors.slice(start, end);
-    const authors = AuthorMapper.toDomainList(paginatedAuthorsRaw);
+    let params = new HttpParams()
+      .set('page', String(page))
+      .set('per_page', String(pageSize));
 
-    return of({
-      authors,
-      total: this.mockAuthors.length,
-    }).pipe(delay(300));
-  }
-
-  search(options: AuthorSearchQuery): Observable<AuthorPaginatedResult> {
-    const query = options.query.toLowerCase().trim();
-    const page = options.page ?? 1;
-    const pageSize = options.pageSize ?? 6;
-
-    if (!query) {
-      return this.getAll({ page, pageSize });
+    const name = options?.name?.trim();
+    if (name) {
+      params = params.set('name', name);
     }
 
-    const filteredRaw = this.mockAuthors.filter((author) =>
-      author.name.toLowerCase().includes(query)
-    );
-
-    const start = (page - 1) * pageSize;
-    const end = start + pageSize;
-    const paginatedAuthorsRaw = filteredRaw.slice(start, end);
-    const authors = AuthorMapper.toDomainList(paginatedAuthorsRaw);
-
-    return of({
-      authors,
-      total: filteredRaw.length,
-    }).pipe(delay(300));
+    return this.http
+      .get<ApiAuthorListResponse>(this.getEndpoint(), { params })
+      .pipe(
+        map((response) => this.mapListResponse(response)),
+        catchError((err: unknown) => this.handleListError(err))
+      );
   }
 
-  create(author: AuthorCreateInput): Observable<Author | null> {
-    const newAuthorRaw = {
-      id: Math.max(...this.mockAuthors.map((a) => a.id)) + 1,
-      ...author,
-    };
-    this.mockAuthors.push(newAuthorRaw);
-    return of(newAuthorRaw).pipe(
-      delay(300),
-      map((raw) => AuthorMapper.toDomain(raw))
-    );
-  }
-
-  update(id: number, author: Partial<Author>): Observable<Author | null> {
-    const index = this.mockAuthors.findIndex((a) => a.id === id);
-    if (index === -1) {
-      throw new Error(`Author with id ${id} not found`);
+  private mapListResponse(response: unknown): AuthorPaginatedResult {
+    if (response === null || typeof response !== 'object') {
+      throw new EnvelopeFailureError('Invalid server response.');
     }
-    this.mockAuthors[index] = { ...this.mockAuthors[index], ...author };
-    return of(this.mockAuthors[index]).pipe(
-      delay(300),
-      map((raw) => AuthorMapper.toDomain(raw))
+
+    const envelopeMsg = extractEnvelopeFailureMessage(response);
+    if (envelopeMsg !== null) {
+      throw new EnvelopeFailureError(envelopeMsg);
+    }
+
+    const r = response as Partial<ApiAuthorListResponse>;
+    if (!r.success || r.data === undefined || r.data === null) {
+      const fallback = extractApiMessage(response) ?? 'Could not load authors';
+      throw new EnvelopeFailureError(fallback);
+    }
+
+    const paginated = PaginatedMapper.toPaginatedResult(r.data, (row) =>
+      AuthorMapper.toDomain(row)
     );
+    if (!paginated) {
+      throw new EnvelopeFailureError('Invalid paginated data.');
+    }
+    return paginated;
   }
 
-  delete(id: number): Observable<void> {
-    const index = this.mockAuthors.findIndex((a) => a.id === id);
-    if (index === -1) {
-      throw new Error(`Author with id ${id} not found`);
+  private handleListError(err: unknown): Observable<never> {
+    if (err instanceof HttpErrorResponse) {
+      return throwError(() => mapHttpErrorResponse(err));
     }
-    this.mockAuthors.splice(index, 1);
-    return of(void 0).pipe(delay(300));
+    return throwError(() =>
+      err instanceof Error ? err : new EnvelopeFailureError('Could not load authors')
+    );
   }
 }

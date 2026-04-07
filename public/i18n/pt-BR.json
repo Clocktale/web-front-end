@@ -63,5 +63,13 @@
     "explore": {
       "comingSoon": "Explorar em breve."
     }
+  },
+  "admin": {
+    "authors": {
+      "createAuthorError": "Não foi possível criar o autor. Tente novamente.",
+      "createAuthorSuccess": "Autor {{name}} criado com sucesso.",
+      "loadError": "Não foi possível carregar os autores. Verifique a API e a rede.",
+      "deleteError": "Não foi possível remover o autor. Tente novamente."
+    }
   }
 }

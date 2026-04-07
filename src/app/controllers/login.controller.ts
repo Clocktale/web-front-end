@@ -9,7 +9,7 @@ import { UiEventsService } from '../services/ui-events.service';
 
 /**
  * Estado e ações do fluxo de login (formulário, lembrar-me, convidado).
- * Sucesso: persiste sessão, emite toast e navega para Explorar; aceder a /login
+ * Sucesso: persiste sessão, emite toast e navega para Autores; aceder a /login
  * com sessão válida é tratado por `redirectIfAuthenticatedGuard`.
  */
 @Injectable({ providedIn: 'root' })
@@ -98,7 +98,7 @@ export class LoginController {
         this.authSession.setSession(session, this.rememberMe());
         this.loading.set(false);
         this.uiEvents.emitLoginSuccess();
-        void this.router.navigate(['/explore']);
+        void this.router.navigate(['/admin/authors']);
       },
       error: (err: unknown) => {
         this.loading.set(false);

@@ -63,5 +63,13 @@
     "explore": {
       "comingSoon": "探索は近日公開予定です。"
     }
+  },
+  "admin": {
+    "authors": {
+      "createAuthorError": "著者を作成できませんでした。もう一度お試しください。",
+      "createAuthorSuccess": "著者「{{name}}」を作成しました。",
+      "loadError": "著者を読み込めませんでした。APIのURLと接続を確認してください。",
+      "deleteError": "著者を削除できませんでした。もう一度お試しください。"
+    }
   }
 }

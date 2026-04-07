@@ -1,14 +1,16 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { LucideAngularModule, Plus } from 'lucide-angular';
-import { AdminLayoutComponent } from '../../../design_system/templates/admin-layout/admin-layout.component';
-import { SearchFieldComponent } from '../../../design_system/molecules/search-field/search-field.component';
-import { AuthorsTableComponent } from '../organisms/authors-table/authors-table.component';
-import { PaginationControlsComponent } from '../../../design_system/organisms/pagination-controls/pagination-controls.component';
-import { ButtonComponent } from '../../../design_system/atoms/button/button.component';
-import { ButtonVariant } from '../../../design_system/atoms/button/button-variant';
 import { AuthorController } from '../../../../controllers/author.controller';
-import type { Author } from '../../../../types/author.type';
+import { CreateAuthorModalController } from '../../../../controllers/create-author-modal.controller';
 import { ToastService } from '../../../../services/toast.service';
+import type { Author } from '../../../../types/author.type';
+import { ButtonVariant } from '../../../design_system/atoms/button/button-variant';
+import { ButtonComponent } from '../../../design_system/atoms/button/button.component';
+import { SearchFieldComponent } from '../../../design_system/molecules/search-field/search-field.component';
+import { PaginationControlsComponent } from '../../../design_system/organisms/pagination-controls/pagination-controls.component';
+import { AdminLayoutComponent } from '../../../design_system/templates/admin-layout/admin-layout.component';
+import { AuthorsTableComponent } from '../organisms/authors-table/authors-table.component';
+import { CreateAuthorModalComponent } from '../organisms/create-author-modal/create-author-modal.component';
 
 @Component({
   selector: 'app-authors-page',
@@ -20,21 +22,20 @@ import { ToastService } from '../../../../services/toast.service';
     PaginationControlsComponent,
     ButtonComponent,
     LucideAngularModule,
+    CreateAuthorModalComponent,
   ],
   template: `
+    @if (createAuthorModal.isOpen()) {
+      <app-create-author-modal />
+    }
     <app-admin-layout>
       <div class="authors-page">
         <header class="authors-page__header">
           <div class="authors-page__title-section">
             <h1 class="authors-page__title">Autores</h1>
-            <p class="authors-page__subtitle">
-              Gerencie os autores de animes do Clocktale
-            </p>
+            <p class="authors-page__subtitle">Gerencie os autores de animes do Clocktale</p>
           </div>
-          <app-button
-            [variant]="ButtonVariantPrimary"
-            (clicked)="addNewAuthor()"
-          >
+          <app-button [variant]="ButtonVariantPrimary" (clicked)="addNewAuthor()">
             <lucide-angular leading [img]="PlusIcon" [size]="20" />
             Adicionar novo autor
           </app-button>
@@ -71,6 +72,7 @@ import { ToastService } from '../../../../services/toast.service';
 })
 export class AuthorsPage implements OnInit {
   protected readonly controller = inject(AuthorController);
+  protected readonly createAuthorModal = inject(CreateAuthorModalController);
   private readonly toastService = inject(ToastService);
 
   protected readonly ButtonVariantPrimary = ButtonVariant.Primary;
@@ -89,10 +91,7 @@ export class AuthorsPage implements OnInit {
   }
 
   addNewAuthor(): void {
-    this.toastService.show({
-      message: 'ADD AUTHOR - NOT IMPLEMENTED YET',
-      variant: 'info',
-    });
+    this.createAuthorModal.open();
   }
 
   onEditAuthor(author: Author): void {

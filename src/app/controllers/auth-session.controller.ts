@@ -1,8 +1,8 @@
-import { Injectable, inject, signal, computed } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthPersistenceService } from '../services/auth-persistence.service';
 import type { AuthSession } from '../types/auth-session.type';
 import type { User } from '../types/user.type';
-import { AuthPersistenceService } from '../services/auth-persistence.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthSessionController {
@@ -11,7 +11,7 @@ export class AuthSessionController {
 
   user = signal<User | null>(null);
   token = signal<string | null>(null);
-  expiresAt = signal<string | null>(null);
+  expiresAt = signal<Date | null>(null);
 
   isAuthenticated = computed(() => {
     const t = this.token();
@@ -57,11 +57,7 @@ export class AuthSessionController {
     this.expiresAt.set(null);
   }
 
-  private isExpired(expiresAtIso: string): boolean {
-    const t = Date.parse(expiresAtIso);
-    if (Number.isNaN(t)) {
-      return true;
-    }
-    return t <= Date.now();
+  private isExpired(expiresAt: Date): boolean {
+    return expiresAt.getTime() <= Date.now();
   }
 }

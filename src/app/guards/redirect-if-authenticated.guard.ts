@@ -10,7 +10,7 @@ export const redirectIfAuthenticatedGuard: CanActivateFn = () => {
   const auth = inject(AuthSessionController);
   const router = inject(Router);
   if (auth.isAuthenticated()) {
-    return router.parseUrl('/explore');
+    return router.parseUrl('/admin/authors');
   }
   return true;
 };

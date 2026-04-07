@@ -1,12 +1,6 @@
-import {
-  Component,
-  input,
-  output,
-  computed,
-  ChangeDetectionStrategy,
-} from '@angular/core';
-import { LucideAngularModule, ChevronLeft, ChevronRight } from 'lucide-angular';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { ChevronLeft, ChevronRight, LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'app-pagination-controls',

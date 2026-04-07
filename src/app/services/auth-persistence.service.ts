@@ -25,7 +25,7 @@ export class AuthPersistenceService {
   saveSession(session: AuthSession, rememberMe: boolean): void {
     const payload: PersistedPayload = {
       token: session.token,
-      expiresAt: session.expiresAt,
+      expiresAt: session.expiresAt.toISOString(),
       user: session.user,
     };
     const json = JSON.stringify(payload);
@@ -41,23 +41,21 @@ export class AuthPersistenceService {
 
   /** Carrega sessão persistida; remove se o token estiver expirado. */
   loadSession(): AuthSession | null {
-    const json =
-      localStorage.getItem(STORAGE_KEY) ??
-      sessionStorage.getItem(STORAGE_KEY);
+    const json = localStorage.getItem(STORAGE_KEY) ?? sessionStorage.getItem(STORAGE_KEY);
     if (!json) {
       this.tokenCache = null;
       return null;
     }
     try {
       const payload = JSON.parse(json) as PersistedPayload;
-      if (this.isExpired(payload.expiresAt)) {
+      if (this.isExpired(new Date(payload.expiresAt))) {
         this.clear();
         return null;
       }
       this.tokenCache = payload.token;
       return {
         token: payload.token,
-        expiresAt: payload.expiresAt,
+        expiresAt: new Date(payload.expiresAt),
         user: payload.user,
       };
     } catch {
@@ -72,11 +70,7 @@ export class AuthPersistenceService {
     this.tokenCache = null;
   }
 
-  private isExpired(expiresAtIso: string): boolean {
-    const expireTimestamp = Date.parse(expiresAtIso);
-    if (Number.isNaN(expireTimestamp)) {
-      return true;
-    }
-    return expireTimestamp <= Date.now();
+  private isExpired(expiresAt: Date): boolean {
+    return expiresAt.getTime() <= Date.now();
   }
 }

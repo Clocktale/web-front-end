@@ -1,14 +1,8 @@
-import {
-  Component,
-  input,
-  output,
-  inject,
-  ChangeDetectionStrategy,
-} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { LucideAngularModule, Pencil, Trash2 } from 'lucide-angular';
-import type { Author } from '../../../../../types/author.type';
 import { ToastService } from '../../../../../services/toast.service';
+import type { Author } from '../../../../../types/author.type';
 
 @Component({
   selector: 'app-authors-table',
@@ -20,17 +14,13 @@ import { ToastService } from '../../../../../services/toast.service';
         <thead class="authors-table__header">
           <tr>
             <th class="authors-table__header-cell">Nome do autor</th>
-            <th class="authors-table__header-cell authors-table__header-cell--actions">
-              Ações
-            </th>
+            <th class="authors-table__header-cell authors-table__header-cell--actions">Ações</th>
           </tr>
         </thead>
         <tbody class="authors-table__body">
           @if (authors().length === 0 && !loading()) {
             <tr>
-              <td colspan="2" class="authors-table__empty">
-                Nenhum autor encontrado
-              </td>
+              <td colspan="2" class="authors-table__empty">Nenhum autor encontrado</td>
             </tr>
           }
           @for (author of authors(); track author.id) {
