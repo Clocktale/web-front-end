@@ -69,7 +69,16 @@
       "createAuthorError": "Could not create the author. Please try again.",
       "createAuthorSuccess": "Author {{name}} created successfully.",
       "loadError": "Could not load authors. Check the API URL and your connection.",
-      "deleteError": "Could not remove the author. Please try again."
+      "deleteError": "Could not remove the author. Please try again.",
+      "paginationItemLabel": "authors"
+    }
+  },
+  "designSystem": {
+    "paginationControls": {
+      "rangeSummary": "Showing {{start}} to {{end}} {{itemLabel}} out of {{total}} total",
+      "previousPageAriaLabel": "Previous page",
+      "nextPageAriaLabel": "Next page",
+      "defaultItemLabel": "results"
     }
   }
 }

@@ -15,10 +15,13 @@ export class AuthorController {
   /** Evita aplicar resposta antiga se um pedido mais recente foi disparado. */
   private loadAuthorsRequestId = 0;
 
+  /** Páginas já obtidas do servidor nesta sessão de pesquisa (chave = número da página). */
+  private readonly pageCache = new Map<number, Author[]>();
+
   authors = signal<Author[]>([]);
   searchQuery = signal('');
   currentPage = signal(1);
-  pageSize = signal(6);
+  pageSize = signal(10);
   totalItems = signal(0);
   /** Última página reportada pela API (LengthAware). */
   lastPage = signal(1);
@@ -36,12 +39,17 @@ export class AuthorController {
   });
 
   loadAuthors(): void {
+    this.pageCache.clear();
+    this.fetchPageFromApi(this.currentPage());
+  }
+
+  private fetchPageFromApi(page: number): void {
     const requestId = ++this.loadAuthorsRequestId;
 
     this.loading.set(true);
+    this.authors.set([]);
 
     const name = this.searchQuery().trim() || undefined;
-    const page = this.currentPage();
     const pageSize = this.pageSize();
 
     this.repository.list({ page, pageSize, name }).subscribe({
@@ -49,6 +57,7 @@ export class AuthorController {
         if (requestId !== this.loadAuthorsRequestId) {
           return;
         }
+        this.pageCache.set(page, result.items);
         this.authors.set(result.items);
         this.totalItems.set(result.total);
         this.lastPage.set(result.lastPage);
@@ -81,7 +90,16 @@ export class AuthorController {
       return;
     }
     this.currentPage.set(page);
-    this.loadAuthors();
+
+    const cached = this.pageCache.get(page);
+    if (cached !== undefined) {
+      this.loadAuthorsRequestId++;
+      this.authors.set(cached);
+      this.loading.set(false);
+      return;
+    }
+
+    this.fetchPageFromApi(page);
   }
 
   deleteAuthor(id: number): void {
@@ -107,9 +125,6 @@ export class AuthorController {
     });
   }
 
-  /**
-   * Log completo no consola para diagnóstico; a UI usa só toast genérico (i18n).
-   */
   private logAuthorError(context: string, err: unknown): void {
     console.error(`[AuthorController] ${context}`, err);
   }

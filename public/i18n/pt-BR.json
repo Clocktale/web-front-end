@@ -69,7 +69,16 @@
       "createAuthorError": "Não foi possível criar o autor. Tente novamente.",
       "createAuthorSuccess": "Autor {{name}} criado com sucesso.",
       "loadError": "Não foi possível carregar os autores. Verifique a API e a rede.",
-      "deleteError": "Não foi possível remover o autor. Tente novamente."
+      "deleteError": "Não foi possível remover o autor. Tente novamente.",
+      "paginationItemLabel": "autores"
+    }
+  },
+  "designSystem": {
+    "paginationControls": {
+      "rangeSummary": "Mostrando {{start}} a {{end}} {{itemLabel}} de um total de {{total}}",
+      "previousPageAriaLabel": "Página anterior",
+      "nextPageAriaLabel": "Próxima página",
+      "defaultItemLabel": "resultados"
     }
   }
 }

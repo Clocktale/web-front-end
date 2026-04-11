@@ -29,7 +29,7 @@ export class AuthorRepository extends BaseApiRepository {
    */
   list(options?: AuthorListQuery): Observable<AuthorPaginatedResult> {
     const page = options?.page ?? 1;
-    const pageSize = options?.pageSize ?? 6;
+    const pageSize = options?.pageSize ?? 10;
 
     let params = new HttpParams()
       .set('page', String(page))

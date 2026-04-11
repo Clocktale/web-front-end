@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { TranslocoModule } from '@jsverse/transloco';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 import { AuthorController } from '../../../../controllers/author.controller';
 import { CreateAuthorModalController } from '../../../../controllers/create-author-modal.controller';
@@ -22,6 +23,7 @@ import { CreateAuthorModalComponent } from '../organisms/create-author-modal/cre
     PaginationControlsComponent,
     ButtonComponent,
     LucideAngularModule,
+    TranslocoModule,
     CreateAuthorModalComponent,
   ],
   template: `
@@ -60,7 +62,8 @@ import { CreateAuthorModalComponent } from '../organisms/create-author-modal/cre
             [currentPage]="controller.currentPage()"
             [totalItems]="controller.totalItems()"
             [pageSize]="controller.pageSize()"
-            itemLabel="autores"
+            [loading]="controller.loading()"
+            [itemLabel]="'admin.authors.paginationItemLabel' | transloco"
             (pageChanged)="onPageChanged($event)"
           />
         </div>

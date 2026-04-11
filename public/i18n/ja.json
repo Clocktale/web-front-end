@@ -69,7 +69,16 @@
       "createAuthorError": "著者を作成できませんでした。もう一度お試しください。",
       "createAuthorSuccess": "著者「{{name}}」を作成しました。",
       "loadError": "著者を読み込めませんでした。APIのURLと接続を確認してください。",
-      "deleteError": "著者を削除できませんでした。もう一度お試しください。"
+      "deleteError": "著者を削除できませんでした。もう一度お試しください。",
+      "paginationItemLabel": "著者"
+    }
+  },
+  "designSystem": {
+    "paginationControls": {
+      "rangeSummary": "{{total}}件中 {{start}}から{{end}}までの{{itemLabel}}を表示",
+      "previousPageAriaLabel": "前のページ",
+      "nextPageAriaLabel": "次のページ",
+      "defaultItemLabel": "結果"
     }
   }
 }
