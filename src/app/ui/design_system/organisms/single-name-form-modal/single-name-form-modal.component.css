@@ -1,4 +1,4 @@
-.create-author-modal__backdrop {
+.single-name-form-modal__backdrop {
   position: fixed;
   inset: 0;
   z-index: 9998;
@@ -6,10 +6,10 @@
   align-items: center;
   justify-content: center;
   padding: var(--space-20);
-  background: var(--color-surface-overlay-strong);
+  background: var(--color-surface-backdrop);
 }
 
-.create-author-modal__panel {
+.single-name-form-modal__panel {
   box-sizing: border-box;
   width: min(100%, 28rem);
   max-height: min(90vh, 32rem);
@@ -18,10 +18,10 @@
   flex-direction: column;
   border-radius: var(--radius-12);
   background: var(--color-surface-modal);
-  box-shadow: 0 var(--space-8) var(--space-32) var(--color-white-muted-10);
+  box-shadow: 0 var(--space-8) var(--space-32) var(--color-surface-modal-shadow);
 }
 
-.create-author-modal__header {
+.single-name-form-modal__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -29,7 +29,7 @@
   padding: var(--space-20);
 }
 
-.create-author-modal__title {
+.single-name-form-modal__title {
   margin: 0;
   font-family: var(--font-family-sans);
   font-size: var(--font-size-20);
@@ -38,7 +38,7 @@
   color: var(--color-text-primary);
 }
 
-.create-author-modal__close {
+.single-name-form-modal__close {
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
@@ -55,16 +55,16 @@
   cursor: pointer;
 }
 
-.create-author-modal__close:hover:not(:disabled) {
+.single-name-form-modal__close:hover:not(:disabled) {
   background: var(--color-surface-overlay);
 }
 
-.create-author-modal__close:disabled {
+.single-name-form-modal__close:disabled {
   cursor: not-allowed;
   opacity: 0.5;
 }
 
-.create-author-modal__divider {
+.single-name-form-modal__divider {
   flex-shrink: 0;
   width: 100%;
   margin: 0;
@@ -72,11 +72,18 @@
   border-top: 1px solid var(--color-divider);
 }
 
-.create-author-modal__body {
+.single-name-form-modal__body {
   padding: var(--space-20);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
 }
 
-.create-author-modal__footer {
+.single-name-form-modal__banner {
+  width: 100%;
+}
+
+.single-name-form-modal__footer {
   display: flex;
   flex-wrap: wrap;
   align-items: center;

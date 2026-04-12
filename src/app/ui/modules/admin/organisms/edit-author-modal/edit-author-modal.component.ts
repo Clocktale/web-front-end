@@ -3,24 +3,23 @@ import {
   inject,
   ChangeDetectionStrategy,
 } from '@angular/core';
-
 import { TranslocoPipe } from '@jsverse/transloco';
 
-import { CreateAuthorModalController } from '../../../../../controllers/create-author-modal.controller';
+import { EditAuthorModalController } from '../../../../../controllers/edit-author-modal.controller';
 import { SingleNameFormModalComponent } from '../../../../design_system/organisms/single-name-form-modal/single-name-form-modal.component';
 
 @Component({
-  selector: 'app-create-author-modal',
+  selector: 'app-edit-author-modal',
   standalone: true,
   imports: [SingleNameFormModalComponent, TranslocoPipe],
   template: `
     <app-single-name-form-modal
-      [title]="'admin.authors.createModalTitle' | transloco"
-      titleId="create-author-modal-title"
+      [title]="'admin.authors.editModalTitle' | transloco"
+      titleId="edit-author-modal-title"
       [fieldLabel]="'admin.authors.nameFieldLabel' | transloco"
-      [placeholder]="'admin.authors.createNamePlaceholder' | transloco"
-      [primaryLabel]="'admin.authors.addAuthor' | transloco"
-      [bannerMessage]="''"
+      [placeholder]="'admin.authors.editNamePlaceholder' | transloco"
+      [primaryLabel]="'admin.authors.saveChanges' | transloco"
+      [bannerMessage]="'admin.authors.editNameBanner' | transloco"
       [fieldValue]="modal.name()"
       (fieldValueChange)="modal.setName($event)"
       [submitting]="modal.submitting()"
@@ -31,6 +30,6 @@ import { SingleNameFormModalComponent } from '../../../../design_system/organism
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CreateAuthorModalComponent {
-  readonly modal = inject(CreateAuthorModalController);
+export class EditAuthorModalComponent {
+  readonly modal = inject(EditAuthorModalController);
 }

@@ -65,11 +65,24 @@
     }
   },
   "admin": {
+    "entityNotFound": "Não encontramos este registro. Ele pode ter sido removido.",
+    "unauthorized": "Não autorizado. Verifique se está autenticado.",
     "authors": {
+      "createModalTitle": "Novo autor",
+      "createNamePlaceholder": "Insira aqui o nome do autor",
+      "addAuthor": "Adicionar",
       "createAuthorError": "Não foi possível criar o autor. Tente novamente.",
       "createAuthorSuccess": "Autor {{name}} criado com sucesso.",
       "loadError": "Não foi possível carregar os autores. Verifique a API e a rede.",
       "deleteError": "Não foi possível remover o autor. Tente novamente.",
+      "deleteAuthorSuccess": "Autor \"{{name}}\" foi removido.",
+      "editModalTitle": "Editar autor",
+      "nameFieldLabel": "Nome do autor",
+      "editNamePlaceholder": "Nome atual do autor",
+      "editNameBanner": "Editar o autor atualizará automaticamente seu nome em todos os animes os quais ele está sendo utilizado",
+      "saveChanges": "Salvar mudança",
+      "editAuthorSuccess": "Autor {{name}} atualizado com sucesso.",
+      "editAuthorError": "Não foi possível atualizar o autor. Tente novamente.",
       "paginationItemLabel": "autores"
     }
   },

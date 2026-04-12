@@ -65,11 +65,24 @@
     }
   },
   "admin": {
+    "entityNotFound": "We could not find this record. It may have been removed.",
+    "unauthorized": "Unauthorized. Please check that you are signed in.",
     "authors": {
+      "createModalTitle": "New author",
+      "createNamePlaceholder": "Enter the author's name",
+      "addAuthor": "Add",
       "createAuthorError": "Could not create the author. Please try again.",
       "createAuthorSuccess": "Author {{name}} created successfully.",
       "loadError": "Could not load authors. Check the API URL and your connection.",
       "deleteError": "Could not remove the author. Please try again.",
+      "deleteAuthorSuccess": "Author \"{{name}}\" was removed.",
+      "editModalTitle": "Edit author",
+      "nameFieldLabel": "Author name",
+      "editNamePlaceholder": "Current author name",
+      "editNameBanner": "Editing the author will automatically update their name in every anime where they are used",
+      "saveChanges": "Save changes",
+      "editAuthorSuccess": "Author {{name}} updated successfully.",
+      "editAuthorError": "Could not update the author. Please try again.",
       "paginationItemLabel": "authors"
     }
   },

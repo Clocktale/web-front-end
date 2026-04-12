@@ -57,6 +57,7 @@
   --color-secondary-avatar: #6366F1;
   --color-page: #0f0f12;
   --color-white: #ffffff;
+  --color-black: #000000;
   --color-muted: #94aeb8;
   --color-surface-elevated: #1a1a28;
   --color-info: #009dff;
@@ -72,6 +73,8 @@
   --color-trophy-silver: #b6b6b6;
   --color-trophy-bronze: #9b632c;
   --color-border-default: #1e293b;
+  --color-info-banner-surface: #190d25;
+  --color-info-banner-border: #2d1843;
 
   /* --------------------------------------------------------------------------
    * Cores — derivados (opacidade via color-mix)
@@ -83,6 +86,9 @@
   --color-white-muted-10: color-mix(in srgb, var(--color-white) 10%, transparent);
   --color-white-muted-20: color-mix(in srgb, var(--color-white) 20%, transparent);
   --color-white-muted-30: color-mix(in srgb, var(--color-white) 30%, transparent);
+
+  --color-black-muted-30: color-mix(in srgb, var(--color-black) 30%, transparent);
+  --color-black-muted-55: color-mix(in srgb, var(--color-black) 55%, transparent);
 
   --color-info-muted-25: color-mix(in srgb, var(--color-info) 25%, transparent);
   --color-danger-muted-25: color-mix(in srgb, var(--color-danger) 25%, transparent);
@@ -101,6 +107,8 @@
   --color-text-secondary: var(--color-muted);
   --color-text-error: var(--color-danger);
   --color-surface-modal: var(--color-surface-elevated);
+  --color-surface-modal-shadow: var(--color-black-muted-30);
+  --color-surface-backdrop: var(--color-black-muted-55);
   --color-icon-default: var(--color-muted);
   --color-border-error: var(--color-danger);
 
@@ -127,6 +135,9 @@
   --color-surface-sidemenu-hover: var(--color-white-muted-10);
   --color-sidemenu-icon-active: var(--color-brand);
   --color-search-field-border: var(--color-white-muted-20);
+
+  --color-surface-info-banner: var(--color-info-banner-surface);
+  --color-border-info-banner: var(--color-info-banner-border);
 
   /* Dimensões */
   --space-sidemenu-width: 240px;

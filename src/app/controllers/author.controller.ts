@@ -4,6 +4,7 @@ import { AdminAuthorRepository } from '../data/repositories/admin-author.reposit
 import { AuthorRepository } from '../data/repositories/author.repository';
 import { ToastService } from '../services/toast.service';
 import type { Author } from '../types/author.type';
+import { resolveUserFacingErrorMessage } from '../utils/error-handling/resolve-user-facing-error';
 
 @Injectable({ providedIn: 'root' })
 export class AuthorController {
@@ -12,10 +13,8 @@ export class AuthorController {
   private readonly transloco = inject(TranslocoService);
   private readonly toastService = inject(ToastService);
 
-  /** Evita aplicar resposta antiga se um pedido mais recente foi disparado. */
   private loadAuthorsRequestId = 0;
 
-  /** Páginas já obtidas do servidor nesta sessão de pesquisa (chave = número da página). */
   private readonly pageCache = new Map<number, Author[]>();
 
   authors = signal<Author[]>([]);
@@ -23,7 +22,6 @@ export class AuthorController {
   currentPage = signal(1);
   pageSize = signal(10);
   totalItems = signal(0);
-  /** Última página reportada pela API (LengthAware). */
   lastPage = signal(1);
   loading = signal(false);
 
@@ -102,23 +100,33 @@ export class AuthorController {
     this.fetchPageFromApi(page);
   }
 
-  deleteAuthor(id: number): void {
+  deleteAuthor(author: Author): void {
     if (this.loading()) {
       return;
     }
 
     this.loading.set(true);
 
-    this.adminAuthorRepository.delete(id).subscribe({
+    this.adminAuthorRepository.delete(author.id).subscribe({
       next: () => {
         this.loading.set(false);
         this.loadAuthors();
+        this.toastService.show({
+          message: this.transloco.translate('admin.authors.deleteAuthorSuccess', {
+            name: author.name,
+          }),
+          variant: 'success',
+        });
       },
       error: (err: unknown) => {
         this.loading.set(false);
         this.logAuthorError('deleteAuthor', err);
         this.toastService.show({
-          message: this.transloco.translate('admin.authors.deleteError'),
+          message: resolveUserFacingErrorMessage(
+            err,
+            (key) => this.transloco.translate(key),
+            'admin.authors.deleteError'
+          ),
           variant: 'error',
         });
       },

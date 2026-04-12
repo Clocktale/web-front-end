@@ -65,11 +65,24 @@
     }
   },
   "admin": {
+    "entityNotFound": "このレコードは見つかりませんでした。削除された可能性があります。",
+    "unauthorized": "認可されていません。ログイン状態をご確認ください。",
     "authors": {
+      "createModalTitle": "新しい著者",
+      "createNamePlaceholder": "著者名を入力",
+      "addAuthor": "追加",
       "createAuthorError": "著者を作成できませんでした。もう一度お試しください。",
       "createAuthorSuccess": "著者「{{name}}」を作成しました。",
       "loadError": "著者を読み込めませんでした。APIのURLと接続を確認してください。",
       "deleteError": "著者を削除できませんでした。もう一度お試しください。",
+      "deleteAuthorSuccess": "著者「{{name}}」を削除しました。",
+      "editModalTitle": "著者を編集",
+      "nameFieldLabel": "著者名",
+      "editNamePlaceholder": "現在の著者名",
+      "editNameBanner": "著者を編集すると、その著者が使われているすべてのアニメで名前が自動的に更新されます",
+      "saveChanges": "変更を保存",
+      "editAuthorSuccess": "著者「{{name}}」を更新しました。",
+      "editAuthorError": "著者を更新できませんでした。もう一度お試しください。",
       "paginationItemLabel": "著者"
     }
   },

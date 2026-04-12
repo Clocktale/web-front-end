@@ -1,6 +1,8 @@
 import {
   isConnectionError,
+  isEntityNotFoundError,
   isServerInternalError,
+  isUnauthorizedError,
 } from '../../errors';
 
 /**
@@ -16,6 +18,12 @@ export function resolveUserFacingErrorMessage(
     return translate(err.uiMessageKey);
   }
   if (isServerInternalError(err)) {
+    return translate(err.uiMessageKey);
+  }
+  if (isEntityNotFoundError(err)) {
+    return translate(err.uiMessageKey);
+  }
+  if (isUnauthorizedError(err)) {
     return translate(err.uiMessageKey);
   }
   if (err instanceof Error) {

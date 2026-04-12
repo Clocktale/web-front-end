@@ -89,10 +89,6 @@ export class AuthorsTableComponent {
   protected readonly shimmerRowIndices: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   onEdit(author: Author): void {
-    this.toastService.show({
-      message: 'EDIT ACTION - NOT IMPLEMENTED YET',
-      variant: 'info',
-    });
     this.editAuthor.emit(author);
   }
 

@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   padding: var(--space-24);
-  background: var(--color-surface-overlay-strong);
+  background: var(--color-surface-backdrop);
 }
 
 .logout-loading-host__panel {

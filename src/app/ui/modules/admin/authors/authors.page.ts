@@ -3,7 +3,7 @@ import { TranslocoModule } from '@jsverse/transloco';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 import { AuthorController } from '../../../../controllers/author.controller';
 import { CreateAuthorModalController } from '../../../../controllers/create-author-modal.controller';
-import { ToastService } from '../../../../services/toast.service';
+import { EditAuthorModalController } from '../../../../controllers/edit-author-modal.controller';
 import type { Author } from '../../../../types/author.type';
 import { ButtonVariant } from '../../../design_system/atoms/button/button-variant';
 import { ButtonComponent } from '../../../design_system/atoms/button/button.component';
@@ -12,6 +12,7 @@ import { PaginationControlsComponent } from '../../../design_system/organisms/pa
 import { AdminLayoutComponent } from '../../../design_system/templates/admin-layout/admin-layout.component';
 import { AuthorsTableComponent } from '../organisms/authors-table/authors-table.component';
 import { CreateAuthorModalComponent } from '../organisms/create-author-modal/create-author-modal.component';
+import { EditAuthorModalComponent } from '../organisms/edit-author-modal/edit-author-modal.component';
 
 @Component({
   selector: 'app-authors-page',
@@ -25,10 +26,14 @@ import { CreateAuthorModalComponent } from '../organisms/create-author-modal/cre
     LucideAngularModule,
     TranslocoModule,
     CreateAuthorModalComponent,
+    EditAuthorModalComponent,
   ],
   template: `
     @if (createAuthorModal.isOpen()) {
       <app-create-author-modal />
+    }
+    @if (editAuthorModal.isOpen()) {
+      <app-edit-author-modal />
     }
     <app-admin-layout>
       <div class="authors-page">
@@ -76,7 +81,7 @@ import { CreateAuthorModalComponent } from '../organisms/create-author-modal/cre
 export class AuthorsPage implements OnInit {
   protected readonly controller = inject(AuthorController);
   protected readonly createAuthorModal = inject(CreateAuthorModalController);
-  private readonly toastService = inject(ToastService);
+  protected readonly editAuthorModal = inject(EditAuthorModalController);
 
   protected readonly ButtonVariantPrimary = ButtonVariant.Primary;
   protected readonly PlusIcon = Plus;
@@ -98,14 +103,10 @@ export class AuthorsPage implements OnInit {
   }
 
   onEditAuthor(author: Author): void {
-    console.log('Edit author:', author);
+    this.editAuthorModal.open(author);
   }
 
   onDeleteAuthor(author: Author): void {
-    this.controller.deleteAuthor(author.id);
-    this.toastService.show({
-      message: `Autor "${author.name}" foi deletado`,
-      variant: 'success',
-    });
+    this.controller.deleteAuthor(author);
   }
 }
