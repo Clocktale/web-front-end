@@ -1,15 +1,15 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
-import { AdminAuthorRepository } from '../data/repositories/admin-author.repository';
 import { AuthorRepository } from '../data/repositories/author.repository';
 import { ToastService } from '../services/toast.service';
 import type { Author } from '../types/author.type';
+import { DeleteAuthorUseCase } from '../use-cases/authors/delete-author.use-case';
 import { resolveUserFacingErrorMessage } from '../utils/error-handling/resolve-user-facing-error';
 
 @Injectable({ providedIn: 'root' })
 export class AuthorController {
   private readonly repository = inject(AuthorRepository);
-  private readonly adminAuthorRepository = inject(AdminAuthorRepository);
+  private readonly deleteAuthorUseCase = inject(DeleteAuthorUseCase);
   private readonly transloco = inject(TranslocoService);
   private readonly toastService = inject(ToastService);
 
@@ -107,7 +107,7 @@ export class AuthorController {
 
     this.loading.set(true);
 
-    this.adminAuthorRepository.delete(author.id).subscribe({
+    this.deleteAuthorUseCase.execute(author.id).subscribe({
       next: () => {
         this.loading.set(false);
         this.loadAuthors();
@@ -125,7 +125,7 @@ export class AuthorController {
           message: resolveUserFacingErrorMessage(
             err,
             (key) => this.transloco.translate(key),
-            'admin.authors.deleteError'
+            'admin.authors.deleteError',
           ),
           variant: 'error',
         });

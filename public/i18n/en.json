@@ -83,7 +83,7 @@
       "saveChanges": "Save changes",
       "editAuthorSuccess": "Author {{name}} updated successfully.",
       "editAuthorError": "Could not update the author. Please try again.",
-      "deleteConfirmTitle": "Are you sure you want to delete the author ({{name}})?",
+      "deleteConfirmTitle": "Are you sure you want to delete the author {{name}}?",
       "deleteConfirmBody": "This author will no longer be searchable in the system or appear in reports. This action is IRREVERSIBLE.",
       "deleteConfirmBanner": "Deleting an author does not hide their anime from the catalog. We suggest doing that before deleting.",
       "deleteConfirmCancel": "Cancel",

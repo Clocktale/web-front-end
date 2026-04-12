@@ -83,7 +83,7 @@
       "saveChanges": "変更を保存",
       "editAuthorSuccess": "著者「{{name}}」を更新しました。",
       "editAuthorError": "著者を更新できませんでした。もう一度お試しください。",
-      "deleteConfirmTitle": "著者「{{name}}」を削除してもよろしいですか？",
+      "deleteConfirmTitle": "著者{{name}}を削除してもよろしいですか？",
       "deleteConfirmBody": "この著者はシステムで検索できなくなり、レポートにも表示されなくなります。この操作は取り消せません。",
       "deleteConfirmBanner": "著者を削除しても、そのアニメがカタログから非表示になるわけではありません。削除前にそちらの対応をおすすめします。",
       "deleteConfirmCancel": "キャンセル",
