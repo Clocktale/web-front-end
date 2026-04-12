@@ -75,7 +75,7 @@
       "createAuthorSuccess": "Autor {{name}} criado com sucesso.",
       "loadError": "Não foi possível carregar os autores. Verifique a API e a rede.",
       "deleteError": "Não foi possível remover o autor. Tente novamente.",
-      "deleteAuthorSuccess": "Autor \"{{name}}\" foi removido.",
+      "deleteAuthorSuccess": "Autor \"{{name}}\" foi removido com sucesso",
       "editModalTitle": "Editar autor",
       "nameFieldLabel": "Nome do autor",
       "editNamePlaceholder": "Nome atual do autor",
@@ -83,6 +83,11 @@
       "saveChanges": "Salvar mudança",
       "editAuthorSuccess": "Autor {{name}} atualizado com sucesso.",
       "editAuthorError": "Não foi possível atualizar o autor. Tente novamente.",
+      "deleteConfirmTitle": "Tem certeza de que deseja deletar o autor ({{name}})?",
+      "deleteConfirmBody": "Esse autor não poderá mais ser pesquisado no sistema nem constará nos relatórios. A ação é IRREVERSÍVEL.",
+      "deleteConfirmBanner": "Deletar um autor não fará com que os animes dele sejam ocultos do catálogo. Sugerimos que faça isso antes de realizar a deleção.",
+      "deleteConfirmCancel": "Cancelar",
+      "deleteConfirmDelete": "Deletar",
       "paginationItemLabel": "autores"
     }
   },

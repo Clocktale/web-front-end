@@ -75,7 +75,7 @@
       "createAuthorSuccess": "著者「{{name}}」を作成しました。",
       "loadError": "著者を読み込めませんでした。APIのURLと接続を確認してください。",
       "deleteError": "著者を削除できませんでした。もう一度お試しください。",
-      "deleteAuthorSuccess": "著者「{{name}}」を削除しました。",
+      "deleteAuthorSuccess": "著者「{{name}}」を正常に削除しました。",
       "editModalTitle": "著者を編集",
       "nameFieldLabel": "著者名",
       "editNamePlaceholder": "現在の著者名",
@@ -83,6 +83,11 @@
       "saveChanges": "変更を保存",
       "editAuthorSuccess": "著者「{{name}}」を更新しました。",
       "editAuthorError": "著者を更新できませんでした。もう一度お試しください。",
+      "deleteConfirmTitle": "著者「{{name}}」を削除してもよろしいですか？",
+      "deleteConfirmBody": "この著者はシステムで検索できなくなり、レポートにも表示されなくなります。この操作は取り消せません。",
+      "deleteConfirmBanner": "著者を削除しても、そのアニメがカタログから非表示になるわけではありません。削除前にそちらの対応をおすすめします。",
+      "deleteConfirmCancel": "キャンセル",
+      "deleteConfirmDelete": "削除",
       "paginationItemLabel": "著者"
     }
   },

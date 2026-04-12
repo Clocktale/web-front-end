@@ -78,6 +78,21 @@
   outline-offset: calc(var(--space-4) / 2);
 }
 
+/* Critical — mesmo peso visual que primary, fundo erro/crítico */
+.ds-button--critical {
+  background-color: var(--color-danger);
+  color: var(--color-text-primary);
+}
+
+.ds-button--critical:hover:not(:disabled):not(.ds-button--loading) {
+  opacity: 0.9;
+}
+
+.ds-button--critical:focus-visible {
+  outline: calc(var(--space-4) / 2) solid var(--color-danger);
+  outline-offset: calc(var(--space-4) / 2);
+}
+
 /* Text — cor de texto = primária (marca) */
 .ds-button--text {
   background-color: transparent;

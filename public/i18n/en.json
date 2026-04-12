@@ -75,7 +75,7 @@
       "createAuthorSuccess": "Author {{name}} created successfully.",
       "loadError": "Could not load authors. Check the API URL and your connection.",
       "deleteError": "Could not remove the author. Please try again.",
-      "deleteAuthorSuccess": "Author \"{{name}}\" was removed.",
+      "deleteAuthorSuccess": "Author \"{{name}}\" was removed successfully",
       "editModalTitle": "Edit author",
       "nameFieldLabel": "Author name",
       "editNamePlaceholder": "Current author name",
@@ -83,6 +83,11 @@
       "saveChanges": "Save changes",
       "editAuthorSuccess": "Author {{name}} updated successfully.",
       "editAuthorError": "Could not update the author. Please try again.",
+      "deleteConfirmTitle": "Are you sure you want to delete the author ({{name}})?",
+      "deleteConfirmBody": "This author will no longer be searchable in the system or appear in reports. This action is IRREVERSIBLE.",
+      "deleteConfirmBanner": "Deleting an author does not hide their anime from the catalog. We suggest doing that before deleting.",
+      "deleteConfirmCancel": "Cancel",
+      "deleteConfirmDelete": "Delete",
       "paginationItemLabel": "authors"
     }
   },

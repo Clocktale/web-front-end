@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { LucideAngularModule, Pencil, Trash2 } from 'lucide-angular';
-import { ToastService } from '../../../../../services/toast.service';
 import type { Author } from '../../../../../types/author.type';
 
 @Component({
@@ -74,8 +73,6 @@ import type { Author } from '../../../../../types/author.type';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthorsTableComponent {
-  private readonly toastService = inject(ToastService);
-
   authors = input.required<Author[]>();
   loading = input(false);
 
@@ -93,10 +90,6 @@ export class AuthorsTableComponent {
   }
 
   onDelete(author: Author): void {
-    this.toastService.show({
-      message: 'DELETE ACTION - NOT IMPLEMENTED YET',
-      variant: 'info',
-    });
     this.deleteAuthor.emit(author);
   }
 }

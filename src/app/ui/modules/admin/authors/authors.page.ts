@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { TranslocoModule } from '@jsverse/transloco';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 import { AuthorController } from '../../../../controllers/author.controller';
@@ -8,6 +14,7 @@ import type { Author } from '../../../../types/author.type';
 import { ButtonVariant } from '../../../design_system/atoms/button/button-variant';
 import { ButtonComponent } from '../../../design_system/atoms/button/button.component';
 import { SearchFieldComponent } from '../../../design_system/molecules/search-field/search-field.component';
+import { ConfirmDeletionModalComponent } from '../../../design_system/organisms/confirm-deletion-modal/confirm-deletion-modal.component';
 import { PaginationControlsComponent } from '../../../design_system/organisms/pagination-controls/pagination-controls.component';
 import { AdminLayoutComponent } from '../../../design_system/templates/admin-layout/admin-layout.component';
 import { AuthorsTableComponent } from '../organisms/authors-table/authors-table.component';
@@ -27,8 +34,21 @@ import { EditAuthorModalComponent } from '../organisms/edit-author-modal/edit-au
     TranslocoModule,
     CreateAuthorModalComponent,
     EditAuthorModalComponent,
+    ConfirmDeletionModalComponent,
   ],
   template: `
+    @if (authorPendingDelete(); as pending) {
+      <app-confirm-deletion-modal
+        titleId="admin-delete-author-confirm-title"
+        [title]="'admin.authors.deleteConfirmTitle' | transloco: { name: pending.name }"
+        [bodyText]="'admin.authors.deleteConfirmBody' | transloco"
+        [bannerMessage]="'admin.authors.deleteConfirmBanner' | transloco"
+        [cancelLabel]="'admin.authors.deleteConfirmCancel' | transloco"
+        [confirmLabel]="'admin.authors.deleteConfirmDelete' | transloco"
+        (cancelRequested)="onDeleteModalClosed()"
+        (confirmRequested)="onDeleteModalConfirm(pending)"
+      />
+    }
     @if (createAuthorModal.isOpen()) {
       <app-create-author-modal />
     }
@@ -83,6 +103,9 @@ export class AuthorsPage implements OnInit {
   protected readonly createAuthorModal = inject(CreateAuthorModalController);
   protected readonly editAuthorModal = inject(EditAuthorModalController);
 
+  /** Autor aguardando confirmação de exclusão; `null` quando o modal está fechado. */
+  protected readonly authorPendingDelete = signal<Author | null>(null);
+
   protected readonly ButtonVariantPrimary = ButtonVariant.Primary;
   protected readonly PlusIcon = Plus;
 
@@ -107,6 +130,15 @@ export class AuthorsPage implements OnInit {
   }
 
   onDeleteAuthor(author: Author): void {
+    this.authorPendingDelete.set(author);
+  }
+
+  onDeleteModalClosed(): void {
+    this.authorPendingDelete.set(null);
+  }
+
+  onDeleteModalConfirm(author: Author): void {
     this.controller.deleteAuthor(author);
+    this.authorPendingDelete.set(null);
   }
 }
