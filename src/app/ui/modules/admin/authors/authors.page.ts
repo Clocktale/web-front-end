@@ -56,43 +56,45 @@ import { EditAuthorModalComponent } from '../organisms/edit-author-modal/edit-au
       <app-edit-author-modal />
     }
     <app-admin-layout>
-      <div class="authors-page">
-        <header class="authors-page__header">
-          <div class="authors-page__title-section">
-            <h1 class="authors-page__title">Autores</h1>
-            <p class="authors-page__subtitle">Gerencie os autores de animes do Clocktale</p>
+      <ng-container *transloco="let t; prefix: 'admin.authors'">
+        <div class="authors-page">
+          <header class="authors-page__header">
+            <div class="authors-page__title-section">
+              <h1 class="authors-page__title">{{ t('pageTitle') }}</h1>
+              <p class="authors-page__subtitle">{{ t('pageSubtitle') }}</p>
+            </div>
+            <app-button [variant]="ButtonVariantPrimary" (clicked)="addNewAuthor()">
+              <lucide-angular leading [img]="PlusIcon" [size]="20" />
+              {{ t('addNewAuthorButton') }}
+            </app-button>
+          </header>
+
+          <div class="authors-page__search">
+            <app-search-field
+              [placeholder]="t('searchPlaceholder')"
+              (searchChanged)="onSearchChanged($event)"
+            />
           </div>
-          <app-button [variant]="ButtonVariantPrimary" (clicked)="addNewAuthor()">
-            <lucide-angular leading [img]="PlusIcon" [size]="20" />
-            Adicionar novo autor
-          </app-button>
-        </header>
 
-        <div class="authors-page__search">
-          <app-search-field
-            placeholder="Pesquise pelo nome do autor"
-            (searchChanged)="onSearchChanged($event)"
-          />
+          <div class="authors-page__content">
+            <app-authors-table
+              [authors]="controller.authors()"
+              [loading]="controller.loading()"
+              (editAuthor)="onEditAuthor($event)"
+              (deleteAuthor)="onDeleteAuthor($event)"
+            />
+
+            <app-pagination-controls
+              [currentPage]="controller.currentPage()"
+              [totalItems]="controller.totalItems()"
+              [pageSize]="controller.pageSize()"
+              [loading]="controller.loading()"
+              [itemLabel]="'admin.authors.paginationItemLabel' | transloco"
+              (pageChanged)="onPageChanged($event)"
+            />
+          </div>
         </div>
-
-        <div class="authors-page__content">
-          <app-authors-table
-            [authors]="controller.authors()"
-            [loading]="controller.loading()"
-            (editAuthor)="onEditAuthor($event)"
-            (deleteAuthor)="onDeleteAuthor($event)"
-          />
-
-          <app-pagination-controls
-            [currentPage]="controller.currentPage()"
-            [totalItems]="controller.totalItems()"
-            [pageSize]="controller.pageSize()"
-            [loading]="controller.loading()"
-            [itemLabel]="'admin.authors.paginationItemLabel' | transloco"
-            (pageChanged)="onPageChanged($event)"
-          />
-        </div>
-      </div>
+      </ng-container>
     </app-admin-layout>
   `,
   styleUrl: './authors.page.css',

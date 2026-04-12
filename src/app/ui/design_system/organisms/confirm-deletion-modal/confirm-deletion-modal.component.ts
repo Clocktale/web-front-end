@@ -6,6 +6,7 @@ import {
   input,
   output,
 } from '@angular/core';
+import { TranslocoModule } from '@jsverse/transloco';
 import { AlertTriangle, LucideAngularModule } from 'lucide-angular';
 
 import { ButtonComponent } from '../../atoms/button/button.component';
@@ -15,63 +16,65 @@ import { InfoCalloutComponent } from '../../molecules/info-callout/info-callout.
 @Component({
   selector: 'app-confirm-deletion-modal',
   standalone: true,
-  imports: [LucideAngularModule, ButtonComponent, InfoCalloutComponent],
+  imports: [LucideAngularModule, ButtonComponent, InfoCalloutComponent, TranslocoModule],
   template: `
-    <div
-      class="confirm-deletion-modal__backdrop"
-      role="presentation"
-      (click)="onBackdropClick($event)"
-    >
+    <ng-container *transloco="let t; prefix: 'designSystem.modal'">
       <div
-        class="confirm-deletion-modal__panel"
-        role="dialog"
-        aria-modal="true"
-        [attr.aria-labelledby]="titleId()"
-        [attr.aria-describedby]="bodyDescriptionId()"
-        (click)="$event.stopPropagation()"
+        class="confirm-deletion-modal__backdrop"
+        role="presentation"
+        (click)="onBackdropClick($event)"
       >
-        <div class="confirm-deletion-modal__content">
-          <div class="confirm-deletion-modal__title-block">
-            <span class="confirm-deletion-modal__icon-wrap" aria-hidden="true">
-              <lucide-angular [img]="WarningIcon" [size]="40" />
-            </span>
-            <h2 [id]="titleId()" class="confirm-deletion-modal__title">
-              {{ title() }}
-            </h2>
-          </div>
+        <div
+          class="confirm-deletion-modal__panel"
+          role="dialog"
+          aria-modal="true"
+          [attr.aria-labelledby]="titleId()"
+          [attr.aria-describedby]="bodyDescriptionId()"
+          (click)="$event.stopPropagation()"
+        >
+          <div class="confirm-deletion-modal__content">
+            <div class="confirm-deletion-modal__title-block">
+              <span class="confirm-deletion-modal__icon-wrap" aria-hidden="true">
+                <lucide-angular [img]="WarningIcon" [size]="40" />
+              </span>
+              <h2 [id]="titleId()" class="confirm-deletion-modal__title">
+                {{ title() }}
+              </h2>
+            </div>
 
-          <div class="confirm-deletion-modal__middle">
-            <p [id]="bodyDescriptionId()" class="confirm-deletion-modal__body">
-              {{ bodyText() }}
-            </p>
-            @if (resolvedBanner(); as banner) {
-              <div class="confirm-deletion-modal__banner">
-                <app-info-callout [message]="banner" />
-              </div>
-            }
-          </div>
+            <div class="confirm-deletion-modal__middle">
+              <p [id]="bodyDescriptionId()" class="confirm-deletion-modal__body">
+                {{ bodyText() }}
+              </p>
+              @if (resolvedBanner(); as banner) {
+                <div class="confirm-deletion-modal__banner">
+                  <app-info-callout [message]="banner" />
+                </div>
+              }
+            </div>
 
-          <div class="confirm-deletion-modal__footer">
-            <app-button
-              [variant]="ButtonVariantSecondary"
-              [fullWidth]="true"
-              [loading]="loading()"
-              (clicked)="cancelRequested.emit()"
-            >
-              {{ cancelLabel() }}
-            </app-button>
-            <app-button
-              [variant]="ButtonVariantCritical"
-              [fullWidth]="true"
-              [loading]="loading()"
-              (clicked)="confirmRequested.emit()"
-            >
-              {{ confirmLabel() }}
-            </app-button>
+            <div class="confirm-deletion-modal__footer">
+              <app-button
+                [variant]="ButtonVariantSecondary"
+                [fullWidth]="true"
+                [loading]="loading()"
+                (clicked)="cancelRequested.emit()"
+              >
+                {{ cancelLabel() ?? t('cancel') }}
+              </app-button>
+              <app-button
+                [variant]="ButtonVariantCritical"
+                [fullWidth]="true"
+                [loading]="loading()"
+                (clicked)="confirmRequested.emit()"
+              >
+                {{ confirmLabel() ?? t('delete') }}
+              </app-button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </ng-container>
   `,
   styleUrl: './confirm-deletion-modal.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -85,8 +88,10 @@ export class ConfirmDeletionModalComponent {
   bodyText = input.required<string>();
   /** Texto do banner informativo; omitir ou vazio = não exibe. */
   bannerMessage = input<string | undefined>(undefined);
-  cancelLabel = input<string>('Cancelar');
-  confirmLabel = input<string>('Deletar');
+  /** Rótulo do botão secundário; omitir para usar a tradução padrão (`designSystem.modal.cancel`). */
+  cancelLabel = input<string | undefined>(undefined);
+  /** Rótulo do botão destrutivo; omitir para usar a tradução padrão (`designSystem.modal.delete`). */
+  confirmLabel = input<string | undefined>(undefined);
   loading = input(false);
 
   cancelRequested = output<void>();

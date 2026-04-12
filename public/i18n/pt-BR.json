@@ -88,10 +88,38 @@
       "deleteConfirmBanner": "Deletar um autor não fará com que os animes dele sejam ocultos do catálogo. Sugerimos que faça isso antes de realizar a deleção.",
       "deleteConfirmCancel": "Cancelar",
       "deleteConfirmDelete": "Deletar",
-      "paginationItemLabel": "autores"
+      "paginationItemLabel": "autores",
+      "pageTitle": "Autores",
+      "pageSubtitle": "Gerencie os autores de animes do Clocktale",
+      "addNewAuthorButton": "Adicionar novo autor",
+      "searchPlaceholder": "Pesquise pelo nome do autor",
+      "tableAuthorNameColumn": "Nome do autor",
+      "tableActionsColumn": "Ações",
+      "tableEmptyState": "Nenhum autor encontrado",
+      "tableEditAuthorAriaLabel": "Editar autor",
+      "tableDeleteAuthorAriaLabel": "Excluir autor"
+    },
+    "sideMenu": {
+      "nav": {
+        "dashboard": "Painel",
+        "animes": "Animes",
+        "reports": "Relatórios",
+        "authors": "Autores",
+        "animeStudios": "Estúdios de anime",
+        "animeCategories": "Categorias de anime",
+        "streamings": "Streamings",
+        "settings": "Configurações"
+      },
+      "logout": "Sair",
+      "fallbackUser": "Usuário"
     }
   },
   "designSystem": {
+    "modal": {
+      "cancel": "Cancelar",
+      "delete": "Excluir",
+      "closeAriaLabel": "Fechar"
+    },
     "paginationControls": {
       "rangeSummary": "Mostrando {{start}} a {{end}} {{itemLabel}} de um total de {{total}}",
       "previousPageAriaLabel": "Página anterior",

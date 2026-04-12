@@ -1,27 +1,31 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { TranslocoModule } from '@jsverse/transloco';
 import { LucideAngularModule, Pencil, Trash2 } from 'lucide-angular';
 import type { Author } from '../../../../../types/author.type';
 
 @Component({
   selector: 'app-authors-table',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule],
+  imports: [CommonModule, LucideAngularModule, TranslocoModule],
   template: `
-    <div class="authors-table">
-      <table class="authors-table__table">
-        <thead class="authors-table__header">
-          <tr>
-            <th class="authors-table__header-cell">Nome do autor</th>
-            <th class="authors-table__header-cell authors-table__header-cell--actions">Ações</th>
-          </tr>
-        </thead>
-        <tbody class="authors-table__body">
-          @if (authors().length === 0 && !loading()) {
+    <ng-container *transloco="let t; prefix: 'admin.authors'">
+      <div class="authors-table">
+        <table class="authors-table__table">
+          <thead class="authors-table__header">
             <tr>
-              <td colspan="2" class="authors-table__empty">Nenhum autor encontrado</td>
+              <th class="authors-table__header-cell">{{ t('tableAuthorNameColumn') }}</th>
+              <th class="authors-table__header-cell authors-table__header-cell--actions">
+                {{ t('tableActionsColumn') }}
+              </th>
             </tr>
-          }
+          </thead>
+          <tbody class="authors-table__body">
+            @if (authors().length === 0 && !loading()) {
+              <tr>
+                <td colspan="2" class="authors-table__empty">{{ t('tableEmptyState') }}</td>
+              </tr>
+            }
           @if (loading()) {
             @for (row of shimmerRowIndices; track row) {
               <tr class="authors-table__row authors-table__row--shimmer" aria-hidden="true">
@@ -47,7 +51,7 @@ import type { Author } from '../../../../../types/author.type';
                       class="authors-table__action-button"
                       (click)="onEdit(author)"
                       [disabled]="loading()"
-                      aria-label="Editar autor"
+                      [attr.aria-label]="t('tableEditAuthorAriaLabel')"
                     >
                       <lucide-angular [img]="PencilIcon" [size]="18" />
                     </button>
@@ -56,7 +60,7 @@ import type { Author } from '../../../../../types/author.type';
                       class="authors-table__action-button authors-table__action-button--danger"
                       (click)="onDelete(author)"
                       [disabled]="loading()"
-                      aria-label="Deletar autor"
+                      [attr.aria-label]="t('tableDeleteAuthorAriaLabel')"
                     >
                       <lucide-angular [img]="Trash2Icon" [size]="18" />
                     </button>
@@ -65,9 +69,10 @@ import type { Author } from '../../../../../types/author.type';
               </tr>
             }
           }
-        </tbody>
-      </table>
-    </div>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
   `,
   styleUrl: './authors-table.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

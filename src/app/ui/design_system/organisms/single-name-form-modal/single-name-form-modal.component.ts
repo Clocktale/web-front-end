@@ -5,6 +5,7 @@ import {
   input,
   output,
 } from '@angular/core';
+import { TranslocoModule } from '@jsverse/transloco';
 import { LucideAngularModule, X } from 'lucide-angular';
 
 import { ButtonComponent } from '../../atoms/button/button.component';
@@ -20,72 +21,75 @@ import { TextFieldComponent } from '../../molecules/text-field/text-field.compon
     ButtonComponent,
     TextFieldComponent,
     InfoCalloutComponent,
+    TranslocoModule,
   ],
   template: `
-    <div
-      class="single-name-form-modal__backdrop"
-      role="presentation"
-      (click)="onBackdropClick($event)"
-    >
+    <ng-container *transloco="let t; prefix: 'designSystem.modal'">
       <div
-        class="single-name-form-modal__panel"
-        role="dialog"
-        aria-modal="true"
-        [attr.aria-labelledby]="titleId()"
-        (click)="$event.stopPropagation()"
+        class="single-name-form-modal__backdrop"
+        role="presentation"
+        (click)="onBackdropClick($event)"
       >
-        <header class="single-name-form-modal__header">
-          <h2 [id]="titleId()" class="single-name-form-modal__title">
-            {{ title() }}
-          </h2>
-          <button
-            type="button"
-            class="single-name-form-modal__close"
-            [disabled]="submitting()"
-            (click)="closeRequested.emit()"
-            aria-label="Fechar"
-          >
-            <lucide-angular [img]="CloseIcon" [size]="28" aria-hidden="true" />
-          </button>
-        </header>
+        <div
+          class="single-name-form-modal__panel"
+          role="dialog"
+          aria-modal="true"
+          [attr.aria-labelledby]="titleId()"
+          (click)="$event.stopPropagation()"
+        >
+          <header class="single-name-form-modal__header">
+            <h2 [id]="titleId()" class="single-name-form-modal__title">
+              {{ title() }}
+            </h2>
+            <button
+              type="button"
+              class="single-name-form-modal__close"
+              [disabled]="submitting()"
+              (click)="closeRequested.emit()"
+              [attr.aria-label]="t('closeAriaLabel')"
+            >
+              <lucide-angular [img]="CloseIcon" [size]="28" aria-hidden="true" />
+            </button>
+          </header>
 
-        <div class="single-name-form-modal__divider" role="separator"></div>
+          <div class="single-name-form-modal__divider" role="separator"></div>
 
-        <div class="single-name-form-modal__body">
-          <app-text-field
-            [label]="fieldLabel()"
-            [placeholder]="placeholder()"
-            type="text"
-            [value]="fieldValue()"
-            (valueChanged)="fieldValueChange.emit($event)"
-            [loading]="submitting()"
-          />
-          @if (bannerMessage().trim()) {
-            <div class="single-name-form-modal__banner">
-              <app-info-callout [message]="bannerMessage()" />
-            </div>
-          }
+          <div class="single-name-form-modal__body">
+            <app-text-field
+              [label]="fieldLabel()"
+              [placeholder]="placeholder()"
+              type="text"
+              [value]="fieldValue()"
+              (valueChanged)="fieldValueChange.emit($event)"
+              [loading]="submitting()"
+            />
+            @if (bannerMessage().trim()) {
+              <div class="single-name-form-modal__banner">
+                <app-info-callout [message]="bannerMessage()" />
+              </div>
+            }
+          </div>
+
+          <footer class="single-name-form-modal__footer">
+            <app-button
+              [variant]="ButtonVariantSecondary"
+              [loading]="submitting()"
+              (clicked)="closeRequested.emit()"
+            >
+              {{ cancelLabel() ?? t('cancel') }}
+            </app-button>
+            <app-button
+              [variant]="ButtonVariantPrimary"
+              [disabled]="primaryDisabled()"
+              [loading]="submitting()"
+              (clicked)="primaryAction.emit()"
+            >
+              {{ primaryLabel() }}
+            </app-button>
+          </footer>
         </div>
-
-        <footer class="single-name-form-modal__footer">
-          <app-button
-            [variant]="ButtonVariantSecondary"
-            [loading]="submitting()"
-            (clicked)="closeRequested.emit()"
-          >
-            {{ cancelLabel() }}
-          </app-button>
-          <app-button
-            [variant]="ButtonVariantPrimary"
-            [disabled]="primaryDisabled()"
-            [loading]="submitting()"
-            (clicked)="primaryAction.emit()"
-          >
-            {{ primaryLabel() }}
-          </app-button>
-        </footer>
       </div>
-    </div>
+    </ng-container>
   `,
   styleUrl: './single-name-form-modal.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -96,7 +100,8 @@ export class SingleNameFormModalComponent {
   fieldLabel = input.required<string>();
   placeholder = input.required<string>();
   primaryLabel = input.required<string>();
-  cancelLabel = input<string>('Cancelar');
+  /** Rótulo do botão secundário; omitir para usar a tradução padrão (`designSystem.modal.cancel`). */
+  cancelLabel = input<string | undefined>(undefined);
   fieldValue = input.required<string>();
   bannerMessage = input<string>('');
   submitting = input(false);

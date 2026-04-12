@@ -20,11 +20,12 @@ import {
   Settings,
   LogOut,
 } from 'lucide-angular';
+import { TranslocoModule } from '@jsverse/transloco';
 import { AuthSessionController } from '../../../../controllers/auth-session.controller';
 import { LogoutController } from '../../../../controllers/logout.controller';
 
 interface MenuItem {
-  label: string;
+  labelKey: string;
   route: string;
   icon: LucideIconData;
 }
@@ -37,6 +38,7 @@ interface MenuItem {
     RouterLink,
     RouterLinkActive,
     LucideAngularModule,
+    TranslocoModule,
   ],
   host: {
     class: 'side-menu',
@@ -44,67 +46,69 @@ interface MenuItem {
     '(mouseleave)': 'onMouseLeave()',
   },
   template: `
-    <aside class="side-menu__container" [class.side-menu__container--expanded]="isExpanded()">
-      <div class="side-menu__header">
-        <div class="side-menu__avatar">
-          {{ userInitial() }}
+    <ng-container *transloco="let t; prefix: 'admin.sideMenu'">
+      <aside class="side-menu__container" [class.side-menu__container--expanded]="isExpanded()">
+        <div class="side-menu__header">
+          <div class="side-menu__avatar">
+            {{ userInitial() }}
+          </div>
+          <div class="side-menu__user-info">
+            <span class="side-menu__user-name">{{ userName() || t('fallbackUser') }}</span>
+          </div>
         </div>
-        <div class="side-menu__user-info">
-          <span class="side-menu__user-name">{{ userName() }}</span>
-        </div>
-      </div>
 
-      <nav class="side-menu__nav">
-        <a
-          *ngFor="let item of mainMenuItems"
-          [routerLink]="item.route"
-          routerLinkActive="side-menu__item--active"
-          class="side-menu__item"
-          [title]="item.label"
-        >
-          <lucide-angular
-            [img]="item.icon"
-            [size]="20"
-            class="side-menu__icon"
-          />
-          <span class="side-menu__label">{{ item.label }}</span>
-        </a>
-
-        <div class="side-menu__footer">
-          <div class="side-menu__divider"></div>
-
+        <nav class="side-menu__nav">
           <a
-            *ngFor="let item of bottomMenuItems"
+            *ngFor="let item of mainMenuItems"
             [routerLink]="item.route"
             routerLinkActive="side-menu__item--active"
             class="side-menu__item"
-            [title]="item.label"
+            [title]="t(item.labelKey)"
           >
             <lucide-angular
               [img]="item.icon"
               [size]="20"
               class="side-menu__icon"
             />
-            <span class="side-menu__label">{{ item.label }}</span>
+            <span class="side-menu__label">{{ t(item.labelKey) }}</span>
           </a>
 
-          <button
-            type="button"
-            class="side-menu__item side-menu__item--button"
-            [disabled]="logoutController.loading()"
-            (click)="logout()"
-            title="Logout"
-          >
-            <lucide-angular
-              [img]="LogOutIcon"
-              [size]="20"
-              class="side-menu__icon"
-            />
-            <span class="side-menu__label">Logout</span>
-          </button>
-        </div>
-      </nav>
-    </aside>
+          <div class="side-menu__footer">
+            <div class="side-menu__divider"></div>
+
+            <a
+              *ngFor="let item of bottomMenuItems"
+              [routerLink]="item.route"
+              routerLinkActive="side-menu__item--active"
+              class="side-menu__item"
+              [title]="t(item.labelKey)"
+            >
+              <lucide-angular
+                [img]="item.icon"
+                [size]="20"
+                class="side-menu__icon"
+              />
+              <span class="side-menu__label">{{ t(item.labelKey) }}</span>
+            </a>
+
+            <button
+              type="button"
+              class="side-menu__item side-menu__item--button"
+              [disabled]="logoutController.loading()"
+              (click)="logout()"
+              [title]="t('logout')"
+            >
+              <lucide-angular
+                [img]="LogOutIcon"
+                [size]="20"
+                class="side-menu__icon"
+              />
+              <span class="side-menu__label">{{ t('logout') }}</span>
+            </button>
+          </div>
+        </nav>
+      </aside>
+    </ng-container>
   `,
   styleUrl: './side-menu.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -126,17 +130,17 @@ export class SideMenuComponent {
   isExpanded = signal(false);
 
   protected readonly mainMenuItems: MenuItem[] = [
-    { label: 'Dashboard', route: '/admin/dashboard', icon: LayoutDashboard },
-    { label: 'Animes', route: '/admin/animes', icon: Film },
-    { label: 'Relatórios', route: '/admin/reports', icon: FileText },
-    { label: 'Autores', route: '/admin/authors', icon: Users },
-    { label: 'Estúdios de Anime', route: '/admin/studios', icon: Building },
-    { label: 'Categorias de Anime', route: '/admin/categories', icon: Layers },
-    { label: 'Streamings', route: '/admin/streamings', icon: Tv },
+    { labelKey: 'nav.dashboard', route: '/admin/dashboard', icon: LayoutDashboard },
+    { labelKey: 'nav.animes', route: '/admin/animes', icon: Film },
+    { labelKey: 'nav.reports', route: '/admin/reports', icon: FileText },
+    { labelKey: 'nav.authors', route: '/admin/authors', icon: Users },
+    { labelKey: 'nav.animeStudios', route: '/admin/studios', icon: Building },
+    { labelKey: 'nav.animeCategories', route: '/admin/categories', icon: Layers },
+    { labelKey: 'nav.streamings', route: '/admin/streamings', icon: Tv },
   ];
 
   protected readonly bottomMenuItems: MenuItem[] = [
-    { label: 'Configurações', route: '/admin/settings', icon: Settings },
+    { labelKey: 'nav.settings', route: '/admin/settings', icon: Settings },
   ];
 
   userInitial = computed(() => {
@@ -149,7 +153,8 @@ export class SideMenuComponent {
 
   userName = computed(() => {
     const user = this.authSession.user();
-    return user?.nickname ?? 'Usuário';
+    const nickname = user?.nickname?.trim();
+    return nickname || '';
   });
 
   onMouseEnter(): void {

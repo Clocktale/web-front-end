@@ -88,10 +88,38 @@
       "deleteConfirmBanner": "著者を削除しても、そのアニメがカタログから非表示になるわけではありません。削除前にそちらの対応をおすすめします。",
       "deleteConfirmCancel": "キャンセル",
       "deleteConfirmDelete": "削除",
-      "paginationItemLabel": "著者"
+      "paginationItemLabel": "著者",
+      "pageTitle": "著者",
+      "pageSubtitle": "Clocktale のアニメ著者を管理します",
+      "addNewAuthorButton": "新しい著者を追加",
+      "searchPlaceholder": "著者名で検索",
+      "tableAuthorNameColumn": "著者名",
+      "tableActionsColumn": "操作",
+      "tableEmptyState": "著者が見つかりません",
+      "tableEditAuthorAriaLabel": "著者を編集",
+      "tableDeleteAuthorAriaLabel": "著者を削除"
+    },
+    "sideMenu": {
+      "nav": {
+        "dashboard": "ダッシュボード",
+        "animes": "アニメ",
+        "reports": "レポート",
+        "authors": "著者",
+        "animeStudios": "アニメスタジオ",
+        "animeCategories": "アニメカテゴリ",
+        "streamings": "配信サービス",
+        "settings": "設定"
+      },
+      "logout": "ログアウト",
+      "fallbackUser": "ユーザー"
     }
   },
   "designSystem": {
+    "modal": {
+      "cancel": "キャンセル",
+      "delete": "削除",
+      "closeAriaLabel": "閉じる"
+    },
     "paginationControls": {
       "rangeSummary": "{{total}}件中 {{start}}から{{end}}までの{{itemLabel}}を表示",
       "previousPageAriaLabel": "前のページ",

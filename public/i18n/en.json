@@ -88,10 +88,38 @@
       "deleteConfirmBanner": "Deleting an author does not hide their anime from the catalog. We suggest doing that before deleting.",
       "deleteConfirmCancel": "Cancel",
       "deleteConfirmDelete": "Delete",
-      "paginationItemLabel": "authors"
+      "paginationItemLabel": "authors",
+      "pageTitle": "Authors",
+      "pageSubtitle": "Manage anime authors for Clocktale",
+      "addNewAuthorButton": "Add new author",
+      "searchPlaceholder": "Search by author name",
+      "tableAuthorNameColumn": "Author name",
+      "tableActionsColumn": "Actions",
+      "tableEmptyState": "No authors found",
+      "tableEditAuthorAriaLabel": "Edit author",
+      "tableDeleteAuthorAriaLabel": "Delete author"
+    },
+    "sideMenu": {
+      "nav": {
+        "dashboard": "Dashboard",
+        "animes": "Anime",
+        "reports": "Reports",
+        "authors": "Authors",
+        "animeStudios": "Anime studios",
+        "animeCategories": "Anime categories",
+        "streamings": "Streaming services",
+        "settings": "Settings"
+      },
+      "logout": "Sign out",
+      "fallbackUser": "User"
     }
   },
   "designSystem": {
+    "modal": {
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "closeAriaLabel": "Close"
+    },
     "paginationControls": {
       "rangeSummary": "Showing {{start}} to {{end}} {{itemLabel}} out of {{total}} total",
       "previousPageAriaLabel": "Previous page",
