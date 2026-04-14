@@ -10,6 +10,13 @@
   padding: var(--space-32) var(--space-40);
   overflow-y: auto;
   transition: margin-left 0.3s ease;
+  min-height: 0;
+}
+
+.admin-layout__outlet {
+  position: relative;
+  flex: 1;
+  min-height: 100%;
 }
 
 @media (max-width: 768px) {

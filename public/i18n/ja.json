@@ -99,6 +99,24 @@
       "tableEditAuthorAriaLabel": "著者を編集",
       "tableDeleteAuthorAriaLabel": "著者を削除"
     },
+    "streamings": {
+      "loadError": "配信サービスを読み込めませんでした。APIのURLと接続を確認してください。",
+      "paginationItemLabel": "配信サービス",
+      "pageTitle": "配信サービス",
+      "pageSubtitle": "Clocktale のアニメ配信サービスを管理します",
+      "addNewButton": "新しい配信サービスを追加",
+      "addButtonDisabledTitle": "画像APIの準備ができるまで追加は利用できません。",
+      "addButtonDisabledAriaLabel": "新しい配信サービスを追加（利用不可）",
+      "searchPlaceholder": "配信サービス名で検索",
+      "tableNameColumn": "配信サービス名",
+      "tableActionsColumn": "操作",
+      "tableEmptyState": "配信サービスが見つかりません",
+      "tableEditAriaLabel": "配信サービスを編集",
+      "tableDeleteAriaLabel": "配信サービスを削除",
+      "detailsUrlLabel": "サービスURL",
+      "detailsCloseButton": "閉じる",
+      "detailsCloseAriaLabel": "配信サービスの詳細を閉じる"
+    },
     "sideMenu": {
       "nav": {
         "dashboard": "ダッシュボード",

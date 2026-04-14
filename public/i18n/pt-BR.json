@@ -99,6 +99,24 @@
       "tableEditAuthorAriaLabel": "Editar autor",
       "tableDeleteAuthorAriaLabel": "Excluir autor"
     },
+    "streamings": {
+      "loadError": "Não foi possível carregar os streamings. Verifique a API e a rede.",
+      "paginationItemLabel": "streamings",
+      "pageTitle": "Streamings",
+      "pageSubtitle": "Gerencie os streamings de anime do Clocktale",
+      "addNewButton": "Adicionar novo streaming",
+      "addButtonDisabledTitle": "Cadastro indisponível até a API de imagens estar pronta.",
+      "addButtonDisabledAriaLabel": "Adicionar novo streaming (indisponível)",
+      "searchPlaceholder": "Pesquise pelo nome do streaming",
+      "tableNameColumn": "Nome do streaming",
+      "tableActionsColumn": "Ações",
+      "tableEmptyState": "Nenhum streaming encontrado",
+      "tableEditAriaLabel": "Editar streaming",
+      "tableDeleteAriaLabel": "Excluir streaming",
+      "detailsUrlLabel": "URL do serviço",
+      "detailsCloseButton": "Fechar",
+      "detailsCloseAriaLabel": "Fechar detalhes do streaming"
+    },
     "sideMenu": {
       "nav": {
         "dashboard": "Painel",

@@ -1,0 +1,105 @@
+.streaming-details-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-20);
+  background: var(--color-surface-backdrop);
+}
+
+.streaming-details-modal__panel {
+  box-sizing: border-box;
+  width: min(100%, 28rem);
+  max-height: min(90vh, 32rem);
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-12);
+  background: var(--color-surface-modal);
+  box-shadow: 0 var(--space-8) var(--space-32) var(--color-surface-modal-shadow);
+}
+
+.streaming-details-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+  padding: var(--space-20);
+}
+
+.streaming-details-modal__title {
+  margin: 0;
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-20);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-text-primary);
+}
+
+.streaming-details-modal__close {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--space-44);
+  height: var(--space-44);
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: var(--radius-8);
+  background: transparent;
+  color: var(--color-icon-default);
+  cursor: pointer;
+}
+
+.streaming-details-modal__close:hover {
+  background: var(--color-surface-overlay);
+}
+
+.streaming-details-modal__divider {
+  flex-shrink: 0;
+  width: 100%;
+  margin: 0;
+  border: none;
+  border-top: 1px solid var(--color-divider);
+}
+
+.streaming-details-modal__body {
+  padding: var(--space-20);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.streaming-details-modal__label {
+  margin: 0;
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-14);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.streaming-details-modal__link {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-14);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-info);
+  word-break: break-all;
+}
+
+.streaming-details-modal__link:hover {
+  color: var(--color-text-primary);
+}
+
+.streaming-details-modal__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-12);
+  padding: var(--space-20);
+}

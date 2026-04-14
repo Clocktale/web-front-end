@@ -99,6 +99,24 @@
       "tableEditAuthorAriaLabel": "Edit author",
       "tableDeleteAuthorAriaLabel": "Delete author"
     },
+    "streamings": {
+      "loadError": "Could not load streaming services. Check the API URL and your connection.",
+      "paginationItemLabel": "streaming services",
+      "pageTitle": "Streaming services",
+      "pageSubtitle": "Manage anime streaming services for Clocktale",
+      "addNewButton": "Add new streaming service",
+      "addButtonDisabledTitle": "Creating services is unavailable until the image API is ready.",
+      "addButtonDisabledAriaLabel": "Add new streaming service (unavailable)",
+      "searchPlaceholder": "Search by streaming service name",
+      "tableNameColumn": "Streaming service name",
+      "tableActionsColumn": "Actions",
+      "tableEmptyState": "No streaming services found",
+      "tableEditAriaLabel": "Edit streaming service",
+      "tableDeleteAriaLabel": "Delete streaming service",
+      "detailsUrlLabel": "Service URL",
+      "detailsCloseButton": "Close",
+      "detailsCloseAriaLabel": "Close streaming details"
+    },
     "sideMenu": {
       "nav": {
         "dashboard": "Dashboard",

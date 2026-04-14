@@ -16,7 +16,6 @@ import { ButtonComponent } from '../../../design_system/atoms/button/button.comp
 import { SearchFieldComponent } from '../../../design_system/molecules/search-field/search-field.component';
 import { ConfirmDeletionModalComponent } from '../../../design_system/organisms/confirm-deletion-modal/confirm-deletion-modal.component';
 import { PaginationControlsComponent } from '../../../design_system/organisms/pagination-controls/pagination-controls.component';
-import { AdminLayoutComponent } from '../../../design_system/templates/admin-layout/admin-layout.component';
 import { AuthorsTableComponent } from '../organisms/authors-table/authors-table.component';
 import { CreateAuthorModalComponent } from '../organisms/create-author-modal/create-author-modal.component';
 import { EditAuthorModalComponent } from '../organisms/edit-author-modal/edit-author-modal.component';
@@ -25,7 +24,6 @@ import { EditAuthorModalComponent } from '../organisms/edit-author-modal/edit-au
   selector: 'app-authors-page',
   standalone: true,
   imports: [
-    AdminLayoutComponent,
     SearchFieldComponent,
     AuthorsTableComponent,
     PaginationControlsComponent,
@@ -55,47 +53,45 @@ import { EditAuthorModalComponent } from '../organisms/edit-author-modal/edit-au
     @if (editAuthorModal.isOpen()) {
       <app-edit-author-modal />
     }
-    <app-admin-layout>
-      <ng-container *transloco="let t; prefix: 'admin.authors'">
-        <div class="authors-page">
-          <header class="authors-page__header">
-            <div class="authors-page__title-section">
-              <h1 class="authors-page__title">{{ t('pageTitle') }}</h1>
-              <p class="authors-page__subtitle">{{ t('pageSubtitle') }}</p>
-            </div>
-            <app-button [variant]="ButtonVariantPrimary" (clicked)="addNewAuthor()">
-              <lucide-angular leading [img]="PlusIcon" [size]="20" />
-              {{ t('addNewAuthorButton') }}
-            </app-button>
-          </header>
-
-          <div class="authors-page__search">
-            <app-search-field
-              [placeholder]="t('searchPlaceholder')"
-              (searchChanged)="onSearchChanged($event)"
-            />
+    <ng-container *transloco="let t; prefix: 'admin.authors'">
+      <div class="authors-page">
+        <header class="authors-page__header">
+          <div class="authors-page__title-section">
+            <h1 class="authors-page__title">{{ t('pageTitle') }}</h1>
+            <p class="authors-page__subtitle">{{ t('pageSubtitle') }}</p>
           </div>
+          <app-button [variant]="ButtonVariantPrimary" (clicked)="addNewAuthor()">
+            <lucide-angular leading [img]="PlusIcon" [size]="20" />
+            {{ t('addNewAuthorButton') }}
+          </app-button>
+        </header>
 
-          <div class="authors-page__content">
-            <app-authors-table
-              [authors]="controller.authors()"
-              [loading]="controller.loading()"
-              (editAuthor)="onEditAuthor($event)"
-              (deleteAuthor)="onDeleteAuthor($event)"
-            />
-
-            <app-pagination-controls
-              [currentPage]="controller.currentPage()"
-              [totalItems]="controller.totalItems()"
-              [pageSize]="controller.pageSize()"
-              [loading]="controller.loading()"
-              [itemLabel]="'admin.authors.paginationItemLabel' | transloco"
-              (pageChanged)="onPageChanged($event)"
-            />
-          </div>
+        <div class="authors-page__search">
+          <app-search-field
+            [placeholder]="t('searchPlaceholder')"
+            (searchChanged)="onSearchChanged($event)"
+          />
         </div>
-      </ng-container>
-    </app-admin-layout>
+
+        <div class="authors-page__content">
+          <app-authors-table
+            [authors]="controller.authors()"
+            [loading]="controller.loading()"
+            (editAuthor)="onEditAuthor($event)"
+            (deleteAuthor)="onDeleteAuthor($event)"
+          />
+
+          <app-pagination-controls
+            [currentPage]="controller.currentPage()"
+            [totalItems]="controller.totalItems()"
+            [pageSize]="controller.pageSize()"
+            [loading]="controller.loading()"
+            [itemLabel]="'admin.authors.paginationItemLabel' | transloco"
+            (pageChanged)="onPageChanged($event)"
+          />
+        </div>
+      </div>
+    </ng-container>
   `,
   styleUrl: './authors.page.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

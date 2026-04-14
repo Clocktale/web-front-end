@@ -1,0 +1,198 @@
+.streamings-table {
+  width: 100%;
+  background-color: var(--color-surface-admin-table);
+  border-radius: var(--radius-12);
+  border: 1px solid var(--color-white-muted-10);
+  overflow: hidden;
+}
+
+.streamings-table__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-family-sans);
+}
+
+.streamings-table__header {
+  background-color: var(--color-white-muted-5);
+}
+
+.streamings-table__header-cell {
+  padding: var(--space-16) var(--space-24);
+  text-align: left;
+  font-size: var(--font-size-14);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid var(--color-white-muted-10);
+}
+
+.streamings-table__header-cell--actions {
+  text-align: right;
+  width: 120px;
+}
+
+.streamings-table__body {
+  background-color: transparent;
+}
+
+.streamings-table__row {
+  border-bottom: 1px solid var(--color-white-muted-10);
+  transition: background-color 0.2s;
+}
+
+.streamings-table__row--interactive {
+  cursor: pointer;
+}
+
+.streamings-table__row--interactive:hover {
+  background-color: var(--color-white-muted-5);
+}
+
+.streamings-table__row--interactive:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+.streamings-table__row:last-child {
+  border-bottom: none;
+}
+
+.streamings-table__cell {
+  padding: var(--space-20) var(--space-24);
+  font-size: var(--font-size-14);
+  color: var(--color-text-primary);
+}
+
+.streamings-table__cell--actions {
+  text-align: right;
+}
+
+.streamings-table__name-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+}
+
+.streamings-table__name-cell--shimmer {
+  min-height: var(--space-48);
+}
+
+.streamings-table__logo {
+  flex-shrink: 0;
+  width: var(--space-48);
+  height: var(--space-48);
+  border-radius: var(--radius-8);
+  background-color: var(--color-surface-overlay);
+}
+
+.streamings-table__name {
+  font-size: var(--font-size-18);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.streamings-table__actions {
+  display: flex;
+  gap: var(--space-8);
+  justify-content: flex-end;
+}
+
+.streamings-table__action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background-color: var(--color-surface-overlay);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-8);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  padding: 0;
+}
+
+.streamings-table__action-button:hover:not(:disabled) {
+  background-color: var(--color-surface-overlay-medium);
+}
+
+.streamings-table__action-button--danger:hover:not(:disabled) {
+  background-color: var(--color-danger);
+  color: var(--color-white);
+}
+
+.streamings-table__action-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.streamings-table__empty {
+  padding: var(--space-40) var(--space-24);
+  text-align: center;
+  font-size: var(--font-size-14);
+  color: var(--color-text-secondary);
+}
+
+.streamings-table__row--shimmer {
+  pointer-events: none;
+}
+
+.streamings-table__row--shimmer:hover {
+  background-color: transparent;
+}
+
+.streamings-table__actions--shimmer {
+  justify-content: flex-end;
+}
+
+.streamings-table__skeleton {
+  display: block;
+  border-radius: var(--radius-8);
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-overlay) 0%,
+    var(--color-surface-overlay-medium) 45%,
+    var(--color-surface-overlay) 90%
+  );
+  background-size: 200% 100%;
+  animation: streamings-table-shimmer 1.15s ease-in-out infinite;
+}
+
+.streamings-table__skeleton--logo {
+  width: var(--space-48);
+  height: var(--space-48);
+  flex-shrink: 0;
+}
+
+.streamings-table__skeleton--text {
+  height: var(--font-size-18);
+  flex: 1;
+  max-width: 220px;
+}
+
+.streamings-table__skeleton--action {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+@keyframes streamings-table-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .streamings-table__header-cell,
+  .streamings-table__cell {
+    padding: var(--space-12) var(--space-16);
+  }
+
+  .streamings-table__action-button {
+    width: 32px;
+    height: 32px;
+  }
+}
