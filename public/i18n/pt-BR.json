@@ -101,6 +101,13 @@
     },
     "streamings": {
       "loadError": "Não foi possível carregar os streamings. Verifique a API e a rede.",
+      "deleteError": "Não foi possível remover o streaming. Tente novamente.",
+      "deleteSuccess": "Streaming \"{{name}}\" foi removido com sucesso.",
+      "deleteConfirmTitle": "Tem certeza de que deseja deletar o streaming {{name}}?",
+      "deleteConfirmBody": "Esse streaming não poderá mais ser pesquisado no sistema nem constará nos relatórios. A ação é IRREVERSÍVEL.",
+      "deleteConfirmBanner": "Verifique se não há animes ou outros registos dependentes deste streaming antes de confirmar.",
+      "deleteConfirmCancel": "Cancelar",
+      "deleteConfirmDelete": "Deletar",
       "paginationItemLabel": "streamings",
       "pageTitle": "Streamings",
       "pageSubtitle": "Gerencie os streamings de anime do Clocktale",

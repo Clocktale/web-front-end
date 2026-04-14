@@ -101,6 +101,13 @@
     },
     "streamings": {
       "loadError": "配信サービスを読み込めませんでした。APIのURLと接続を確認してください。",
+      "deleteError": "配信サービスを削除できませんでした。もう一度お試しください。",
+      "deleteSuccess": "配信サービス「{{name}}」を削除しました。",
+      "deleteConfirmTitle": "配信サービス「{{name}}」を削除してもよろしいですか？",
+      "deleteConfirmBody": "この配信サービスはシステムで検索できなくなり、レポートにも表示されなくなります。この操作は取り消せません。",
+      "deleteConfirmBanner": "削除する前に、このサービスに依存するアニメなどがないか確認してください。",
+      "deleteConfirmCancel": "キャンセル",
+      "deleteConfirmDelete": "削除",
       "paginationItemLabel": "配信サービス",
       "pageTitle": "配信サービス",
       "pageSubtitle": "Clocktale のアニメ配信サービスを管理します",

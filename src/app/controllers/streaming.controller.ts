@@ -3,10 +3,13 @@ import { TranslocoService } from '@jsverse/transloco';
 import { StreamingRepository } from '../data/repositories/streaming.repository';
 import { ToastService } from '../services/toast.service';
 import type { Streaming } from '../types/streaming.type';
+import { DeleteStreamingUseCase } from '../use-cases/streamings/delete-streaming.use-case';
+import { resolveUserFacingErrorMessage } from '../utils/error-handling/resolve-user-facing-error';
 
 @Injectable({ providedIn: 'root' })
 export class StreamingController {
   private readonly repository = inject(StreamingRepository);
+  private readonly deleteStreamingUseCase = inject(DeleteStreamingUseCase);
   private readonly transloco = inject(TranslocoService);
   private readonly toastService = inject(ToastService);
 
@@ -105,5 +108,38 @@ export class StreamingController {
     }
 
     this.fetchPageFromApi(page);
+  }
+
+  deleteStreaming(streaming: Streaming): void {
+    if (this.loading()) {
+      return;
+    }
+
+    this.loading.set(true);
+
+    this.deleteStreamingUseCase.execute(streaming.id).subscribe({
+      next: () => {
+        this.loading.set(false);
+        this.loadStreamings();
+        this.toastService.show({
+          message: this.transloco.translate('admin.streamings.deleteSuccess', {
+            name: streaming.name,
+          }),
+          variant: 'success',
+        });
+      },
+      error: (err: unknown) => {
+        this.loading.set(false);
+        console.error('[StreamingController] deleteStreaming', err);
+        this.toastService.show({
+          message: resolveUserFacingErrorMessage(
+            err,
+            (key) => this.transloco.translate(key),
+            'admin.streamings.deleteError',
+          ),
+          variant: 'error',
+        });
+      },
+    });
   }
 }

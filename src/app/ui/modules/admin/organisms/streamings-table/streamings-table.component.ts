@@ -73,7 +73,8 @@ import type { Streaming } from '../../../../../types/streaming.type';
                       <button
                         type="button"
                         class="streamings-table__action-button streamings-table__action-button--danger"
-                        disabled
+                        [disabled]="loading()"
+                        (click)="onDelete(streaming)"
                         [attr.aria-label]="t('tableDeleteAriaLabel')"
                       >
                         <lucide-angular [img]="Trash2Icon" [size]="18" />
@@ -96,6 +97,7 @@ export class StreamingsTableComponent {
   loading = input(false);
 
   rowSelected = output<Streaming>();
+  deleteStreaming = output<Streaming>();
 
   protected readonly PencilIcon = Pencil;
   protected readonly Trash2Icon = Trash2;
@@ -116,5 +118,9 @@ export class StreamingsTableComponent {
     }
     event.preventDefault();
     this.rowSelected.emit(streaming);
+  }
+
+  onDelete(streaming: Streaming): void {
+    this.deleteStreaming.emit(streaming);
   }
 }

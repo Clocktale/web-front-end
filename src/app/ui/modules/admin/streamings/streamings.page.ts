@@ -3,6 +3,7 @@ import {
   Component,
   inject,
   OnInit,
+  signal,
 } from '@angular/core';
 import { TranslocoModule } from '@jsverse/transloco';
 import { LucideAngularModule, Plus } from 'lucide-angular';
@@ -11,6 +12,7 @@ import type { Streaming } from '../../../../types/streaming.type';
 import { ButtonVariant } from '../../../design_system/atoms/button/button-variant';
 import { ButtonComponent } from '../../../design_system/atoms/button/button.component';
 import { SearchFieldComponent } from '../../../design_system/molecules/search-field/search-field.component';
+import { ConfirmDeletionModalComponent } from '../../../design_system/organisms/confirm-deletion-modal/confirm-deletion-modal.component';
 import { PaginationControlsComponent } from '../../../design_system/organisms/pagination-controls/pagination-controls.component';
 import { StreamingDetailsModalComponent } from '../organisms/streaming-details-modal/streaming-details-modal.component';
 import { StreamingsTableComponent } from '../organisms/streamings-table/streamings-table.component';
@@ -26,8 +28,21 @@ import { StreamingsTableComponent } from '../organisms/streamings-table/streamin
     LucideAngularModule,
     TranslocoModule,
     StreamingDetailsModalComponent,
+    ConfirmDeletionModalComponent,
   ],
   template: `
+    @if (streamingPendingDelete(); as pending) {
+      <app-confirm-deletion-modal
+        titleId="admin-delete-streaming-confirm-title"
+        [title]="'admin.streamings.deleteConfirmTitle' | transloco: { name: pending.name }"
+        [bodyText]="'admin.streamings.deleteConfirmBody' | transloco"
+        [bannerMessage]="'admin.streamings.deleteConfirmBanner' | transloco"
+        [cancelLabel]="'admin.streamings.deleteConfirmCancel' | transloco"
+        [confirmLabel]="'admin.streamings.deleteConfirmDelete' | transloco"
+        (cancelRequested)="onDeleteModalClosed()"
+        (confirmRequested)="onDeleteModalConfirm(pending)"
+      />
+    }
     @if (controller.selectedStreaming(); as selected) {
       <app-streaming-details-modal
         [streaming]="selected"
@@ -65,6 +80,7 @@ import { StreamingsTableComponent } from '../organisms/streamings-table/streamin
             [streamings]="controller.streamings()"
             [loading]="controller.loading()"
             (rowSelected)="onRowSelected($event)"
+            (deleteStreaming)="onDeleteStreaming($event)"
           />
 
           <app-pagination-controls
@@ -84,6 +100,8 @@ import { StreamingsTableComponent } from '../organisms/streamings-table/streamin
 })
 export class StreamingsPage implements OnInit {
   protected readonly controller = inject(StreamingController);
+
+  protected readonly streamingPendingDelete = signal<Streaming | null>(null);
 
   protected readonly ButtonVariantPrimary = ButtonVariant.Primary;
   protected readonly PlusIcon = Plus;
@@ -106,5 +124,18 @@ export class StreamingsPage implements OnInit {
 
   onDetailsClosed(): void {
     this.controller.closeDetails();
+  }
+
+  onDeleteStreaming(streaming: Streaming): void {
+    this.streamingPendingDelete.set(streaming);
+  }
+
+  onDeleteModalClosed(): void {
+    this.streamingPendingDelete.set(null);
+  }
+
+  onDeleteModalConfirm(streaming: Streaming): void {
+    this.controller.deleteStreaming(streaming);
+    this.streamingPendingDelete.set(null);
   }
 }

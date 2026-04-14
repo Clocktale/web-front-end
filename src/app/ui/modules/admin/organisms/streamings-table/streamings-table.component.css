@@ -73,20 +73,20 @@
 }
 
 .streamings-table__name-cell--shimmer {
-  min-height: var(--space-48);
+  min-height: var(--space-32);
 }
 
 .streamings-table__logo {
   flex-shrink: 0;
-  width: var(--space-48);
-  height: var(--space-48);
+  width: var(--space-32);
+  height: var(--space-32);
   border-radius: var(--radius-8);
   background-color: var(--color-surface-overlay);
 }
 
 .streamings-table__name {
-  font-size: var(--font-size-18);
-  font-weight: 700;
+  font-size: var(--font-size-14);
+  font-weight: 400;
   color: var(--color-text-primary);
 }
 
@@ -158,13 +158,13 @@
 }
 
 .streamings-table__skeleton--logo {
-  width: var(--space-48);
-  height: var(--space-48);
+  width: var(--space-32);
+  height: var(--space-32);
   flex-shrink: 0;
 }
 
 .streamings-table__skeleton--text {
-  height: var(--font-size-18);
+  height: var(--font-size-14);
   flex: 1;
   max-width: 220px;
 }

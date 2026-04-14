@@ -101,6 +101,13 @@
     },
     "streamings": {
       "loadError": "Could not load streaming services. Check the API URL and your connection.",
+      "deleteError": "Could not remove the streaming service. Please try again.",
+      "deleteSuccess": "Streaming service \"{{name}}\" was removed successfully.",
+      "deleteConfirmTitle": "Are you sure you want to delete the streaming service {{name}}?",
+      "deleteConfirmBody": "This streaming service will no longer be searchable in the system or appear in reports. This action is IRREVERSIBLE.",
+      "deleteConfirmBanner": "Check for anime or other records that still depend on this service before you confirm.",
+      "deleteConfirmCancel": "Cancel",
+      "deleteConfirmDelete": "Delete",
       "paginationItemLabel": "streaming services",
       "pageTitle": "Streaming services",
       "pageSubtitle": "Manage anime streaming services for Clocktale",
