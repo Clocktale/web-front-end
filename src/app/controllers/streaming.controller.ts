@@ -120,6 +120,9 @@ export class StreamingController {
     this.deleteStreamingUseCase.execute(streaming.id).subscribe({
       next: () => {
         this.loading.set(false);
+        if (this.selectedStreaming()?.id === streaming.id) {
+          this.closeDetails();
+        }
         this.loadStreamings();
         this.toastService.show({
           message: this.transloco.translate('admin.streamings.deleteSuccess', {
