@@ -98,7 +98,8 @@ export class LoginController {
         this.authSession.setSession(session, this.rememberMe());
         this.loading.set(false);
         this.uiEvents.emitLoginSuccess();
-        void this.router.navigate(['/admin/authors']);
+        const target = this.authSession.isAdmin() ? '/admin/authors' : '/app/home';
+        void this.router.navigate([target]);
       },
       error: (err: unknown) => {
         this.loading.set(false);

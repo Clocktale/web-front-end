@@ -4,6 +4,7 @@ import {
   computed,
   signal,
   ChangeDetectionStrategy,
+  input,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
@@ -19,16 +20,48 @@ import {
   Tv,
   Settings,
   LogOut,
+  Home,
+  Search,
+  SquarePen,
+  Info,
+  Power,
 } from 'lucide-angular';
 import { TranslocoModule } from '@jsverse/transloco';
 import { AuthSessionController } from '../../../../controllers/auth-session.controller';
 import { LogoutController } from '../../../../controllers/logout.controller';
+
+export type SideMenuVariant = 'admin' | 'user';
 
 interface MenuItem {
   labelKey: string;
   route: string;
   icon: LucideIconData;
 }
+
+const ADMIN_MAIN_ITEMS: MenuItem[] = [
+  { labelKey: 'nav.dashboard', route: '/admin/dashboard', icon: LayoutDashboard },
+  { labelKey: 'nav.animes', route: '/admin/animes', icon: Film },
+  { labelKey: 'nav.reports', route: '/admin/reports', icon: FileText },
+  { labelKey: 'nav.authors', route: '/admin/authors', icon: Users },
+  { labelKey: 'nav.animeStudios', route: '/admin/studios', icon: Building },
+  { labelKey: 'nav.animeCategories', route: '/admin/categories', icon: Layers },
+  { labelKey: 'nav.streamings', route: '/admin/streamings', icon: Tv },
+];
+
+const ADMIN_BOTTOM_ITEMS: MenuItem[] = [
+  { labelKey: 'nav.settings', route: '/admin/settings', icon: Settings },
+];
+
+const USER_MAIN_ITEMS: MenuItem[] = [
+  { labelKey: 'nav.home', route: '/app/home', icon: Home },
+  { labelKey: 'nav.search', route: '/app/search', icon: Search },
+  { labelKey: 'nav.edit', route: '/app/edit', icon: SquarePen },
+];
+
+const USER_BOTTOM_ITEMS: MenuItem[] = [
+  { labelKey: 'nav.settings', route: '/app/settings', icon: Settings },
+  { labelKey: 'nav.info', route: '/app/info', icon: Info },
+];
 
 @Component({
   selector: 'app-side-menu',
@@ -46,7 +79,7 @@ interface MenuItem {
     '(mouseleave)': 'onMouseLeave()',
   },
   template: `
-    <ng-container *transloco="let t; prefix: 'admin.sideMenu'">
+    <ng-container *transloco="let t; prefix: i18nPrefix()">
       <aside class="side-menu__container" [class.side-menu__container--expanded]="isExpanded()">
         <div class="side-menu__header">
           <div class="side-menu__avatar">
@@ -59,7 +92,7 @@ interface MenuItem {
 
         <nav class="side-menu__nav">
           <a
-            *ngFor="let item of mainMenuItems"
+            *ngFor="let item of mainMenuItems()"
             [routerLink]="item.route"
             routerLinkActive="side-menu__item--active"
             class="side-menu__item"
@@ -77,7 +110,7 @@ interface MenuItem {
             <div class="side-menu__divider"></div>
 
             <a
-              *ngFor="let item of bottomMenuItems"
+              *ngFor="let item of bottomMenuItems()"
               [routerLink]="item.route"
               routerLinkActive="side-menu__item--active"
               class="side-menu__item"
@@ -99,7 +132,7 @@ interface MenuItem {
               [title]="t('logout')"
             >
               <lucide-angular
-                [img]="LogOutIcon"
+                [img]="logoutIcon()"
                 [size]="20"
                 class="side-menu__icon"
               />
@@ -117,31 +150,26 @@ export class SideMenuComponent {
   private readonly authSession = inject(AuthSessionController);
   readonly logoutController = inject(LogoutController);
 
-  protected readonly LayoutDashboardIcon = LayoutDashboard;
-  protected readonly FilmIcon = Film;
-  protected readonly FileTextIcon = FileText;
-  protected readonly UsersIcon = Users;
-  protected readonly BuildingIcon = Building;
-  protected readonly LayersIcon = Layers;
-  protected readonly TvIcon = Tv;
-  protected readonly SettingsIcon = Settings;
-  protected readonly LogOutIcon = LogOut;
+  /** Área de administração (`admin.sideMenu`) ou utilizador (`app.sideMenu`). */
+  variant = input<SideMenuVariant>('admin');
 
   isExpanded = signal(false);
 
-  protected readonly mainMenuItems: MenuItem[] = [
-    { labelKey: 'nav.dashboard', route: '/admin/dashboard', icon: LayoutDashboard },
-    { labelKey: 'nav.animes', route: '/admin/animes', icon: Film },
-    { labelKey: 'nav.reports', route: '/admin/reports', icon: FileText },
-    { labelKey: 'nav.authors', route: '/admin/authors', icon: Users },
-    { labelKey: 'nav.animeStudios', route: '/admin/studios', icon: Building },
-    { labelKey: 'nav.animeCategories', route: '/admin/categories', icon: Layers },
-    { labelKey: 'nav.streamings', route: '/admin/streamings', icon: Tv },
-  ];
+  protected readonly i18nPrefix = computed(() =>
+    this.variant() === 'admin' ? 'admin.sideMenu' : 'app.sideMenu'
+  );
 
-  protected readonly bottomMenuItems: MenuItem[] = [
-    { labelKey: 'nav.settings', route: '/admin/settings', icon: Settings },
-  ];
+  protected readonly mainMenuItems = computed(() =>
+    this.variant() === 'admin' ? ADMIN_MAIN_ITEMS : USER_MAIN_ITEMS
+  );
+
+  protected readonly bottomMenuItems = computed(() =>
+    this.variant() === 'admin' ? ADMIN_BOTTOM_ITEMS : USER_BOTTOM_ITEMS
+  );
+
+  protected readonly logoutIcon = computed(() =>
+    this.variant() === 'user' ? Power : LogOut
+  );
 
   userInitial = computed(() => {
     const user = this.authSession.user();

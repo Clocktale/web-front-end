@@ -34,6 +34,7 @@ export class AuthMapper extends BaseMapper {
       email: api.email,
       createdAt: this.toDate(api.created_at),
       updatedAt: this.toDate(api.updated_at),
+      isAdmin: api.is_admin === true,
     };
   }
 

@@ -13,6 +13,8 @@ export interface ApiAuthUser {
   email: string;
   created_at: string;
   updated_at: string;
+  /** Só administradores enviam `true`; omitido = utilizador comum. */
+  is_admin?: boolean;
 }
 
 /** `data` da resposta de POST /auth/login. */

@@ -22,6 +22,9 @@ export class AuthSessionController {
     return !this.isExpired(exp);
   });
 
+  /** Só é administrador com `user.isAdmin === true` (API explícita). */
+  isAdmin = computed(() => this.user()?.isAdmin === true);
+
   /** Restaura estado a partir do storage (arranque da app ou após refresh). */
   hydrateFromStorage(): void {
     const session = this.persistence.loadSession();
