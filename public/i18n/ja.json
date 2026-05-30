@@ -139,6 +139,41 @@
       "fallbackUser": "ユーザー"
     }
   },
+  "app": {
+    "sideMenu": {
+      "nav": {
+        "home": "ホーム",
+        "search": "検索",
+        "edit": "編集",
+        "settings": "設定",
+        "info": "概要"
+      },
+      "logout": "ログアウト",
+      "fallbackUser": "ユーザー"
+    },
+    "search": {
+      "searchPlaceholder": "アニメ名・著者・スタジオで検索",
+      "filtersButton": "フィルター",
+      "resultsTitle": "検索結果",
+      "resultsSubtitle": "全{{total}}件中 {{showing}}件を表示",
+      "sortBy": "並び替え：",
+      "sortByName": "名前",
+      "sortByReleaseDate": "リリース日",
+      "sortByStars": "評価",
+      "sortBySeasonCount": "シーズン数",
+      "sortByTotalEpisodes": "話数",
+      "sortAsc": "A → Z",
+      "sortDesc": "Z → A",
+      "sortDateAsc": "新しい順",
+      "sortDateDesc": "古い順",
+      "sortStarsAsc": "高評価順",
+      "sortStarsDesc": "低評価順",
+      "sortCountAsc": "多い順",
+      "sortCountDesc": "少ない順",
+      "loadError": "アニメを読み込めませんでした。もう一度お試しください。",
+      "emptyState": "アニメが見つかりません"
+    }
+  },
   "designSystem": {
     "modal": {
       "cancel": "キャンセル",

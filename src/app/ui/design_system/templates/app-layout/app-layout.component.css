@@ -1,0 +1,27 @@
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--color-surface);
+}
+
+.app-layout__content {
+  flex: 1;
+  margin-left: calc(var(--space-sidemenu-collapsed-width) + var(--space-16));
+  overflow-y: auto;
+  transition: margin-left 0.3s ease;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-layout__outlet {
+  position: relative;
+  flex: 1;
+  min-height: 100%;
+}
+
+@media (max-width: 768px) {
+  .app-layout__content {
+    margin-left: calc(var(--space-sidemenu-width) + var(--space-16));
+  }
+}

@@ -1,0 +1,90 @@
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* ── Trigger button ── */
+
+.dropdown__trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-14);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  background-color: var(--color-surface-overlay);
+  border: 1px solid var(--color-surface-overlay-medium);
+  border-radius: var(--radius-8);
+  padding: 0 var(--space-12);
+  height: 32px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.dropdown__trigger:hover,
+.dropdown__trigger--open {
+  border-color: var(--color-primary);
+  background-color: var(--color-surface-overlay-medium);
+}
+
+.dropdown__label {
+  flex: 1;
+  text-align: left;
+}
+
+.dropdown__chevron {
+  flex-shrink: 0;
+  color: var(--color-icon-default);
+  transition: transform 0.2s ease;
+}
+
+.dropdown__chevron--open {
+  transform: rotate(180deg);
+}
+
+/* ── Dropdown menu ── */
+
+.dropdown__menu {
+  position: absolute;
+  top: calc(100% + var(--space-4));
+  left: 0;
+  min-width: 100%;
+  background-color: var(--color-surface-elevated);
+  border: 1px solid var(--color-surface-overlay-medium);
+  border-radius: var(--radius-8);
+  padding: var(--space-4) 0;
+  margin: 0;
+  list-style: none;
+  z-index: 200;
+  box-shadow: 0 8px 24px var(--color-black-muted-30);
+  overflow: hidden;
+}
+
+/* ── Menu item ── */
+
+.dropdown__item {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-14);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  padding: var(--space-8) var(--space-16);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.1s ease;
+}
+
+.dropdown__item:hover {
+  background-color: var(--color-surface-overlay);
+}
+
+.dropdown__item--active {
+  color: var(--color-primary);
+  font-weight: 600;
+  background-color: var(--color-surface-primary-tint);
+}
+
+.dropdown__item--active:hover {
+  background-color: var(--color-surface-primary-tint-strong);
+}

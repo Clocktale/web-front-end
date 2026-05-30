@@ -139,6 +139,41 @@
       "fallbackUser": "Usuário"
     }
   },
+  "app": {
+    "sideMenu": {
+      "nav": {
+        "home": "Início",
+        "search": "Busca",
+        "edit": "Editar",
+        "settings": "Configurações",
+        "info": "Sobre"
+      },
+      "logout": "Sair",
+      "fallbackUser": "Usuário"
+    },
+    "search": {
+      "searchPlaceholder": "Pesquise animes pelo nome, autor ou estúdio",
+      "filtersButton": "Filtros",
+      "resultsTitle": "Resultados da Pesquisa",
+      "resultsSubtitle": "Mostrando {{showing}} resultados de um total de {{total}}",
+      "sortBy": "Ordenar por:",
+      "sortByName": "Nome",
+      "sortByReleaseDate": "Data de lançamento",
+      "sortByStars": "Estrelas",
+      "sortBySeasonCount": "Temporadas",
+      "sortByTotalEpisodes": "Episódios",
+      "sortAsc": "A → Z",
+      "sortDesc": "Z → A",
+      "sortDateAsc": "Mais recentes",
+      "sortDateDesc": "Mais antigos",
+      "sortStarsAsc": "Maior nota",
+      "sortStarsDesc": "Menor nota",
+      "sortCountAsc": "Mais",
+      "sortCountDesc": "Menos",
+      "loadError": "Não foi possível carregar os animes. Tente novamente.",
+      "emptyState": "Nenhum anime encontrado"
+    }
+  },
   "designSystem": {
     "modal": {
       "cancel": "Cancelar",

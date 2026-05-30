@@ -11,6 +11,8 @@ import { devHttpRequestLogInterceptor } from './interceptors/dev-http-request-lo
 import { devHttpResponseLogInterceptor } from './interceptors/dev-http-response-log.interceptor';
 import { AuthSessionController } from './controllers/auth-session.controller';
 import { ToastService } from './services/toast.service';
+import { AnimeRepository } from './data/repositories/anime.repository';
+import { AnimeRepositoryMock } from './data/repositories/anime-mock.repository';
 
 const AVAILABLE_LANGS = ['en', 'pt-BR', 'ja'] as const;
 
@@ -50,5 +52,6 @@ export const appConfig: ApplicationConfig = {
       inject(AuthSessionController).hydrateFromStorage();
       inject(ToastService);
     }),
+    { provide: AnimeRepository, useClass: AnimeRepositoryMock },
   ],
 };

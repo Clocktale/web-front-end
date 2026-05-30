@@ -1,0 +1,144 @@
+.anime-search {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* ── Topbar / Header ── */
+
+.anime-search__topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-16) var(--space-32);
+  flex-shrink: 0;
+}
+
+.anime-search__search {
+  flex: 1;
+}
+
+.anime-search__filter-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-14);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  background-color: var(--color-surface-overlay);
+  border: 1px solid var(--color-surface-overlay-medium);
+  border-radius: var(--radius-8);
+  padding: var(--space-12) var(--space-16);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.anime-search__filter-btn:hover {
+  background-color: var(--color-surface-overlay-medium);
+  border-color: var(--color-primary);
+}
+
+/* ── Main content ── */
+
+.anime-search__content {
+  padding: var(--space-16) var(--space-32);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-28);
+  flex: 1;
+}
+
+/* ── Results row ── */
+
+.anime-search__results-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-16);
+  flex-wrap: wrap;
+}
+
+.anime-search__title-area {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.anime-search__title {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-24);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.anime-search__subtitle {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-14);
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ── Sort controls ── */
+
+.anime-search__sort {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  flex-shrink: 0;
+}
+
+.anime-search__sort-label {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-18);
+  font-weight: 400;
+  color: var(--color-text-primary);
+}
+
+
+/* ── Grid ── */
+
+.anime-search__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-16);
+}
+
+.anime-search__empty {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-16);
+  color: var(--color-text-secondary);
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--space-64) 0;
+}
+
+/* ── Loading skeleton ── */
+
+.anime-search__skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-16);
+}
+
+.anime-search__skeleton-card {
+  aspect-ratio: 2 / 3;
+  border-radius: var(--radius-16);
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-elevated) 0%,
+    var(--color-surface-overlay) 50%,
+    var(--color-surface-elevated) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

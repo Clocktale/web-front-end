@@ -1,0 +1,86 @@
+.anime-card {
+  aspect-ratio: 2 / 3;
+  border-radius: var(--radius-16);
+  background-size: cover;
+  background-position: center;
+  background-color: var(--color-surface-elevated);
+  position: relative;
+  cursor: pointer;
+}
+
+
+/* ── Info overlay (visible on hover only) ── */
+
+.anime-card__info {
+  position: absolute;
+  bottom: -1px;
+  left: -1px;
+  right: -1px;
+  background-color: var(--color-neutral-850);
+  padding: var(--space-8) var(--space-12);
+  border-radius: 0 0 var(--radius-16) var(--radius-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.anime-card:hover .anime-card__info {
+  opacity: 1;
+}
+
+/* ── Genres ── */
+
+.anime-card__genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  line-height: 1.4;
+}
+
+.anime-card__genre {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-10);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* ── Title ── */
+
+.anime-card__title {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-14);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.3;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+/* ── Footer (stars + status) ── */
+
+.anime-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+
+.anime-card__stars {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-10);
+  font-weight: 700;
+  color: var(--color-trophy-gold);
+  line-height: 1;
+}
+
+.anime-card__status {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-10);
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  line-height: 1;
+}

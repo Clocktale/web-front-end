@@ -9,6 +9,8 @@
    * -------------------------------------------------------------------------- */
   --font-family-sans: 'Public Sans', system-ui, sans-serif;
 
+  --font-size-10: 10px;
+  --font-size-12: 12px;
   --font-size-14: 14px;
   --font-size-16: 16px;
   --font-size-18: 18px;
@@ -89,6 +91,7 @@
 
   --color-black-muted-30: color-mix(in srgb, var(--color-black) 30%, transparent);
   --color-black-muted-55: color-mix(in srgb, var(--color-black) 55%, transparent);
+  --color-black-muted-80: color-mix(in srgb, var(--color-black) 80%, transparent);
 
   --color-info-muted-25: color-mix(in srgb, var(--color-info) 25%, transparent);
   --color-danger-muted-25: color-mix(in srgb, var(--color-danger) 25%, transparent);
@@ -140,5 +143,6 @@
   --color-border-info-banner: var(--color-info-banner-border);
 
   /* Dimensões */
+  --space-sidemenu-collapsed-width: 72px;
   --space-sidemenu-width: 240px;
 }

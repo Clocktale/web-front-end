@@ -1,4 +1,4 @@
-.side-menu {
+:host {
   display: block;
   width: 72px;
   max-width: 72px;
@@ -10,7 +10,7 @@
   z-index: 1000;
 }
 
-.side-menu:hover {
+:host(:hover) {
   width: var(--space-sidemenu-width);
   max-width: var(--space-sidemenu-width);
 }
@@ -161,7 +161,7 @@
 }
 
 @media (max-width: 768px) {
-  .side-menu {
+  :host {
     width: var(--space-sidemenu-width);
     max-width: var(--space-sidemenu-width);
   }

@@ -98,7 +98,7 @@ export class LoginController {
         this.authSession.setSession(session, this.rememberMe());
         this.loading.set(false);
         this.uiEvents.emitLoginSuccess();
-        const target = this.authSession.isAdmin() ? '/admin/authors' : '/app/home';
+        const target = this.authSession.isAdmin() ? '/admin/authors' : '/app/search';
         void this.router.navigate([target]);
       },
       error: (err: unknown) => {
