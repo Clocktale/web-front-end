@@ -8,6 +8,7 @@ import { ExplorePage } from './ui/modules/explore/explore.page';
 import { AuthorsPage } from './ui/modules/admin/authors/authors.page';
 import { StreamingsPage } from './ui/modules/admin/streamings/streamings.page';
 import { AnimeSearchPage } from './ui/modules/app/anime-search/anime-search.page';
+import { SettingsPage } from './ui/modules/app/settings/settings.page';
 
 export const routes: Routes = [
   {
@@ -34,6 +35,7 @@ export const routes: Routes = [
     component: AppLayoutComponent,
     children: [
       { path: 'search', component: AnimeSearchPage },
+      { path: 'settings', component: SettingsPage },
     ],
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

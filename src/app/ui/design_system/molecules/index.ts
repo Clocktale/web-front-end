@@ -8,3 +8,4 @@ export { DropdownSelectComponent } from './dropdown-select/dropdown-select.compo
 export type { DropdownOption } from './dropdown-select/dropdown-select.component';
 export { SegmentedButtonComponent } from './segmented-button/segmented-button.component';
 export type { SegmentedOption } from './segmented-button/segmented-button.component';
+export { RadioTileComponent } from './radio-tile/radio-tile.component';

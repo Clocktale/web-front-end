@@ -10,11 +10,15 @@ import { authErrorInterceptor } from './interceptors/auth-error.interceptor';
 import { devHttpRequestLogInterceptor } from './interceptors/dev-http-request-log.interceptor';
 import { devHttpResponseLogInterceptor } from './interceptors/dev-http-response-log.interceptor';
 import { AuthSessionController } from './controllers/auth-session.controller';
+import { SettingsController } from './controllers/settings.controller';
 import { ToastService } from './services/toast.service';
+import { LocalePersistenceService } from './services/locale-persistence.service';
 import { AnimeRepository } from './data/repositories/anime.repository';
 import { AnimeRepositoryMock } from './data/repositories/anime-mock.repository';
-
-const AVAILABLE_LANGS = ['en', 'pt-BR', 'ja'] as const;
+import {
+  APP_LOCALES,
+  resolveBrowserLocale,
+} from './types/app-locale.type';
 
 const httpInterceptorFns = [
   authInterceptor,
@@ -31,7 +35,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors(httpInterceptorFns)),
     provideTransloco({
       config: {
-        availableLangs: [...AVAILABLE_LANGS],
+        availableLangs: [...APP_LOCALES],
         defaultLang: 'en',
         fallbackLang: 'en',
         reRenderOnLangChange: true,
@@ -41,12 +45,12 @@ export const appConfig: ApplicationConfig = {
     }),
     provideAppInitializer(() => {
       const transloco = inject(TranslocoService);
-      const browserLang = navigator.language;
-      const match =
-        AVAILABLE_LANGS.find(l => browserLang.startsWith(l)) ??
-        AVAILABLE_LANGS.find(l => browserLang.startsWith(l.split('-')[0])) ??
-        'en';
-      transloco.setActiveLang(match);
+      const localePersistence = inject(LocalePersistenceService);
+      const stored = localePersistence.load();
+      const lang =
+        stored ?? resolveBrowserLocale(navigator.language);
+      transloco.setActiveLang(lang);
+      inject(SettingsController).syncFromActiveLang();
     }),
     provideAppInitializer(() => {
       inject(AuthSessionController).hydrateFromStorage();

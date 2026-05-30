@@ -151,6 +151,11 @@
       "logout": "Sign out",
       "fallbackUser": "User"
     },
+    "settings": {
+      "title": "Settings",
+      "languageSectionTitle": "System language",
+      "languageOptionAriaLabel": "Select language {{language}}"
+    },
     "search": {
       "searchPlaceholder": "Search anime by name, author or studio",
       "filtersButton": "Filters",

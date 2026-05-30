@@ -151,6 +151,11 @@
       "logout": "Sair",
       "fallbackUser": "Usuário"
     },
+    "settings": {
+      "title": "Configurações",
+      "languageSectionTitle": "Idioma do sistema",
+      "languageOptionAriaLabel": "Selecionar idioma {{language}}"
+    },
     "search": {
       "searchPlaceholder": "Pesquise animes pelo nome, autor ou estúdio",
       "filtersButton": "Filtros",

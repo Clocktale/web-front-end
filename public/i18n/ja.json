@@ -151,6 +151,11 @@
       "logout": "ログアウト",
       "fallbackUser": "ユーザー"
     },
+    "settings": {
+      "title": "設定",
+      "languageSectionTitle": "システム言語",
+      "languageOptionAriaLabel": "言語を選択: {{language}}"
+    },
     "search": {
       "searchPlaceholder": "アニメ名・著者・スタジオで検索",
       "filtersButton": "フィルター",
